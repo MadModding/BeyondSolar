@@ -10,11 +10,13 @@ public final class ModItems {
 	public static final Item evilstaff = new EvilStaff("evilstaff", evilStaffToolMaterial);
 	public static final Item warp = new WarpStar("warp");
 	public static final Item fragment = new ItemFragment("fragment");
+	public static final Item dust = new Item().setCreativeTab(Main.aliensTab).setUnlocalizedName("dust");
 
 	public static void init() {
 		GameRegistry.registerItem(evilstaff, "evilstaff");
 		GameRegistry.registerItem(warp, "warp");
 		GameRegistry.registerItem(fragment, "fragment");
+		GameRegistry.registerItem(dust, "dust");
 	}
 
 }
