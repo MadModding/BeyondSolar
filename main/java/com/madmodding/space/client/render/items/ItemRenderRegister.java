@@ -13,6 +13,7 @@ public final class ItemRenderRegister {
 
 	public static void registerItemRenderer() {
 
+                reg(ModItems.dust);
 		reg(ModItems.evilstaff);
 		for (int i = 0; i < ItemFragment.names.length*4; i++)
 			reg(ModItems.fragment, i);
