@@ -3,16 +3,20 @@ package com.madmodding.space;
 import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.blocks.ModFluids;
 import com.madmodding.space.cell.WorldProviderCell;
+import com.madmodding.space.client.render.items.RenderDrillLaser;
+import com.madmodding.space.entity.item.EntityDrillLaser;
 import com.madmodding.space.items.ModItems;
 import com.madmodding.space.items.RecipesDyeAdv;
 import com.madmodding.space.items.RecipesDyeCustom;
 import com.madmodding.space.items.RecipesToolDye;
 import com.madmodding.space.space.WorldProviderSpace;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -48,6 +52,7 @@ public class CommonProxy {
 		Main.network.registerMessage(MessagePushY.Handler.class, MessagePushY.class, packetId++, Side.CLIENT);
 		Main.network.registerMessage(MessagePushZ.Handler.class, MessagePushZ.class, packetId++, Side.CLIENT);
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
+		RenderingRegistry.registerEntityRenderingHandler(EntityDrillLaser.class, new RenderDrillLaser());
 		DimensionManager.registerProviderType(71, WorldProviderSpace.class, true);
 		DimensionManager.registerDimension(71, 71);
 		DimensionManager.registerProviderType(-10, WorldProviderCell.class, true);
