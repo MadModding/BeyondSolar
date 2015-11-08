@@ -18,7 +18,6 @@ public class BiomeGenSpace extends BiomeGenBase
         this.spawnableCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntitySpider.class, 10, 4, 4));
         this.topBlock = Blocks.end_stone.getDefaultState();
         this.fillerBlock = Blocks.end_stone.getDefaultState();
         this.theBiomeDecorator = new BiomeSpaceDecorator();

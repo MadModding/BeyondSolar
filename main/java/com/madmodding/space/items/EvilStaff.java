@@ -17,7 +17,7 @@ public class EvilStaff extends ItemSword {
 	public EvilStaff(String name, ToolMaterial mat) {
 		super(mat);
 		this.setUnlocalizedName(name);
-		this.setCreativeTab(Main.aliensTab);
+		this.setCreativeTab(Main.aliensTabTech);
 	}
 	
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {

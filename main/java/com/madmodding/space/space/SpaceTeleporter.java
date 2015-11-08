@@ -67,13 +67,13 @@ public class SpaceTeleporter extends Teleporter
                         int l1 = j + j1;
                         int i2 = k + i1 * b1 - l * b0;
                         boolean flag = j1 < 0;
-                        this.worldServerInstance.setBlockState(new BlockPos(k1, l1, i2), flag ? Blocks.obsidian.getDefaultState() : Blocks.air.getDefaultState());
+                        //this.worldServerInstance.setBlockState(new BlockPos(k1, l1, i2), flag ? Blocks.obsidian.getDefaultState() : Blocks.air.getDefaultState());
                     }
                 }
             }
 
             entityIn.setLocationAndAngles((double)i, (double)j, (double)k, entityIn.rotationYaw, 0.0F);
-            entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
+           // entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
         }
     }
 
@@ -109,9 +109,9 @@ public class SpaceTeleporter extends Teleporter
                     {
                         blockpos1 = blockpos.down();
 
-                        if (this.worldServerInstance.getBlockState(blockpos).getBlock() == Blocks.air)
+                        if (this.worldServerInstance.getBlockState(blockpos).getBlock() == Blocks.portal)
                         {
-                            while (this.worldServerInstance.getBlockState(blockpos1 = blockpos.down()).getBlock() == Blocks.air)
+                            while (this.worldServerInstance.getBlockState(blockpos1 = blockpos.down()).getBlock() == Blocks.portal)
                             {
                                 blockpos = blockpos1;
                             }
@@ -142,22 +142,22 @@ public class SpaceTeleporter extends Teleporter
             double d6 = (double)((BlockPos)object).getZ() + 0.5D;
             EnumFacing enumfacing = null;
 
-            if (this.worldServerInstance.getBlockState(((BlockPos)object).west()).getBlock() == Blocks.air)
+            if (this.worldServerInstance.getBlockState(((BlockPos)object).west()).getBlock() == Blocks.portal)
             {
                 enumfacing = EnumFacing.NORTH;
             }
 
-            if (this.worldServerInstance.getBlockState(((BlockPos)object).east()).getBlock() == Blocks.air)
+            if (this.worldServerInstance.getBlockState(((BlockPos)object).east()).getBlock() == Blocks.portal)
             {
                 enumfacing = EnumFacing.SOUTH;
             }
 
-            if (this.worldServerInstance.getBlockState(((BlockPos)object).north()).getBlock() == Blocks.air)
+            if (this.worldServerInstance.getBlockState(((BlockPos)object).north()).getBlock() == Blocks.portal)
             {
                 enumfacing = EnumFacing.EAST;
             }
 
-            if (this.worldServerInstance.getBlockState(((BlockPos)object).south()).getBlock() == Blocks.air)
+            if (this.worldServerInstance.getBlockState(((BlockPos)object).south()).getBlock() == Blocks.portal)
             {
                 enumfacing = EnumFacing.WEST;
             }
@@ -230,13 +230,15 @@ public class SpaceTeleporter extends Teleporter
 
                 double d2 = entityIn.motionX;
                 double d3 = entityIn.motionZ;
-                entityIn.motionX = d2 * (double)f2 + d3 * (double)f5;
-                entityIn.motionZ = d2 * (double)f4 + d3 * (double)f3;
+                //entityIn.motionX = d2 * (double)f2 + d3 * (double)f5;
+                //entityIn.motionZ = d2 * (double)f4 + d3 * (double)f3;
+                entityIn.posY+=entityIn.motionY;
+                entityIn.posY+=entityIn.motionY;
                 entityIn.rotationYaw = p_180620_2_ - (float)(enumfacing1.getHorizontalIndex() * 90) + (float)(enumfacing.getHorizontalIndex() * 90);
             }
             else
             {
-                entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
+                //entityIn.motionX = entityIn.motionY = entityIn.motionZ = 0.0D;
             }
 
             entityIn.setLocationAndAngles(d4, d5, d6, entityIn.rotationYaw, entityIn.rotationPitch);
@@ -430,13 +432,13 @@ public class SpaceTeleporter extends Teleporter
                         i4 = j2 + k3;
                         j4 = k2 + (j3 - 1) * l2 - i3 * l5;
                         boolean flag = k3 < 0;
-                        this.worldServerInstance.setBlockState(new BlockPos(l3, i4, j4), flag ? Blocks.obsidian.getDefaultState() : Blocks.air.getDefaultState());
+                        //this.worldServerInstance.setBlockState(new BlockPos(l3, i4, j4), flag ? Blocks.obsidian.getDefaultState() : Blocks.air.getDefaultState());
                     }
                 }
             }
         }
 
-        IBlockState iblockstate = Blocks.air.getDefaultState().withProperty(BlockPortal.AXIS, l5 != 0 ? EnumFacing.Axis.X : EnumFacing.Axis.Z);
+        IBlockState iblockstate = Blocks.portal.getDefaultState().withProperty(BlockPortal.AXIS, l5 != 0 ? EnumFacing.Axis.X : EnumFacing.Axis.Z);
 
         for (j3 = 0; j3 < 4; ++j3)
         {
@@ -448,7 +450,7 @@ public class SpaceTeleporter extends Teleporter
                     j4 = j2 + l3;
                     k4 = k2 + (k3 - 1) * l2;
                     boolean flag1 = k3 == 0 || k3 == 3 || l3 == -1 || l3 == 3;
-                    this.worldServerInstance.setBlockState(new BlockPos(i4, j4, k4), flag1 ? Blocks.obsidian.getDefaultState() : iblockstate, 2);
+                    //this.worldServerInstance.setBlockState(new BlockPos(i4, j4, k4), flag1 ? Blocks.obsidian.getDefaultState() : iblockstate, 2);
                 }
             }
 

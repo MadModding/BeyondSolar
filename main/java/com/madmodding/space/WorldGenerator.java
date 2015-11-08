@@ -2,6 +2,8 @@ package com.madmodding.space;
 
 import java.util.Random;
 
+import com.madmodding.space.blocks.ModBlocks;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockHelper;
 import net.minecraft.init.Blocks;
@@ -13,8 +15,11 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class WorldGenerator implements IWorldGenerator {
 	public static final String SPACE_BOX = "spaceLootBox";
-	public static final IBlockState[] oretypes = new IBlockState[] { Blocks.iron_ore.getDefaultState(),
-			Blocks.gold_ore.getDefaultState(), Blocks.ice.getDefaultState() };
+	public static final IBlockState[] oretypes = new IBlockState[] { ModBlocks.ferrousOre.getDefaultState(),
+			ModBlocks.ferrousOre.getDefaultState(), ModBlocks.ferrousOre.getDefaultState(),
+			ModBlocks.ferrousOre.getDefaultState(), ModBlocks.ferrousOre.getDefaultState(),
+			ModBlocks.platinumMeteorite.getDefaultState(), ModBlocks.rareMetalMeteorite.getDefaultState(),
+			ModBlocks.ice.getDefaultState() };
 
 	public WorldGenerator() {
 

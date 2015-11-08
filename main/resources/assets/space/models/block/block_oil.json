@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "space:blocks/OilStill",
+        "flowing": "space:blocks/OilFlowing"
+    }
+}

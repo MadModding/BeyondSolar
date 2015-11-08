@@ -12,7 +12,7 @@ public class AlienEgg extends BlockContainer {
 	
 	public AlienEgg(Material mat) { 
 		super(mat);
-		this.setCreativeTab(Main.aliensTab);
+		this.setCreativeTab(Main.aliensTabBlock);
 	}
 	
 	public int getRenderType() {

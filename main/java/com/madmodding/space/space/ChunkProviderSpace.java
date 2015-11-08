@@ -2,10 +2,10 @@ package com.madmodding.space.space;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
+import com.madmodding.space.blocks.ModBlocks;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockHelper;
@@ -19,18 +19,9 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.FlatGeneratorInfo;
-import net.minecraft.world.gen.FlatLayerInfo;
-import net.minecraft.world.gen.MapGenBase;
-import net.minecraft.world.gen.feature.WorldGenDungeons;
-import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.structure.MapGenMineshaft;
-import net.minecraft.world.gen.structure.MapGenScatteredFeature;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.MapGenVillage;
-import net.minecraft.world.gen.structure.StructureOceanMonument;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
@@ -47,7 +38,8 @@ public class ChunkProviderSpace implements IChunkProvider
         this.worldObj = worldIn;
         this.random = new Random(p_i2004_2_);
         boolean flag1 = true;
-        this.cachedBlockIDs[1] = Blocks.barrier.getDefaultState();
+        //for(int i = 0; i < 256; i ++)
+       //	cachedBlockIDs[i] = ModBlocks.air.getDefaultState();
  }
 
     /**
@@ -86,27 +78,34 @@ public class ChunkProviderSpace implements IChunkProvider
         chunk.generateSkylightMap();
         return chunk;
     }
-    private void generateSpace(World world, Random rand, int chunkX, int chunkZ) {
+    public static void generateSpace(World world, Random rand, int chunkX, int chunkZ) {
         for(int k = 0; k < 10; k++){
         	int firstBlockXCoord = chunkX + rand.nextInt(16);
         	int firstBlockYCoord = rand.nextInt(256);
         	int firstBlockZCoord = chunkZ + rand.nextInt(16);
         	
-        	(new WorldGenMinable(Blocks.iron_ore.getDefaultState(), 48, BlockHelper.forBlock(Blocks.air))).generate(world, rand, new BlockPos(firstBlockXCoord, firstBlockYCoord, firstBlockZCoord));
+        	(new WorldGenMinable(ModBlocks.ferrousOre.getDefaultState(), 64, BlockHelper.forBlock(ModBlocks.air))).generate(world, rand, new BlockPos(firstBlockXCoord, firstBlockYCoord, firstBlockZCoord));
+        }
+        for(int k = 0; k < 1; k++){
+        	int firstBlockXCoord = chunkX + rand.nextInt(16);
+        	int firstBlockYCoord = rand.nextInt(256);
+        	int firstBlockZCoord = chunkZ + rand.nextInt(16);
+        	
+        	(new WorldGenMinable(ModBlocks.platinumMeteorite.getDefaultState(), 64, BlockHelper.forBlock(ModBlocks.air))).generate(world, rand, new BlockPos(firstBlockXCoord, firstBlockYCoord, firstBlockZCoord));
+        }
+        for(int k = 0; k < 1; k++){
+        	int firstBlockXCoord = chunkX + rand.nextInt(16);
+        	int firstBlockYCoord = rand.nextInt(256);
+        	int firstBlockZCoord = chunkZ + rand.nextInt(16);
+        	
+        	(new WorldGenMinable(ModBlocks.rareMetalMeteorite.getDefaultState(), 64, BlockHelper.forBlock(ModBlocks.air))).generate(world, rand, new BlockPos(firstBlockXCoord, firstBlockYCoord, firstBlockZCoord));
         }
         for(int k = 0; k < 10; k++){
         	int firstBlockXCoord = chunkX + rand.nextInt(16);
         	int firstBlockYCoord = rand.nextInt(256);
         	int firstBlockZCoord = chunkZ + rand.nextInt(16);
         	
-        	(new WorldGenMinable(Blocks.gold_ore.getDefaultState(), 48, BlockHelper.forBlock(Blocks.air))).generate(world, rand, new BlockPos(firstBlockXCoord, firstBlockYCoord, firstBlockZCoord));
-        }
-        for(int k = 0; k < 10; k++){
-        	int firstBlockXCoord = chunkX + rand.nextInt(16);
-        	int firstBlockYCoord = rand.nextInt(256);
-        	int firstBlockZCoord = chunkZ + rand.nextInt(16);
-        	
-        	(new WorldGenMinable(Blocks.ice.getDefaultState(), 48, BlockHelper.forBlock(Blocks.air))).generate(world, rand, new BlockPos(firstBlockXCoord, firstBlockYCoord, firstBlockZCoord));
+        	(new WorldGenMinable(ModBlocks.ice.getDefaultState(), 64, BlockHelper.forBlock(ModBlocks.air))).generate(world, rand, new BlockPos(firstBlockXCoord, firstBlockYCoord, firstBlockZCoord));
         }
 	}
     /**

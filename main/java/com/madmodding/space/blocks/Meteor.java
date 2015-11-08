@@ -8,6 +8,6 @@ import net.minecraft.block.material.Material;
 public class Meteor extends Block {
 	public Meteor(Material mat) {
 		super(mat);
-		this.setCreativeTab(Main.aliensTab);
-	}
+		this.setCreativeTab(Main.aliensTabBlock);
+		}
 }
