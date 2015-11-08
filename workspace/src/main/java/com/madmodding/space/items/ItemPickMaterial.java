@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.madmodding.space.ElementLib;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -35,17 +36,19 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 			0, 0, 0.4, 1.5, 0, 6.0, 7.0, 8.5, 6.0, 4.0, 5.0, 4.0, 3.0, 2.5, 1.5, 6.0, 3.5, 2.0, 0, 0, 0.3, 1.5, 0, 5.0,
 			6.0, 5.5, 0, 6.5, 6.0, 5.0, 2.5, 2.0, 1.0, 1.5, 3.0, 2.0, 0, 0, 0.2, 1.0, 2.5, 2.5, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 5.5, 6.5, 7.5, 7.0, 7.0, 6.5, 3.5, 2.5, 0, 1.0, 1.5, 2.5, 0, 0, 0, 0, 0, 0, 3.0, 0, 6.0, 0,
-			0, 0, 0, 0, 0, 0, 0, 11, 0 };
-	
+			0, 0, 0, 0, 0, 0, 0, 11, 20 };
+	private double attackDamage;
+
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-		for (int i = 0; i < 101; i++) {
+		for (int i = 0; i < ItemFragment.names.length; i++) {
 			if (hard[i] != 0 && ItemRefined.types[i] == 1) {
-				subItems.add(new ItemStack(itemIn, 1, i));
-				subItems.add(new ItemStack(itemIn, 1, i + 101));
-				subItems.add(new ItemStack(itemIn, 1, i + 202));
-				subItems.add(new ItemStack(itemIn, 1, i + 303));
+				for (int t = 0; t < 4; t++) {
+					ItemStack stack = new ItemStack(itemIn, 1, i + (t * ItemFragment.names.length));
+					this.onFirstTick(stack);
+					subItems.add(stack);
 				}
+			}
 		}
 	}
 
@@ -97,50 +100,13 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 		return EnumRarity.RARE;
 	}
 
-	public int getColor(long time) {
-		double t = (int) ((time / 8) % 300);
-		int clr = 0;
-		int r = 0;
-		int g = 0;
-		int b = 0;
-		if (t > 250 || t < 150) { // 000 - 100
-			if (t > 250)
-				r = (int) ((t - 250d) / 50d * 255d);
-			else if (t < 150 && t > 100)
-				r = (int) ((150d - t) / 50d * 255d);
-			else
-				r = 255;
-		}
-		if (t > 50 && t < 250) { // 100 - 200
-			if (t > 200 && t < 250)
-				g = (int) (-(t - 250d) / 50d * 255d);
-			else if (t < 100 && t > 50)
-				g = (int) ((t - 50d) / 50d * 255d);
-			else
-				g = 255;
-		}
-		if (t > 150 || t < 50) { // 200 - 300
-			if (t < 50 && t > 0)
-				b = (int) ((50d - t) / 50d * 255d);
-			else if (t > 150 && t < 200)
-				b = (int) ((200d - t) / 50d * 255d);
-			else
-				b = 255;
-
-		}
-		clr += r * 65536;
-		clr += g * 256;
-		clr += b;
-		return clr;
-	}
-
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		if (!stack.hasTagCompound())
 			onFirstTick(stack);
 		double clr = stack.getTagCompound().getInteger("color");
 		if (clr == -1)
-			clr = getColor(Minecraft.getSystemTime());
+			clr = ElementLib.getColor(Minecraft.getSystemTime());
 		if (stack.getTagCompound().getBoolean("anti")) {
 			double r = ((int) clr / 65536d);
 			clr -= r * 65536;
@@ -184,8 +150,8 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 	@Override
 	public void onFirstTick(ItemStack stack) {
 
-		int i = (int) ((stack.getItemDamage()) / 101) + 1;
-		stack.setItemDamage(stack.getItemDamage() - (i - 1) * 101);
+		int i = (int) ((stack.getItemDamage()) / ItemFragment.names.length) + 1;
+		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ItemFragment.names.length);
 		boolean neg = i % 2 == 0;
 		boolean anti = i > 2;
 		if (!stack.hasTagCompound())

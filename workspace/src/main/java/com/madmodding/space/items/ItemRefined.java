@@ -2,6 +2,8 @@ package com.madmodding.space.items;
 
 import java.util.List;
 
+import com.madmodding.space.ElementLib;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -19,17 +21,18 @@ public class ItemRefined extends Item implements IFirstTick {
 	public static final int[] types = new int[] { 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 2, 1, 2, 3, 2, 3, 3, 3, 2, 2, 1, 3,
 			1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2,
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 2, 2, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3,
-			3, 3, 3, 3, 3, 1, 1 };
+			3, 3, 3, 3, 3, 1, 1, 1 };
 	public static final String[] typenames = new String[] { "blankingot", "blankdust", "blankpot" };
 
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
 		for (int i = 0; i < ItemFragment.names.length; i++) {
-			subItems.add(new ItemStack(itemIn, 1, i + 0 * ItemFragment.names.length));
-			subItems.add(new ItemStack(itemIn, 1, i + 1 * ItemFragment.names.length));
-			subItems.add(new ItemStack(itemIn, 1, i + 2 * ItemFragment.names.length));
-			subItems.add(new ItemStack(itemIn, 1, i + 3 * ItemFragment.names.length));
+			for (int t = 0; t < 4; t++) {
+				ItemStack stack = new ItemStack(itemIn, 1, i + t * ItemFragment.names.length);
+				this.onFirstTick(stack);
+				subItems.add(stack);
 			}
+		}
 	}
 
 	public ItemRefined(String unlocalizedName) {
@@ -38,50 +41,13 @@ public class ItemRefined extends Item implements IFirstTick {
 		this.setUnlocalizedName(unlocalizedName);
 	}
 
-	public int getColor(long time) {
-		double t = (int) ((time / 8) % 300);
-		int clr = 0;
-		int r = 0;
-		int g = 0;
-		int b = 0;
-		if (t > 250 || t < 150) { // 000 - 100
-			if (t > 250)
-				r = (int) ((t - 250d) / 50d * 255d);
-			else if (t < 150 && t > 100)
-				r = (int) ((150d - t) / 50d * 255d);
-			else
-				r = 255;
-		}
-		if (t > 50 && t < 250) { // 100 - 200
-			if (t > 200 && t < 250)
-				g = (int) (-(t - 250d) / 50d * 255d);
-			else if (t < 100 && t > 50)
-				g = (int) ((t - 50d) / 50d * 255d);
-			else
-				g = 255;
-		}
-		if (t > 150 || t < 50) { // 200 - 300
-			if (t < 50 && t > 0)
-				b = (int) ((50d - t) / 50d * 255d);
-			else if (t > 150 && t < 200)
-				b = (int) ((200d - t) / 50d * 255d);
-			else
-				b = 255;
-
-		}
-		clr += r * 65536;
-		clr += g * 256;
-		clr += b;
-		return clr;
-	}
-
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		if (!stack.hasTagCompound())
 			onFirstTick(stack);
 		double clr = stack.getTagCompound().getInteger("color");
 		if (clr == -1)
-			clr = getColor(Minecraft.getSystemTime());
+			clr = ElementLib.getColor(Minecraft.getSystemTime());
 		if (stack.getTagCompound().getBoolean("anti")) {
 			double r = ((int) clr / 65536d);
 			clr -= r * 65536;
