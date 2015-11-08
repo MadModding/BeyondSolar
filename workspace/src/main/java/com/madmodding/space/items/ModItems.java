@@ -12,8 +12,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public final class ModItems {
 	public static final Item.ToolMaterial evilStaffToolMaterial = EnumHelper.addToolMaterial("alienStaffMaterial", 0,
 			100, 0.0F, 3.0F, 30);
-	public static final ToolMaterial material = EnumHelper.addToolMaterial("SpaceMaterial", 4, 18054, 20.0f,
-			16.0f, 0);
+	public static final ToolMaterial material = EnumHelper.addToolMaterial("SpaceMaterial", 4, 18054, 20.0f, 16.0f, 0);
 	public static final Item evilstaff = new EvilStaff("evilstaff", evilStaffToolMaterial)
 			.setCreativeTab(Main.aliensTabTech);
 	public static final Item warp = new WarpStar("warp").setCreativeTab(Main.aliensTabTech);
@@ -29,21 +28,20 @@ public final class ModItems {
 			.setCreativeTab(Main.aliensTabTech);
 	public static final Item ColorSword = new ItemSwordMaterial("colorsword", material)
 			.setCreativeTab(Main.aliensTabTech);
-	public static final Item ColorAxe = new ItemAxeMaterial("coloraxe", material)
-			.setCreativeTab(Main.aliensTabTech);
+	public static final Item ColorAxe = new ItemAxeMaterial("coloraxe", material).setCreativeTab(Main.aliensTabTech);
 	public static final Item ColorSpade = new ItemSpadeMaterial("colorspade", material)
 			.setCreativeTab(Main.aliensTabTech);
-	public static final Item ColorPick = new ItemPickMaterial("colorpick", material)
-			.setCreativeTab(Main.aliensTabTech);
+	public static final Item ColorPick = new ItemPickMaterial("colorpick", material).setCreativeTab(Main.aliensTabTech);
 	public static final Item dye = new ItemDyeSpec().setCreativeTab(Main.aliensTabRef);
 	public static final Item dust = new Item().setCreativeTab(Main.aliensTabUnRef).setUnlocalizedName("dust");
-	public static final Item dustcrusher = new ItemCrusher("dustcrusher").setCreativeTab(Main.aliensTabTech);
+	public static final Item dustcrusher = new ItemCrusher("dustcrusher").setCreativeTab(Main.aliensTabTech)
+			.setMaxStackSize(1);
 	public static final Item acidTank = new AcidTank("acidtank");
 	public static final Item acidTankfull = new AcidTankfull("acidtankfull");
-	public static final Item drill = new ItemDrill("drill").setCreativeTab(Main.aliensTabTech);
+	public static final Item drill = new ItemDrill("drill").setCreativeTab(Main.aliensTabTech).setMaxStackSize(1);
 	public static final Item enderpouch = new EnderItem("enderpouch");
 	public static final Item pouch = new ItemBag("pouch");
-	
+
 	public static void init() {
 		GameRegistry.registerItem(pouch, "pouch");
 		GameRegistry.registerItem(enderpouch, "enderpouch");
