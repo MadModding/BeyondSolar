@@ -1,11 +1,10 @@
 package com.madmodding.space;
 
-import com.madmodding.space.blocks.AlienCell;
 import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
 import com.madmodding.space.items.ItemArmorCustom;
-import com.madmodding.space.items.ItemDyeSpec;
-import com.madmodding.space.items.ModItems;
+import com.madmodding.space.items.element.ElementLib;
+import com.madmodding.space.items.element.ItemDyeSpec;
 import com.madmodding.space.space.SpaceTeleporter;
 
 import net.minecraft.block.material.Material;
@@ -15,7 +14,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
@@ -24,7 +22,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EventHandler {
@@ -219,14 +216,14 @@ public class EventHandler {
 	@SubscribeEvent
 	public void OnItemInfo(ItemTooltipEvent event) {
 
-		if (event.itemStack != null && event.itemStack.getItem() == ModItems.dye
+		if (event.itemStack != null && event.itemStack.getItem() == ElementLib.Dye
 				&& event.itemStack.getItemDamage() > 15) {
 			int x = event.itemStack.getItemDamage() - 16;
 			int i1 = x / 16;
 			int i2 = x - i1 * 16;
 			event.toolTip.add(ItemDyeSpec.dyeColorNouns[i1] + " + " + ItemDyeSpec.dyeColorNouns[i2]);
 		}
-		if (event.itemStack != null && event.itemStack.getItem() == ModItems.dye
+		if (event.itemStack != null && event.itemStack.getItem() == ElementLib.Dye
 				&& event.itemStack.getItemDamage() < 16) {
 			int x = event.itemStack.getItemDamage();
 			event.toolTip.add(ItemDyeSpec.dyeColorNouns[x]);

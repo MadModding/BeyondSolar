@@ -1,4 +1,6 @@
-package com.madmodding.space.items;
+package com.madmodding.space.items.element;
+
+import com.madmodding.space.items.ModItems;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +26,7 @@ public class ItemCrusher extends Item {
 			}
 			if (crushing) {
 				player.inventory
-						.addItemStackToInventory(new ItemStack(ModItems.fragment, player.getRNG().nextInt(4)+1, player.getRNG().nextInt(61) + 19));
+						.addItemStackToInventory(new ItemStack(ElementLib.Fragment, player.getRNG().nextInt(4)+1, player.getRNG().nextInt(61) + 19));
 			}
 		}
 		return stack;

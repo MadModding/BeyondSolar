@@ -1,9 +1,10 @@
-package com.madmodding.space.items;
+package com.madmodding.space.items.element;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
+import com.madmodding.space.items.ModItems;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,7 @@ public class RecipesDyeCustom implements IRecipe {
 	 * Returns an Item that is the result of this recipe
 	 */
 	public ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
-		ItemStack stack = new ItemStack(ModItems.dye, 2);
+		ItemStack stack = new ItemStack(ElementLib.Dye, 2);
 		ItemStack dye1 = null;
 		ItemStack dye2 = null;
 		for (int k = 0; k < p_77572_1_.getSizeInventory(); ++k) {

@@ -6,9 +6,10 @@ import com.madmodding.space.cell.WorldProviderCell;
 import com.madmodding.space.client.render.items.RenderDrillLaser;
 import com.madmodding.space.entity.item.EntityDrillLaser;
 import com.madmodding.space.items.ModItems;
-import com.madmodding.space.items.RecipesDyeAdv;
-import com.madmodding.space.items.RecipesDyeCustom;
-import com.madmodding.space.items.RecipesToolDye;
+import com.madmodding.space.items.element.ElementLib;
+import com.madmodding.space.items.element.RecipesDyeAdv;
+import com.madmodding.space.items.element.RecipesDyeCustom;
+import com.madmodding.space.items.element.RecipesToolDye;
 import com.madmodding.space.space.WorldProviderSpace;
 
 import net.minecraft.client.Minecraft;
@@ -31,6 +32,7 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		ModFluids.init();
+		ElementLib.initCommon();
 		RecipeSorter.register("space:tooldye", RecipesToolDye.class, RecipeSorter.Category.SHAPELESS,
 				"before:minecraft:shapeless");
 		RecipeSorter.register("space:advtooldye", RecipesDyeAdv.class, RecipeSorter.Category.SHAPED,
@@ -40,9 +42,7 @@ public class CommonProxy {
 		CraftingManager.getInstance().addRecipe(new RecipesToolDye());
 		CraftingManager.getInstance().addRecipe(new RecipesDyeAdv());
 		CraftingManager.getInstance().addRecipe(new RecipesDyeCustom());
-		ModelBakery.addVariantName(ModItems.ref,
-				new String[] { Main.MODID + ":blankingot", Main.MODID + ":blankdust", Main.MODID + ":blankpot" });
-
+		
 	}
 
 	public void init(FMLInitializationEvent e) {

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import com.madmodding.space.Main;
 import com.madmodding.space.items.ModItems;
+import com.madmodding.space.items.element.ElementLib;
 
 public class SpaceOre extends Block {
 
@@ -36,26 +37,26 @@ public class SpaceOre extends Block {
 
 		if (blockstate.getBlock() == ModBlocks.ferrousOre) {
 			if (chance > 95) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 27));
+				ElementLib.addDrop(drops, 27);
 			} else if (chance > 80) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 28));
+				ElementLib.addDrop(drops, 28);
 			} else if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 25));
+				ElementLib.addDrop(drops, 25);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.nickelOre) {
 			if (chance > 95) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 25));
-				drops.add(new ItemStack(ModItems.fragment, 1, 78));
+				ElementLib.addDrop(drops, 25);
+				ElementLib.addDrop(drops, 78);
 			} else if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 27));
+				ElementLib.addDrop(drops, 27);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.cobaltOre) {
 			if (chance > 95) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 26));
+				ElementLib.addDrop(drops, 26);
 			} else if (chance > 10) {
 				drops.add(new ItemStack(Items.dye, 1, 4));
 			}
@@ -65,45 +66,45 @@ public class SpaceOre extends Block {
 			if (chance > 30) {
 				drops.add(new ItemStack(Blocks.air, 1));
 			} else if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 10));
+				ElementLib.addDrop(drops, 10);
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 11));
+				ElementLib.addDrop(drops, 11);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.siliconOre) {
 			if (chance > 80) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 17));
+				ElementLib.addDrop(drops, 17);
 			} else if (chance > 50) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 16));
+				ElementLib.addDrop(drops, 16);
 			} else if (chance > 20) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 15));
+				ElementLib.addDrop(drops, 15);
 			} else if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 14));
+				ElementLib.addDrop(drops, 14);
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 13));
+				ElementLib.addDrop(drops, 13);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.silverOre) {
 			if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 46));
+				ElementLib.addDrop(drops, 46);
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 77));
+				ElementLib.addDrop(drops, 77);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.platinumOre) {
 			if (chance > 50) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 77));
+				ElementLib.addDrop(drops, 77);
 			} else {
-				drops.add(new ItemStack(ModItems.fragment, 1, 46));
+				ElementLib.addDrop(drops, 46);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.uraniumOre) {
 			if (chance > 50) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 91));
+				ElementLib.addDrop(drops, 91);
 			} else {
 				drops.add(new ItemStack(Items.blaze_powder));
 			}
@@ -111,25 +112,25 @@ public class SpaceOre extends Block {
 		}
 		if (blockstate.getBlock() == ModBlocks.copperOre) {
 			if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 27));
+				ElementLib.addDrop(drops, 27);
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 28));
+				ElementLib.addDrop(drops, 28);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.aluminiumOre) {
 			if (chance > 50) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 12));
+				ElementLib.addDrop(drops, 12);
 			} else if (chance < 50) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 13));
+				ElementLib.addDrop(drops, 13);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.zincOre) {
 			if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 27));
+				ElementLib.addDrop(drops, 27);
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 29));
+				ElementLib.addDrop(drops, 29);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
@@ -137,32 +138,32 @@ public class SpaceOre extends Block {
 			if (chance > 10) {
 				drops.add(new ItemStack(Blocks.cobblestone, 1));
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 81));
+				ElementLib.addDrop(drops, 81);
 
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.tinOre) {
 			if (chance > 20) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 49));
+				ElementLib.addDrop(drops, 49);
 			} else if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 46));
+				ElementLib.addDrop(drops, 46);
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 48));
+				ElementLib.addDrop(drops, 48);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.bauxiteOre) {
 			if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 21));
+				ElementLib.addDrop(drops, 21);
 			} else if (chance > 1) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 75));
+				ElementLib.addDrop(drops, 75);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.titaniumOre) {
 			if (chance > 50) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 21));
+				ElementLib.addDrop(drops, 21);
 			} else {
 				drops.add(new ItemStack(Items.flint, 1));
 			}
@@ -170,11 +171,11 @@ public class SpaceOre extends Block {
 		}
 		if (blockstate.getBlock() == ModBlocks.rareMetalMeteorite) {
 			if (chance > 75) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 61));
+				ElementLib.addDrop(drops, 61);
 			} else if (chance > 50) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 59));
+				ElementLib.addDrop(drops, 59);
 			} else if (chance > 25) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 56));
+				ElementLib.addDrop(drops, 56);
 			} else {
 				drops.add(new ItemStack(Blocks.air, 1));
 			}
@@ -182,17 +183,17 @@ public class SpaceOre extends Block {
 		}
 		if (blockstate.getBlock() == ModBlocks.platinumMeteorite) {
 			if (chance > 80) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 76));
+				ElementLib.addDrop(drops, 76);
 			} else if (chance > 60) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 77));
+				ElementLib.addDrop(drops, 77);
 			} else if (chance > 40) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 45));
+				ElementLib.addDrop(drops, 45);
 			} else if (chance > 20) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 44));
+				ElementLib.addDrop(drops, 44);
 			} else if (chance > 10) {
-				drops.add(new ItemStack(ModItems.fragment, 1, 75));
+				ElementLib.addDrop(drops, 75);
 			} else {
-				drops.add(new ItemStack(ModItems.fragment, 1, 43));
+				ElementLib.addDrop(drops, 43);
 			}
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}

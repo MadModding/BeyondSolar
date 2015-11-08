@@ -3,6 +3,7 @@ package com.madmodding.space;
 import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.cell.BiomeGenCell;
 import com.madmodding.space.items.ModItems;
+import com.madmodding.space.items.element.ElementLib;
 import com.madmodding.space.space.BiomeGenSpace;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenEnd;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -56,7 +56,7 @@ public class Main {
 	};
 	public static CreativeTabs aliensTabUnRef = new CreativeTabs("Aliens3") {
 		public ItemStack getIconItemStack() {
-			return new ItemStack(ModItems.fragment, 1, 404);
+			return new ItemStack(ElementLib.Fragment, 1, 404);
 		}
 
 		@Override
@@ -66,7 +66,7 @@ public class Main {
 	};
 	public static CreativeTabs aliensTabRef = new CreativeTabs("Aliens4") {
 		public ItemStack getIconItemStack() {
-			return new ItemStack(ModItems.ref, 1, 404);
+			return new ItemStack(ElementLib.Refined, 1, 404);
 		}
 
 		@Override

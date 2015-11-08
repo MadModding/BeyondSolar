@@ -10,6 +10,7 @@ import com.madmodding.space.client.render.items.RenderAcidContainer;
 import com.madmodding.space.client.render.items.RenderAcidFull;
 import com.madmodding.space.client.render.items.RenderAlienCell;
 import com.madmodding.space.client.render.items.RenderAlienEgg;
+import com.madmodding.space.items.element.ElementLib;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -22,6 +23,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent e) {
 		super.preInit(e);
+		ElementLib.initClient();
 		}
 
 	@Override

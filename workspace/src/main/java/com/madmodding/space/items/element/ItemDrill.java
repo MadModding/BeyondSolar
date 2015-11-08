@@ -1,4 +1,4 @@
-package com.madmodding.space.items;
+package com.madmodding.space.items.element;
 
 import com.madmodding.space.entity.item.EntityDrillLaser;
 

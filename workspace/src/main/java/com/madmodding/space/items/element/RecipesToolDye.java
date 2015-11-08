@@ -1,8 +1,10 @@
-package com.madmodding.space.items;
+package com.madmodding.space.items.element;
 
 import java.util.ArrayList;
 
 import com.google.common.collect.Lists;
+import com.madmodding.space.items.IColorable;
+import com.madmodding.space.items.ModItems;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -28,7 +30,7 @@ public class RecipesToolDye implements IRecipe {
 
 					itemstack = itemstack1;
 				} else {
-					if (itemstack1.getItem() != ModItems.dye) {
+					if (itemstack1.getItem() != ElementLib.Dye) {
 						return false;
 					}
 
@@ -78,7 +80,7 @@ public class RecipesToolDye implements IRecipe {
 						++j;
 					}
 				} else {
-					if (itemstack1.getItem() != ModItems.dye) {
+					if (itemstack1.getItem() != ElementLib.Dye) {
 						return null;
 					}
 					int r = 0;

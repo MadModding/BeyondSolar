@@ -1,4 +1,4 @@
-package com.madmodding.space.items;
+package com.madmodding.space.items.inv;
 
 import com.madmodding.space.Main;
 

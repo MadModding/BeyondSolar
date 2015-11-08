@@ -1,8 +1,8 @@
-package com.madmodding.space.items;
+package com.madmodding.space.items.element;
 
 import java.util.List;
 
-import com.madmodding.space.ElementLib;
+import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,17 +18,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRefined extends Item implements IFirstTick {
 
-	public static final int[] types = new int[] { 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 2, 1, 2, 3, 2, 3, 3, 3, 2, 2, 1, 3,
-			1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2,
-			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 2, 2, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3,
-			3, 3, 3, 3, 3, 1, 1, 1 };
-	public static final String[] typenames = new String[] { "blankingot", "blankdust", "blankpot" };
-
+	
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-		for (int i = 0; i < ItemFragment.names.length; i++) {
+		for (int i = 0; i < ElementLib.names.length; i++) {
 			for (int t = 0; t < 4; t++) {
-				ItemStack stack = new ItemStack(itemIn, 1, i + t * ItemFragment.names.length);
+				ItemStack stack = new ItemStack(itemIn, 1, i + t * ElementLib.names.length);
 				this.onFirstTick(stack);
 				subItems.add(stack);
 			}
@@ -43,31 +38,7 @@ public class ItemRefined extends Item implements IFirstTick {
 
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		if (!stack.hasTagCompound())
-			onFirstTick(stack);
-		double clr = stack.getTagCompound().getInteger("color");
-		if (clr == -1)
-			clr = ElementLib.getColor(Minecraft.getSystemTime());
-		if (stack.getTagCompound().getBoolean("anti")) {
-			double r = ((int) clr / 65536d);
-			clr -= r * 65536;
-			double g = ((int) clr / 256d);
-			clr -= g * 256;
-			double b = ((int) clr);
-			clr -= b;
-			r = 255 - r;
-			g = 255 - g;
-			b = 255 - b;
-			clr += r * 65536;
-			clr += g * 256;
-			clr += b;
-		}
-		if (renderPass == 1) {
-			return (int) clr;
-		}
-		if (stack.getTagCompound().getBoolean("neg"))
-			return 0x111111;
-		return 0xFFFFFF;
+		return ElementLib.getColorFromItemStack(stack, renderPass, 0);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -103,21 +74,21 @@ public class ItemRefined extends Item implements IFirstTick {
 	public void onFirstTick(ItemStack stack) {
 		int d = stack.getItemDamage();
 		stack.setTagCompound(new NBTTagCompound());
-		if (d < (ItemFragment.names.length * 4)) {
-			int i = (int) ((stack.getItemDamage()) / ItemFragment.names.length) + 1;
-			stack.setItemDamage(stack.getItemDamage() - (i - 1) * ItemFragment.names.length);
+		if (d < (ElementLib.names.length * 4)) {
+			int i = (int) ((stack.getItemDamage()) / ElementLib.names.length) + 1;
+			stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.names.length);
 			boolean neg = i % 2 == 0;
 			boolean anti = i > 2;
-			stack.getTagCompound().setString("name", ItemFragment.names[stack.getItemDamage()]);
-			stack.getTagCompound().setDouble("amass", ItemFragment.masses[stack.getItemDamage()]);
-			stack.getTagCompound().setInteger("color", ItemFragment.colors[stack.getItemDamage()]);
+			stack.getTagCompound().setString("name", ElementLib.names[stack.getItemDamage()]);
+			stack.getTagCompound().setDouble("amass", ElementLib.masses[stack.getItemDamage()]);
+			stack.getTagCompound().setInteger("color", ElementLib.colors[stack.getItemDamage()]);
 			stack.getTagCompound().setBoolean("neg", neg);
 			stack.getTagCompound().setBoolean("anti", anti);
 			stack.getTagCompound().setBoolean("ore", false);
 		} else {
-			d -= ItemFragment.names.length * 4;
+			d -= ElementLib.names.length * 4;
 			stack.setItemDamage(d);
-			stack.getTagCompound().setString("name", ItemFragment.orenames[d]);
+			stack.getTagCompound().setString("name", ElementLib.orenames[d]);
 			stack.getTagCompound().setInteger("id", d);
 			stack.getTagCompound().setBoolean("ore", true);
 		}
