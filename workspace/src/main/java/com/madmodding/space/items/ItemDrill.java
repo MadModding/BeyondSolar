@@ -22,7 +22,7 @@ public class ItemDrill extends Item {
 		super();
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(CreativeTabs.tabTools);
-		this.setMaxDamage(100);
+		this.setMaxDamage(50);
 		this.setMaxStackSize(1);
 	}
 
@@ -33,6 +33,8 @@ public class ItemDrill extends Item {
 	}
 
 	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
+		if (count < 0 || count > getMaxItemUseDuration(stack))
+			player.stopUsingItem();
 		if (count % 3 == 0) {
 			EntityDrillLaser entityarrow = new EntityDrillLaser(player.worldObj, player, 4);
 			player.worldObj.spawnEntityInWorld(entityarrow);
@@ -40,7 +42,7 @@ public class ItemDrill extends Item {
 	}
 
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityPlayer playerIn, int timeLeft) {
-		stack.setItemDamage(100 - timeLeft);
+		stack.setItemDamage(getMaxItemUseDuration(stack) - timeLeft);
 	}
 
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn) {
@@ -59,13 +61,13 @@ public class ItemDrill extends Item {
 	public double getDurabilityForDisplay(ItemStack stack) {
 		if (Minecraft.getMinecraft().thePlayer.isUsingItem()
 				&& Minecraft.getMinecraft().thePlayer.getHeldItem() == stack)
-			return (double) Minecraft.getMinecraft().thePlayer.getItemInUseDuration() / 100;
+			return (double) Minecraft.getMinecraft().thePlayer.getItemInUseDuration() / getMaxItemUseDuration(stack);
 		else
 			return super.getDurabilityForDisplay(stack);
 	}
 
 	public int getMaxItemUseDuration(ItemStack stack) {
-		return 100;
+		return 50;
 	}
 
 	public EnumAction getItemUseAction(ItemStack stack) {
