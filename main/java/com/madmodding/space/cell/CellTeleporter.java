@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.Lists;
-import com.madmodding.space.space.SpaceTeleporter;
+import com.madmodding.space.SpaceTeleporter;
 
 import net.minecraft.block.BlockPortal;
 import net.minecraft.block.state.IBlockState;

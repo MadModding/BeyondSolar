@@ -169,13 +169,12 @@ public class SpaceOre extends Block {
 			drops.add(new ItemStack(ModItems.dust, 3));
 		}
 		if (blockstate.getBlock() == ModBlocks.rareMetalMeteorite) {
-			// 56-70,88-99, Total: 30
-			if (chance > 25) {
-				chance = rand.nextInt(27);
-				if (chance < 15) {
-					drops.add(new ItemStack(ModItems.fragment, 1, 56 + chance));
-				} else
-					drops.add(new ItemStack(ModItems.fragment, 1, 73 + chance));
+			if (chance > 75) {
+				drops.add(new ItemStack(ModItems.fragment, 1, 61));
+			} else if (chance > 50) {
+				drops.add(new ItemStack(ModItems.fragment, 1, 59));
+			} else if (chance > 25) {
+				drops.add(new ItemStack(ModItems.fragment, 1, 56));
 			} else {
 				drops.add(new ItemStack(Blocks.air, 1));
 			}
@@ -201,7 +200,4 @@ public class SpaceOre extends Block {
 		return drops;
 	}
 
-	private void add(ArrayList drops, int dmg) {
-		drops.add(new ItemStack(ModItems.fragment, 1, dmg));
-	}
 }

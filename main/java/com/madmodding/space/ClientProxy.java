@@ -27,6 +27,7 @@ public class ClientProxy extends CommonProxy {
 	public void init(FMLInitializationEvent e) {
 		super.init(e);
 		ItemRenderRegister.registerItemRenderer();
+	    BlockRenderRegister.registerBlockRenderer();
 		ClientRegistry.registerTileEntity(TileEntityAlienEgg.class, "space:alienegg",new RenderAlienEgg());
 		ClientRegistry.registerTileEntity(TileEntityAcidContainer.class, "space:acidcontainer",new RenderAcidContainer());
 		ClientRegistry.registerTileEntity(TileEntityAcidFull.class, "space:acidfull",new RenderAcidFull());

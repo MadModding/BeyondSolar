@@ -9,5 +9,5 @@ public class Meteor extends Block {
 	public Meteor(Material mat) {
 		super(mat);
 		this.setCreativeTab(Main.aliensTabBlock);
-		}
+	}
 }

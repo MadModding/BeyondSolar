@@ -65,7 +65,7 @@ tile.silverOre.name=Silver Ore
 tile.platinumOre.name=Platinum Ore
 tile.uraniumOre.name=Uranium Ore
 tile.copperOre.name=Copper Ore
-tile.aluminumOre.name=Aluminium Ore
+tile.aluminiumOre.name=Aluminium Ore
 tile.zincOre.name=Zinc Ore
 tile.leadOre.name=Lead Ore
 tile.tinOre.name=Tin Ore
@@ -73,6 +73,7 @@ tile.titaniumOre.name=Titanium Ore
 tile.bauxiteOre.name=Bauxite Ore
 tile.rareMetalMeteorite.name=Rare Metal Meteorite
 tile.platinumMeteorite.name=Platinoid Meteorite
+tile.fluid.normal.name=Acid Fluid
 
 
 commands.push.success=Pushed %s to %s

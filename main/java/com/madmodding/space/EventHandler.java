@@ -1,5 +1,8 @@
 package com.madmodding.space;
 
+import com.madmodding.space.blocks.AlienCell;
+import com.madmodding.space.blocks.ModBlocks;
+import com.madmodding.space.blocks.tile.TileEntityAlienCell;
 import com.madmodding.space.items.ItemArmorCustom;
 import com.madmodding.space.items.ItemDyeSpec;
 import com.madmodding.space.items.ModItems;
@@ -12,6 +15,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
@@ -19,6 +23,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -27,6 +32,35 @@ public class EventHandler {
 	//public void serverLoad(FMLServerStartingEvent event) {
 	//	event.registerServerCommand(new CommandPush());
 	//}
+
+	@SubscribeEvent
+	public void onCellPlaced(BlockEvent.PlaceEvent event) {
+		
+		if(event.placedBlock == ModBlocks.alienCell.getDefaultState()) {
+			TileEntityAlienCell cell = (TileEntityAlienCell) event.world.getTileEntity(event.pos);
+			cell.cellID = TileEntityAlienCell.worldID;
+			TileEntityAlienCell.worldID++;
+			
+			System.out.println("world id: " + TileEntityAlienCell.worldID);
+			System.out.println("cell id: " + cell.cellID);
+			
+		}
+		
+	}
+	
+	@SubscribeEvent
+	public void onCellDeleted(BlockEvent.BreakEvent event) {
+		
+		if(event.state == ModBlocks.alienCell.getDefaultState()) {
+			TileEntityAlienCell cell = (TileEntityAlienCell) event.world.getTileEntity(event.pos);
+			TileEntityAlienCell.worldID = TileEntityAlienCell.worldID - 1;
+			
+			System.out.println("world id: " + TileEntityAlienCell.worldID);
+			System.out.println("cell id: " + cell.cellID);
+			
+		}
+		
+	}
 
 	@SubscribeEvent
 	public void onEntityTick(LivingUpdateEvent event) {
