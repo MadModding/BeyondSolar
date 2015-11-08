@@ -1,0 +1,16 @@
+[
+{
+  "modid": "space",
+  "name": "BeyondSolar",
+  "description": "A mod",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Arideus", "Harpreet Singh", "Madhat Injection", "Samuel Moor"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

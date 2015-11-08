@@ -1,0 +1,82 @@
+item.evilstaff.name=Evil Staff
+
+
+tile.alienEgg.name=Alien Egg 
+tile.blockNekmunnitOre.name=Meteor
+
+
+key.aliens.category=Aliens
+
+key.evilstaff.fire.desc=Evil Staff: Fire Attack
+
+key.evilstaff.ice.desc=Evil Staff: Ice Attack
+
+key.evilstaff.lightning.desc=Evil Staff: Lightning Attack
+
+key.evilstaff.earth.desc=Evil Staff: Earth Attack
+
+item.colorhelm.name=Space Suit Cap
+item.colorchest.name=Space Suit Jacket
+item.colorlegs.name=Space Suit Belt
+item.colorboots.name=Space Suit Pants
+item.colorsword.name=Space Age Sword
+item.colorpick.name=Space Age Pickaxe
+item.coloraxe.name=Space Age Axe
+item.colorspade.name=Space Age Shovel
+item.warp.name=Spatial Displacer
+item.dust.name=Dust
+item.pouch.name=Quantum Storage Device
+item.enderpouch.name=Portable Ender Chest
+item.drill.name=Experimental Laser Drill
+item.dustcrusher.name=Dust Compactor
+tile.fluid.normal.name=Acid Fluid
+tile.spaceIce.name=Space Ice
+tile.alienCell.name=Alien Containment Unit
+tile.cellBlock.name=Alien Containment Cell Wall
+container.spacepouch=Quantum Storage Device
+itemGroup.Aliens1=BeyondSolar: Technology
+itemGroup.Aliens2=BeyondSolar: Blocks
+itemGroup.Aliens3=BeyondSolar: Unrefined Materials
+itemGroup.Aliens4=BeyondSolar: Refined Materials
+item.spec_dye.name=Customized Dye
+item.spec_dye_black.name=Customized Black Dye
+item.spec_dye_red.name=Customized Red Dye
+item.spec_dye_green.name=Customized Green Dye
+item.spec_dye_brown.name=Customized Brown Dye
+item.spec_dye_blue.name=Customized Blue Dye
+item.spec_dye_purple.name=Customized Purple Dye
+item.spec_dye_cyan.name=Customized Cyan Dye
+item.spec_dye_silver.name=Customized Light Gray Dye
+item.spec_dye_gray.name=Customized Gray Dye
+item.spec_dye_pink.name=Customized Pink Dye
+item.spec_dye_lime.name=Customized Lime Dye
+item.spec_dye_yellow.name=Customized Yellow Dye
+item.spec_dye_lightBlue.name=Customized Light Blue Dye
+item.spec_dye_magenta.name=Customized Magenta Dye
+item.spec_dye_orange.name=Customized Orange Dye
+item.spec_dye_white.name=Customized White Dye
+item.spec_dye_ultra.name=Compound TiO2
+tile.ferrousOre.name=Ferrous Ore
+tile.nickelOre.name=Nickel Ore
+tile.cobaltOre.name=Cobalt Ore
+tile.magnesiumOre.name=Magnesium Ore
+tile.siliconOre.name=Silicon Ore
+tile.silverOre.name=Silver Ore
+tile.platinumOre.name=Platinum Ore
+tile.uraniumOre.name=Uranium Ore
+tile.copperOre.name=Copper Ore
+tile.aluminiumOre.name=Aluminium Ore
+tile.zincOre.name=Zinc Ore
+tile.leadOre.name=Lead Ore
+tile.tinOre.name=Tin Ore
+tile.titaniumOre.name=Titanium Ore
+tile.bauxiteOre.name=Bauxite Ore
+tile.rareMetalMeteorite.name=Rare Metal Meteorite
+tile.platinumMeteorite.name=Platinoid Meteorite
+tile.fluid.normal.name=Acid Fluid
+
+
+commands.push.success=Pushed %s to %s
+commands.push.success.coordinates=Pushed %s with the force of %s X, %s Y, %s Z
+commands.push.usage=/push [target player] <destination player> OR /push [target player] <x> <y> <z>
+commands.push.notSameDimension=Unable to push because players are not in the same dimension
