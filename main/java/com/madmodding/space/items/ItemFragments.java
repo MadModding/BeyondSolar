@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFragment extends Item implements IFirstTick {
+public class ItemFragments extends Item implements IFirstTick {
 
 	public static final String[] names = new String[] { "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon",
 			"Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus",
@@ -52,11 +52,11 @@ public class ItemFragment extends Item implements IFirstTick {
 
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-		for (int i = 0; i < ItemFragment.names.length * 4; i++)
+		for (int i = 0; i < ItemFragments.names.length * 4; i++)
 			subItems.add(new ItemStack(itemIn, 1, i));
 	}
 
-	public ItemFragment(String unlocalizedName) {
+	public ItemFragments(String unlocalizedName) {
 		super();
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(unlocalizedName);
@@ -172,8 +172,8 @@ public class ItemFragment extends Item implements IFirstTick {
 
 	@Override
 	public void onFirstTick(ItemStack stack) {
-		int i = (int) ((stack.getItemDamage()) / ItemFragment.names.length) + 1;
-		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ItemFragment.names.length);
+		int i = (int) ((stack.getItemDamage()) / ItemFragments.names.length) + 1;
+		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ItemFragments.names.length);
 		boolean neg = i % 2 == 0;
 		boolean anti = i > 2;
 		stack.setTagCompound(new NBTTagCompound());

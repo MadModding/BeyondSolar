@@ -23,7 +23,6 @@ public final class ModBlocks {
 	public static final Block acidContainer= new AcidContainer();
 	public static final Block alienCell = new AlienCell().setUnlocalizedName("alienCell");
 	public static final Block air = new SpaceAir().setUnlocalizedName("spaceair");
-	public static final Block acidContainer= new AcidContainer();   
 	public static final Block acidFull= new AcidFull();   
 	public static final Block ferrousOre = new SpaceOre(Material.rock).setUnlocalizedName("ferrousOre").setHardness(15.0F);
 	public static final Block nickelOre = new SpaceOre(Material.rock).setUnlocalizedName("nickelOre").setHardness(12.0F);
@@ -60,7 +59,6 @@ public final class ModBlocks {
 		GameRegistry.registerBlock(uraniumOre, uraniumOre.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(copperOre, copperOre.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(aluminiumOre, aluminiumOre.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(acidContainer, acidContainer.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(zincOre, zincOre.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(leadOre, leadOre.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(tinOre, tinOre.getUnlocalizedName().substring(5));

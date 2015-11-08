@@ -6,9 +6,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class BasicItem extends Item {
+public class BasicItems extends Item {
 
-	public BasicItem(String unlocalizedName) {
+	public BasicItems(String unlocalizedName) {
 		super();
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(CreativeTabs.tabMaterials);

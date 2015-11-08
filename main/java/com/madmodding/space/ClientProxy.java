@@ -1,5 +1,6 @@
 package com.madmodding.space;
 
+import com.madmodding.space.blocks.BlockRenderRegister;
 import com.madmodding.space.blocks.tile.TileEntityAcidContainer;
 import com.madmodding.space.blocks.tile.TileEntityAcidFull;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
