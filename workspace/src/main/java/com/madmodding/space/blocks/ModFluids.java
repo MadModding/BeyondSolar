@@ -26,7 +26,7 @@ import com.madmodding.space.items.ModItems;
 public class ModFluids {
 	private static final String FLUID_MODEL_PATH = Main.MODID + ":" + "fluid";
 	public static Fluid fluidNormal;
-	public static BlockFluidClassic blockNormal;
+	public static AcidBlock blockNormal;
 	public static Material acidMat = new MaterialLiquid(MapColor.adobeColor);
 
 	public static void init() {

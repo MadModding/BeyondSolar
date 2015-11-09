@@ -10,9 +10,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.BlockFluidFinite;
 import net.minecraftforge.fluids.Fluid;
 
-public class AcidBlock extends BlockFluidClassic {
+public class AcidBlock extends BlockFluidFinite {
 
 	public AcidBlock(Fluid fluid, Material material) {
 		super(fluid, material);
@@ -26,12 +27,11 @@ public class AcidBlock extends BlockFluidClassic {
 	@Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
-		System.out.println("AcidFluid Debug x: "+pos.getX());
-		System.out.println("AcidFluid Debug z: "+pos.getZ());
 		IBlockState iblockstate = worldIn.getBlockState(pos.down());
         Material material = iblockstate.getBlock().getMaterial();
         if (!(material == ModFluids.acidMat))
         {
+    		System.out.println("AcidFluid Debug Block Destroyed x:"+pos.getX()+" "+" y:"+(pos.getY()-1)+" z:"+pos.getZ());
             worldIn.setBlockToAir(pos.down());
         }    
 		

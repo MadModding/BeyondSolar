@@ -48,12 +48,12 @@ public class AcidTank extends Item {
 	                {
 	                    return itemStackIn;
 	                }
-	                    IBlockState iblockstate = worldIn.getBlockState(blockpos);
+	                
+	                    IBlockState iblockstate = worldIn.getBlockState(blockpos.up());
 	                    Material material = iblockstate.getBlock().getMaterial();
-
-	                    if (material == ModFluids.acidMat && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+	                    if (material == ModFluids.acidMat)
 	                    {
-	                        worldIn.setBlockToAir(blockpos);
+	                        worldIn.setBlockToAir(blockpos.up());
 	                        return new ItemStack(ModItems.acidTankfull);
 	                    }          
 	                    else
