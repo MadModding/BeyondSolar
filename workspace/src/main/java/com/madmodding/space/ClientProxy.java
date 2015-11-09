@@ -23,12 +23,12 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent e) {
 		super.preInit(e);
-		ElementLib.initClient();
 		}
 
 	@Override
 	public void init(FMLInitializationEvent e) {
 		super.init(e);
+		ElementLib.initClient();
 		ItemRenderRegister.registerItemRenderer();
 	    BlockRenderRegister.registerBlockRenderer();
 		ClientRegistry.registerTileEntity(TileEntityAlienEgg.class, "space:alienegg",new RenderAlienEgg());

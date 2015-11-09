@@ -15,14 +15,18 @@ key.evilstaff.lightning.desc=Evil Staff: Lightning Attack
 
 key.evilstaff.earth.desc=Evil Staff: Earth Attack
 
-item.colorhelm.name=Space Suit Cap
-item.colorchest.name=Space Suit Jacket
-item.colorlegs.name=Space Suit Belt
-item.colorboots.name=Space Suit Pants
+item.spacehelm.name=Space Suit Cap
+item.spacechest.name=Space Suit Jacket
+item.spacelegs.name=Space Suit Belt
+item.spaceboots.name=Space Suit Pants
 item.colorsword.name=Space Age Sword
 item.colorpick.name=Space Age Pickaxe
 item.coloraxe.name=Space Age Axe
 item.colorspade.name=Space Age Shovel
+item.colorhelm.name=Space Age Helmet
+item.colorchest.name=Space Age Chestplate
+item.colorlegs.name=Space Age Leggings
+item.colorboots.name=Space Age Boots
 item.warp.name=Spatial Displacer
 item.dust.name=Dust
 item.pouch.name=Quantum Storage Device

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.madmodding.space.Main;
 import com.madmodding.space.items.IFirstTick;
+import com.madmodding.space.items.ItemArmorCustom;
 import com.madmodding.space.items.ModItems;
 
 import net.minecraft.block.Block;
@@ -15,6 +16,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -88,7 +90,15 @@ public class ElementLib {
 	public static final Item Fragment = new ItemFragment("fragment").setCreativeTab(Main.aliensTabUnRef);
 	public static final Item Refined = new ItemRefined("blankingot").setCreativeTab(Main.aliensTabRef);
 	public static final Item Dye = new ItemDyeSpec().setCreativeTab(Main.aliensTabRef);
-
+	public static final Item ElementHelm = new ItemArmorMaterial("colorhelm", ArmorMaterial.LEATHER, 0)
+			.setCreativeTab(Main.aliensTabTech);
+	public static final Item ElementChest = new ItemArmorMaterial("colorchest", ArmorMaterial.LEATHER, 1)
+			.setCreativeTab(Main.aliensTabTech);
+	public static final Item ElementLegs = new ItemArmorMaterial("colorlegs", ArmorMaterial.LEATHER, 2)
+			.setCreativeTab(Main.aliensTabTech);
+	public static final Item ElementBoots = new ItemArmorMaterial("colorboots", ArmorMaterial.LEATHER, 3)
+			.setCreativeTab(Main.aliensTabTech);
+	
 	public static void initCommon() {
 		{
 			GameRegistry.registerItem(Dye, "spec_dye");
@@ -98,6 +108,10 @@ public class ElementLib {
 			GameRegistry.registerItem(ElementAxe, "coloraxe");
 			GameRegistry.registerItem(ElementSpade, "colorspade");
 			GameRegistry.registerItem(ElementPick, "colorpick");
+			GameRegistry.registerItem(ElementHelm, "colorhelm");
+			GameRegistry.registerItem(ElementChest, "colorchest");
+			GameRegistry.registerItem(ElementLegs, "colorlegs");
+			GameRegistry.registerItem(ElementBoots, "colorboots");
 		}
 		{
 			ModelBakery.addVariantName(Refined,
@@ -111,13 +125,17 @@ public class ElementLib {
 			reg(ElementPick, i);
 			reg(ElementSpade, i);
 			reg(ElementAxe, i);
+			reg(ElementHelm, i);
+			reg(ElementChest, i);
+			reg(ElementLegs, i);
+			reg(ElementBoots, i);
 		}
 		for (int i = 0; i < 272; i++)
 			reg(Dye, i);
 		for (int i = 0; i < ElementLib.names.length * 4 + ElementLib.orenames.length; i++)
 			reg(Fragment, i);
 		for (int i = 0; i < ElementLib.names.length * 4; i++) {
-			int p = i / (i / 101 + 1);
+			int p = i / (i / ElementLib.names.length + 1);
 			reg(Refined, i, ElementLib.typenames[ElementLib.types[p] - 1]);
 		}
 	}

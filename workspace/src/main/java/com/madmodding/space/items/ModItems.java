@@ -18,13 +18,13 @@ public final class ModItems {
 	public static final Item evilstaff = new EvilStaff("evilstaff", evilStaffToolMaterial)
 			.setCreativeTab(Main.aliensTabTech);
 	public static final Item warp = new WarpStar("warp").setCreativeTab(Main.aliensTabTech);
-	public static final Item ColorHelm = new ItemArmorCustom("colorhelm", ArmorMaterial.LEATHER, 0)
+	public static final Item ColorHelm = new ItemArmorCustom("spacehelm", ArmorMaterial.LEATHER, 0)
 			.setCreativeTab(Main.aliensTabTech);
-	public static final Item ColorChest = new ItemArmorCustom("colorchest", ArmorMaterial.LEATHER, 1)
+	public static final Item ColorChest = new ItemArmorCustom("spacechest", ArmorMaterial.LEATHER, 1)
 			.setCreativeTab(Main.aliensTabTech);
-	public static final Item ColorLegs = new ItemArmorCustom("colorlegs", ArmorMaterial.LEATHER, 2)
+	public static final Item ColorLegs = new ItemArmorCustom("spacelegs", ArmorMaterial.LEATHER, 2)
 			.setCreativeTab(Main.aliensTabTech);
-	public static final Item ColorBoots = new ItemArmorCustom("colorboots", ArmorMaterial.LEATHER, 3)
+	public static final Item ColorBoots = new ItemArmorCustom("spaceboots", ArmorMaterial.LEATHER, 3)
 			.setCreativeTab(Main.aliensTabTech);
 	public static final Item dust = new Item().setCreativeTab(Main.aliensTabUnRef).setUnlocalizedName("dust");
 	public static final Item dustcrusher = new ItemCrusher("dustcrusher").setCreativeTab(Main.aliensTabTech)
@@ -41,10 +41,10 @@ public final class ModItems {
 		GameRegistry.registerItem(dust, "dust");
 		GameRegistry.registerItem(drill, "drill");
 		GameRegistry.registerItem(dustcrusher, "dustcrusher");
-		GameRegistry.registerItem(ColorHelm, "colorhelm");
-		GameRegistry.registerItem(ColorChest, "colorchest");
-		GameRegistry.registerItem(ColorLegs, "colorlegs");
-		GameRegistry.registerItem(ColorBoots, "colorboots");
+		GameRegistry.registerItem(ColorHelm, "spacehelm");
+		GameRegistry.registerItem(ColorChest, "spacechest");
+		GameRegistry.registerItem(ColorLegs, "spacelegs");
+		GameRegistry.registerItem(ColorBoots, "spaceboots");
 		GameRegistry.registerItem(evilstaff, "evilstaff");
 		GameRegistry.registerItem(warp, "warp");
 		GameRegistry.registerItem(acidTank, "acidtank");
