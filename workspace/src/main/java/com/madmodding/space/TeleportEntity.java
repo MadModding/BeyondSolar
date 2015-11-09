@@ -58,7 +58,8 @@ public class TeleportEntity {
                  }
 
                  worldserver1.spawnEntityInWorld(entity);
-                 entity.setPosition(pos.getX(), pos.getY(), pos.getZ());
+                 entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+                 System.out.println("TeleportEntity Debug:"+"Entity: "+entity.getName()+" at "+pos.getX()+" "+pos.getY()+" "+pos.getZ());
              }
              
              entity0.isDead = true;

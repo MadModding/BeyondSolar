@@ -43,9 +43,9 @@ public class AlienCell extends BlockContainer {
 				worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, entityIn.posX, entityIn.posY, entityIn.posZ, 0, 0, 0, new int[0]);
 				((EntityLivingBase) entityIn).addChatMessage(new ChatComponentTranslation(EnumChatFormatting.RED + entityIn.getName() + " is entering cell " + cell.cellID));
 		        ((EntityPlayerMP) entityIn).mcServer.getConfigurationManager().transferPlayerToDimension(((EntityPlayerMP) entityIn), -10, new CellTeleporter(((EntityPlayerMP) entityIn).mcServer.worldServerForDimension(1)));		  
-			    ((EntityPlayerMP) entityIn).setPosition(4+((cell.cellID*16)-16), 1, 4+((cell.cellID*16)-16));
-				worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, entityIn.posX, entityIn.posY, entityIn.posZ, 0, 0, 0, new int[0]);
-			}else{ TeleportEntity.tpMobToDim(entityIn, -10, worldIn, new BlockPos(4+((cell.cellID*16)-16), 1, 4+((cell.cellID*16)-16))); }}		    
+			    entityIn.setPositionAndUpdate((8+((cell.cellID*16))), 3,(8+((cell.cellID*16))));
+			worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, entityIn.posX, entityIn.posY, entityIn.posZ, 0, 0, 0, new int[0]);
+			}else{ TeleportEntity.tpMobToDim(entityIn, -10, worldIn, new BlockPos((8+((cell.cellID*16))), 3, (8+((cell.cellID*16))))); }}		    
 	}
 
 	@Override

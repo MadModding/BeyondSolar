@@ -45,19 +45,6 @@ public class EventHandler {
 		
 	}
 	
-	@SubscribeEvent
-	public void onCellDeleted(BlockEvent.BreakEvent event) {
-		
-		if(event.state == ModBlocks.alienCell.getDefaultState()) {
-			TileEntityAlienCell cell = (TileEntityAlienCell) event.world.getTileEntity(event.pos);
-			TileEntityAlienCell.worldID = TileEntityAlienCell.worldID - 1;
-			
-			System.out.println("world id: " + TileEntityAlienCell.worldID);
-			System.out.println("cell id: " + cell.cellID);
-			
-		}
-		
-	}
 
 	@SubscribeEvent
 	public void onEntityTick(LivingUpdateEvent event) {

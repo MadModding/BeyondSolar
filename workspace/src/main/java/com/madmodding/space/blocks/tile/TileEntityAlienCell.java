@@ -15,6 +15,7 @@ public class TileEntityAlienCell extends TileEntity {
 		super.readFromNBT(compound);
 		
 		compound.getShort("CellID");
+		compound.getShort("WorldID");
 	}
 
 	@Override
