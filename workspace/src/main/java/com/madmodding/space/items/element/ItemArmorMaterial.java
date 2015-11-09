@@ -3,8 +3,8 @@ package com.madmodding.space.items.element;
 import java.util.List;
 
 import com.madmodding.space.Main;
-import com.madmodding.space.client.models.ModelSpaceSuit;
 import com.madmodding.space.items.IColorable;
+import com.madmodding.space.items.IFirstTick;
 import com.madmodding.space.items.ModItems;
 
 import net.minecraft.client.model.ModelBiped;
@@ -12,7 +12,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -23,7 +22,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColorable {
+public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirstTick, IColorable {
 
 	public ItemArmorMaterial(String unlocalizedName, ArmorMaterial material, int slot) {
 		super(material, slot, slot);
@@ -35,8 +34,6 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColo
 	ModelBiped model2 = null;
 	ModelBiped model = null;
 
-	
-
 	/**
 	 * Return whether the specified armor ItemStack has a color.
 	 */
@@ -44,7 +41,7 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColo
 		if (!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		if (!stack.getTagCompound().hasKey("Name"))
-			stack.getTagCompound().setString("Name", "Space Suit");
+			stack.getTagCompound().setString("Name", "Space Age");
 		if (!stack.getTagCompound().hasKey("Mode"))
 			stack.getTagCompound().setInteger("Mode", 0);
 		if (!stack.getTagCompound().hasKey("Color0"))
@@ -59,34 +56,15 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColo
 	 */
 	public int getColor(ItemStack stack) {
 		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		if (!stack.getTagCompound().hasKey("Name"))
-			stack.getTagCompound().setString("Name", "Space Suit");
-		if (!stack.getTagCompound().hasKey("Mode"))
-			stack.getTagCompound().setInteger("Mode", 0);
-		if (!stack.getTagCompound().hasKey("Color0"))
-			stack.getTagCompound().setInteger("Color0", 16777215);
-		if (!stack.getTagCompound().hasKey("Unbreakable"))
-			stack.getTagCompound().setBoolean("Unbreakable", true);
-		return stack.getTagCompound().getInteger("Color");
+			onFirstTick(stack);
+		return stack.getTagCompound().getInteger("Color0");
 	}
 
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		if (!stack.getTagCompound().hasKey("Name"))
-			stack.getTagCompound().setString("Name", "Space Suit");
-		if (!stack.getTagCompound().hasKey("Mode"))
-			stack.getTagCompound().setInteger("Mode", 0);
-		if (!stack.getTagCompound().hasKey("Color0"))
-			stack.getTagCompound().setInteger("Color0", 16777215);
-		if (!stack.getTagCompound().hasKey("Color1"))
-			stack.getTagCompound().setInteger("Color1", 16777215);
-		if (!stack.getTagCompound().hasKey("Unbreakable"))
-			stack.getTagCompound().setBoolean("Unbreakable", true);
+			onFirstTick(stack);
 		return stack.getTagCompound().getInteger("Color" + renderPass);
-
 	}
 
 	/**
@@ -94,7 +72,6 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColo
 	 */
 	public void removeColor(ItemStack stack) {
 		NBTTagCompound nbttagcompound = stack.getTagCompound();
-
 		if (nbttagcompound != null) {
 			if (nbttagcompound.hasKey("Color")) {
 				nbttagcompound.removeTag("Color");
@@ -108,25 +85,13 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColo
 	 */
 	public void setColor(ItemStack stack, int color) {
 
-		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		if (!stack.getTagCompound().hasKey("Name"))
-			stack.getTagCompound().setString("Name", "Space Suit");
-		if (!stack.getTagCompound().hasKey("Mode"))
-			stack.getTagCompound().setInteger("Mode", 0);
-		if (!stack.getTagCompound().hasKey("Color0"))
-			stack.getTagCompound().setInteger("Color0", 16777215);
-		if (!stack.getTagCompound().hasKey("Unbreakable"))
-			stack.getTagCompound().setBoolean("Unbreakable", true);
 		stack.getTagCompound().setInteger("Color", color);
 
 	}
 
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		if (!stack.getTagCompound().hasKey("Color0"))
-			stack.getTagCompound().setInteger("Color0", 16777215);
+			onFirstTick(stack);
 		NBTTagCompound nbttagcompound1 = stack.getTagCompound().getCompoundTag("display");
 		if (!stack.getTagCompound().hasKey("display"))
 			stack.getTagCompound().setTag("display", nbttagcompound1);
@@ -141,9 +106,7 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColo
 
 	public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
 		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		if (!stack.getTagCompound().hasKey("Unbreakable"))
-			stack.getTagCompound().setBoolean("Unbreakable", true);
+			onFirstTick(stack);
 	}
 
 	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
@@ -162,13 +125,18 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IColo
 	}
 
 	@Override
+	public void onFirstTick(ItemStack stack) {
+		stack.setTagCompound(new NBTTagCompound());
+		stack.getTagCompound().setString("Name", "Space Age");
+		stack.getTagCompound().setInteger("Mode", 0);
+		stack.getTagCompound().setInteger("Color0", 16777215);
+		stack.getTagCompound().setInteger("Color1", 16777215);
+		stack.getTagCompound().setBoolean("Unbreakable", true);
+	}
+
+	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack stack, DamageSource source, double damage,
 			int slot) {
-		if (stack.getItem() == ModItems.ColorBoots && source == DamageSource.fall)
-			return new ArmorProperties(1, 1, Integer.MAX_VALUE);
-		if (source == Main.inSpace)
-			return new ArmorProperties(1, 0.3, Integer.MAX_VALUE);
-
 		return new ArmorProperties(1, 0.25, 100);
 	}
 
