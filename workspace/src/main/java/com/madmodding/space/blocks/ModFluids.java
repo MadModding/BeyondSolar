@@ -1,5 +1,7 @@
 package com.madmodding.space.blocks;
 
+import com.madmodding.space.Main;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -9,19 +11,12 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.madmodding.space.Main;
-import com.madmodding.space.items.ModItems;
 
 public class ModFluids {
 	private static final String FLUID_MODEL_PATH = Main.MODID + ":" + "fluid";
@@ -40,7 +35,7 @@ public class ModFluids {
 		GameRegistry.registerBlock(blockNormal, blockNormal.getUnlocalizedName());
 
 		registerFluidModel(blockNormal);
-
+		
 	}
 
 	private static void registerFluidModel(IFluidBlock fluidBlock) {
