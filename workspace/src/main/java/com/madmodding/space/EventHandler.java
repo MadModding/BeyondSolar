@@ -1,7 +1,6 @@
 package com.madmodding.space;
 
 import com.madmodding.space.blocks.ModBlocks;
-import com.madmodding.space.blocks.ModFluids;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
 import com.madmodding.space.items.ItemArmorCustom;
 import com.madmodding.space.items.element.ElementLib;
