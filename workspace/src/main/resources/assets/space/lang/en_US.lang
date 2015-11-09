@@ -15,8 +15,6 @@ key.evilstaff.lightning.desc=Evil Staff: Lightning Attack
 
 key.evilstaff.earth.desc=Evil Staff: Earth Attack
 
-death.attack.normal=%1$s melted in a puddle of acid
-
 item.colorhelm.name=Space Suit Cap
 item.colorchest.name=Space Suit Jacket
 item.colorlegs.name=Space Suit Belt
