@@ -27,6 +27,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.actors.threadpool.Arrays;
 
 public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 
@@ -123,7 +124,10 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 			stack.getTagCompound().setString("Name", name);
 		}
 		stack.getTagCompound().setInteger("Mode", 0);
-		stack.getTagCompound().setInteger("Color3", 0xC89632);
+		if (Arrays.asList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
+			stack.getTagCompound().setInteger("Color3", 0xC89632);
+		else
+			stack.getTagCompound().setInteger("Color3", 0x444444);
 		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
 		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
 		if (anti)

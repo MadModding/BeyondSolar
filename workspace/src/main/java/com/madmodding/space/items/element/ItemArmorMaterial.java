@@ -72,7 +72,12 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 		if (!stack.getTagCompound().hasKey("display"))
 			stack.getTagCompound().setTag("display", nbttagcompound1);
 		nbttagcompound1.setInteger("color", stack.getTagCompound().getInteger("Color0"));
-
+		if (stack.getTagCompound().getInteger("Type") == 1) {
+			player.inventory.armorInventory[0] = null; 
+			player.inventory.armorInventory[1] = null;
+			player.inventory.armorInventory[2] = null;
+			player.inventory.armorInventory[3] = null;
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -139,9 +144,9 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 			name += "";
 			stack.getTagCompound().setString("Name", name);
 		}
-		stack.getTagCompound().setInteger("Color0",ElementLib.Elements[stack.getItemDamage()].getColor());
+		stack.getTagCompound().setInteger("Color0", ElementLib.Elements[stack.getItemDamage()].getColor());
 		stack.getTagCompound().setInteger("Color1", 16777215);
-		stack.getTagCompound().setInteger("Mode", 0);
+		stack.getTagCompound().setInteger("Type", ElementLib.Elements[stack.getItemDamage()].getNumber());
 		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
 		double prot = ElementLib.Elements[stack.getItemDamage()].getHardness();
 		stack.getTagCompound().setDouble("Prot", prot);
@@ -151,9 +156,10 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack stack, DamageSource source, double damage,
 			int slot) {
-		
+
 		return new ArmorProperties(1,
-				(stack.getTagCompound().getDouble("Prot") - 1) / stack.getTagCompound().getDouble("Prot")/4, (int) (stack.getTagCompound().getDouble("Prot")*10));
+				(stack.getTagCompound().getDouble("Prot") - 1) / stack.getTagCompound().getDouble("Prot") / 4,
+				(int) (stack.getTagCompound().getDouble("Prot") * 10));
 	}
 
 	@Override

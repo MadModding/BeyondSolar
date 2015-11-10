@@ -22,7 +22,7 @@ public class ItemRefined extends Item implements IFirstTick {
 	public EnumRarity getRarity(ItemStack stack) {
 		return ElementLib.getRarity(stack);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
 		for (int i = 0; i < ElementLib.NonResElements.length; i++) {
@@ -31,15 +31,16 @@ public class ItemRefined extends Item implements IFirstTick {
 				this.onFirstTick(stack);
 				subItems.add(stack);
 			}
-		}if (Minecraft.getMinecraft().thePlayer.getName() == "Arideus")
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1)
 			subItems.add(new ItemStack(itemIn, 1, 103));
-		if (Minecraft.getMinecraft().thePlayer.getName() == "MadHatInjection")
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2)
 			subItems.add(new ItemStack(itemIn, 1, 104));
-		if (Minecraft.getMinecraft().thePlayer.getName() == "Harpcode")
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3)
 			subItems.add(new ItemStack(itemIn, 1, 105));
-		if (Minecraft.getMinecraft().thePlayer.getName() == "Arideus")
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4)
 			subItems.add(new ItemStack(itemIn, 1, 106));
-		if (Minecraft.getMinecraft().thePlayer.getName().contains("9"))
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5)
 			subItems.add(new ItemStack(itemIn, 1, 102));
 	}
 

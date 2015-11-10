@@ -29,6 +29,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.actors.threadpool.Arrays;
 
 public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 
@@ -133,7 +134,10 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 			stack.getTagCompound().setString("Name", name);
 		}
 		stack.getTagCompound().setInteger("Mode", 0);
-		stack.getTagCompound().setInteger("Color1", 0xC89632);
+		if (Arrays.asList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
+			stack.getTagCompound().setInteger("Color1", 0xC89632);
+		else
+			stack.getTagCompound().setInteger("Color1", 0x444444);
 		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
 		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
 		dmg *= 0.5;

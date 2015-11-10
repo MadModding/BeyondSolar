@@ -79,8 +79,7 @@ tile.rareMetalMeteorite.name=Rare Metal Meteorite
 tile.platinumMeteorite.name=Platinoid Meteorite
 tile.fluid.normal.name=Acid Fluid
 
+commands.empower.usage=/empower
 
 commands.push.success=Pushed %s to %s
-commands.push.success.coordinates=Pushed %s with the force of %s X, %s Y, %s Z
-commands.push.usage=/push [target player] <destination player> OR /push [target player] <x> <y> <z>
-commands.push.notSameDimension=Unable to push because players are not in the same dimension
+commands.push.usage=/push <motionx> <motiony> <motionz>

@@ -189,15 +189,23 @@ public class ElementLib {
 				}
 			}
 		}
-		if (Minecraft.getMinecraft().thePlayer.getName() == "Arideus")
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1) // ==
+																			// "Arideus")
 			subItems.add(new ItemStack(itemIn, 1, 103));
-		if (Minecraft.getMinecraft().thePlayer.getName() == "MadHatInjection")
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2) // ==
+																			// "Arideus")
 			subItems.add(new ItemStack(itemIn, 1, 104));
-		if (Minecraft.getMinecraft().thePlayer.getName() == "Harpcode")
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3) // ==
+																			// "Arideus")
 			subItems.add(new ItemStack(itemIn, 1, 105));
-		if (Minecraft.getMinecraft().thePlayer.getName() == "Arideus")
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4) // ==
+																			// "Arideus")
 			subItems.add(new ItemStack(itemIn, 1, 106));
-		if (Minecraft.getMinecraft().thePlayer.getName().contains("9"))
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 6) // ==
+																			// "Arideus")
+			subItems.add(new ItemStack(itemIn, 1, 107));
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5) // ==
+																			// "Arideus")
 			subItems.add(new ItemStack(itemIn, 1, 102));
 	}
 
@@ -261,7 +269,7 @@ public class ElementLib {
 					b = 255;
 
 			}
-		} else if (type == -2) {
+		} else if (type == -2) {// Solar Flare
 			double t = (int) ((time / 32) % 100);
 			r = 255;
 
@@ -272,12 +280,57 @@ public class ElementLib {
 			else
 				g = 127;
 
+		} else if (type == -3) {// Arideum
+			double t = (int) ((time / 32) % 100);
+			r = 100;
+			if (t >= 0 && t < 50)
+				r += (int) ((t) / 50d * 100d);
+			else if (t >= 50 && t < 100)
+				r += (int) (-(t - 100d) / 50d * 100d);
+			else
+				r = 200;
+
+		} else if (type == -4) {// Madhatium
+			double t = (int) ((time / 32) % 100);
+			g = 100;
+			if (t >= 0 && t < 50)
+				g += (int) ((t) / 50d * 155d);
+			else if (t >= 50 && t < 100)
+				g += (int) (-(t - 100d) / 50d * 155d);
+			else
+				g = 255;
+
+		} else if (type == -5) {// Jurassicalienthiumtium
+			double t = (int) ((time / 32) % 100);
+			if (t >= 0 && t < 50)
+				r = (int) ((t) / 50d * 255d);
+			else if (t >= 50 && t < 100)
+				r = (int) (-(t - 100d) / 50d * 255d);
+			else
+				r = 255;
+
 		}
 
 		clr += r * 65536;
 		clr += g * 256;
 		clr += b;
 		return clr;
+	}
+
+	public static int isSpecial(String name) {
+		if (name.equals("Arideus"))
+			return 1;
+		if (name.equals("MadHatInjection"))
+			return 2;
+		if (name.equals("Harpcode"))
+			return 3;
+		if (name.equals("Samuel"))
+			return 4;
+		if (name.contains("9"))
+			return 5;
+		if (name.equals("JurassicAlien"))
+			return 6;
+		return 0;
 	}
 
 	private static String modid = Main.MODID;

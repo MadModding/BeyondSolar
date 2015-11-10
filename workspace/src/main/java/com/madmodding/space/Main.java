@@ -88,6 +88,7 @@ public class Main {
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandPush());
+		event.registerServerCommand(new CommandEmpower());
 	}
 
 	@EventHandler
