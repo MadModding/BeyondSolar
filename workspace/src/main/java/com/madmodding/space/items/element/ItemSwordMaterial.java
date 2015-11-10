@@ -73,11 +73,10 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 		}
 	}
 
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return EnumRarity.RARE;
+		return ElementLib.getRarity(stack);
 	}
-
-	
 
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
@@ -105,8 +104,8 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 	@Override
 	public void onFirstTick(ItemStack stack) {
 
-		int i = (int) ((stack.getItemDamage()) / ElementLib.names.length) + 1;
-		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.names.length);
+		int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length) + 1;
+		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
 		boolean neg = i % 2 == 0;
 		boolean anti = i > 2;
 		if (!stack.hasTagCompound())
@@ -119,18 +118,18 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 				name += "Negative ";
 			if (stack.getTagCompound().getBoolean("anti"))
 				name += "Anti-";
-			name += ElementLib.names[stack.getItemDamage()];
+			name += ElementLib.Elements[stack.getItemDamage()].getName();
 			name += "";
 			stack.getTagCompound().setString("Name", name);
 		}
 		stack.getTagCompound().setInteger("Mode", 0);
 		stack.getTagCompound().setInteger("Color3", 0xC89632);
-		stack.getTagCompound().setInteger("color", ElementLib.colors[stack.getItemDamage()]);
-		double dmg = ElementLib.hard[stack.getItemDamage()];
+		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
+		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
 		if (anti)
 			dmg *= 2;
 		stack.getTagCompound().setDouble("Damage", dmg);
-		stack.getTagCompound().setDouble("Speed", 1.2d * ElementLib.hard[stack.getItemDamage()]);
+		stack.getTagCompound().setDouble("Speed", 1.2d * ElementLib.Elements[stack.getItemDamage()].getHardness());
 		stack.getTagCompound().setBoolean("Unbreakable", true);
 	}
 }

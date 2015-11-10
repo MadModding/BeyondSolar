@@ -215,7 +215,7 @@ public class ItemArmorCustom extends ItemArmor implements ISpecialArmor, IColora
 		if (source == Main.inSpace)
 			return new ArmorProperties(1, 0.3, Integer.MAX_VALUE);
 
-		return new ArmorProperties(1, 0.25, 100);
+		return new ArmorProperties(1, 0.2, 100);
 	}
 
 	@Override

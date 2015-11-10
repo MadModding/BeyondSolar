@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,17 +18,29 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRefined extends Item implements IFirstTick {
-
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+		return ElementLib.getRarity(stack);
+	}
 	
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-		for (int i = 0; i < ElementLib.names.length; i++) {
+		for (int i = 0; i < ElementLib.NonResElements.length; i++) {
 			for (int t = 0; t < 4; t++) {
-				ItemStack stack = new ItemStack(itemIn, 1, i + t * ElementLib.names.length);
+				ItemStack stack = new ItemStack(itemIn, 1, i + t * ElementLib.Elements.length);
 				this.onFirstTick(stack);
 				subItems.add(stack);
 			}
-		}
+		}if (Minecraft.getMinecraft().thePlayer.getName() == "Arideus")
+			subItems.add(new ItemStack(itemIn, 1, 103));
+		if (Minecraft.getMinecraft().thePlayer.getName() == "MadHatInjection")
+			subItems.add(new ItemStack(itemIn, 1, 104));
+		if (Minecraft.getMinecraft().thePlayer.getName() == "Harpcode")
+			subItems.add(new ItemStack(itemIn, 1, 105));
+		if (Minecraft.getMinecraft().thePlayer.getName() == "Arideus")
+			subItems.add(new ItemStack(itemIn, 1, 106));
+		if (Minecraft.getMinecraft().thePlayer.getName().contains("9"))
+			subItems.add(new ItemStack(itemIn, 1, 102));
 	}
 
 	public ItemRefined(String unlocalizedName) {
@@ -74,23 +87,17 @@ public class ItemRefined extends Item implements IFirstTick {
 	public void onFirstTick(ItemStack stack) {
 		int d = stack.getItemDamage();
 		stack.setTagCompound(new NBTTagCompound());
-		if (d < (ElementLib.names.length * 4)) {
-			int i = (int) ((stack.getItemDamage()) / ElementLib.names.length) + 1;
-			stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.names.length);
+		if (d < (ElementLib.Elements.length * 4)) {
+			int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length) + 1;
+			stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
 			boolean neg = i % 2 == 0;
 			boolean anti = i > 2;
-			stack.getTagCompound().setString("name", ElementLib.names[stack.getItemDamage()]);
-			stack.getTagCompound().setDouble("amass", ElementLib.masses[stack.getItemDamage()]);
-			stack.getTagCompound().setInteger("color", ElementLib.colors[stack.getItemDamage()]);
+			stack.getTagCompound().setString("name", ElementLib.Elements[stack.getItemDamage()].getName());
+			stack.getTagCompound().setDouble("amass", ElementLib.Elements[stack.getItemDamage()].getMass());
+			stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
 			stack.getTagCompound().setBoolean("neg", neg);
 			stack.getTagCompound().setBoolean("anti", anti);
 			stack.getTagCompound().setBoolean("ore", false);
-		} else {
-			d -= ElementLib.names.length * 4;
-			stack.setItemDamage(d);
-			stack.getTagCompound().setString("name", ElementLib.orenames[d]);
-			stack.getTagCompound().setInteger("id", d);
-			stack.getTagCompound().setBoolean("ore", true);
 		}
 	}
 
