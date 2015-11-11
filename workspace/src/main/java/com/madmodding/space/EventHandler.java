@@ -1,10 +1,10 @@
 package com.madmodding.space;
 
 import com.madmodding.space.blocks.ModBlocks;
-import com.madmodding.space.blocks.ModFluids;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
 import com.madmodding.space.items.ItemArmorCustom;
 import com.madmodding.space.items.element.ElementLib;
+import com.madmodding.space.items.element.ItemArmorMaterial;
 import com.madmodding.space.items.element.ItemDyeSpec;
 import com.madmodding.space.space.SpaceTeleporter;
 
@@ -40,11 +40,11 @@ public class EventHandler {
 			cell.cellID = TileEntityAlienCell.worldID;
 			cell.loc.add(cell.getPos());
 			TileEntityAlienCell.worldID++;
-			//System.out.println("sent:" + cell.cellID);
+			// System.out.println("sent:" + cell.cellID);
 			TileEntityAlienCell.loc.add(cell.cellID, cell.getPos());
 
-			//System.out.println("world id: " + TileEntityAlienCell.worldID);
-			//System.out.println("cell id: " + cell.cellID);
+			// System.out.println("world id: " + TileEntityAlienCell.worldID);
+			// System.out.println("cell id: " + cell.cellID);
 
 		}
 
@@ -155,8 +155,20 @@ public class EventHandler {
 		if (event.entityLiving.dimension != 71) {
 			int l = 0;
 			for (int i = 0; i < 4; i++) {
-				if ((event.entityLiving.getCurrentArmor(i) != null
-						&& event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorCustom)) {
+				if ((event.entityLiving
+						.getCurrentArmor(
+								i) != null
+						&& (event.entityLiving
+								.getCurrentArmor(
+										i)
+								.getItem() instanceof ItemArmorCustom
+								|| (event.entityLiving
+										.getCurrentArmor(
+												i)
+										.getItem() instanceof ItemArmorMaterial
+										&& !ElementLib.toList(ElementLib.BaseElements)
+												.contains(ElementLib.Elements[event.entityLiving.getCurrentArmor(i)
+														.getItemDamage() % ElementLib.Elements.length]))))) {
 					l++;
 				}
 			}
