@@ -24,7 +24,7 @@ public class ModFluids {
 	private static final String FLUID_MODEL_PATH = Main.MODID + ":" + "fluid";
 	public static Fluid fluidAcid;
 	public static AcidBlock blockAcid;
-	//spaecial material to identify acid blocks
+	//special material to identify acid blocks
 	public static Material acidMat = new MaterialLiquid(MapColor.adobeColor);
 	public static Fluid fluidNormalGas;
 	public static BlockFluidClassic blockNormalGas;

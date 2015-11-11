@@ -37,8 +37,10 @@ public class EventHandler {
 		if(event.placedBlock == ModBlocks.alienCell.getDefaultState()) {
 			TileEntityAlienCell cell = (TileEntityAlienCell) event.world.getTileEntity(event.pos);
 			cell.cellID = TileEntityAlienCell.worldID;
+			cell.loc.add(cell.getPos());
 			TileEntityAlienCell.worldID++;
-			
+			System.out.println("sent:"+cell.cellID);
+			TileEntityAlienCell.loc.add(cell.cellID,cell.getPos());		
 			System.out.println("world id: " + TileEntityAlienCell.worldID);
 			System.out.println("cell id: " + cell.cellID);
 			

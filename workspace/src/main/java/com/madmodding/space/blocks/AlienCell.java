@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -23,6 +24,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 public class AlienCell extends BlockContainer {
 	
@@ -31,8 +33,9 @@ public class AlienCell extends BlockContainer {
 		this.setCreativeTab(Main.aliensTabTech);
 		this.setHardness(12.0F);
 		this.setCellBounds();
+		
 	}
-
+	
 	@Override
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 		
@@ -45,23 +48,28 @@ public class AlienCell extends BlockContainer {
 		        ((EntityPlayerMP) entityIn).mcServer.getConfigurationManager().transferPlayerToDimension(((EntityPlayerMP) entityIn), -10, new CellTeleporter(((EntityPlayerMP) entityIn).mcServer.worldServerForDimension(1)));		  
 			    entityIn.setPositionAndUpdate((8+((cell.cellID*16))), 3,(8+((cell.cellID*16))));
 			worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, entityIn.posX, entityIn.posY, entityIn.posZ, 0, 0, 0, new int[0]);
-			}else{ TeleportEntity.tpMobToDim(entityIn, -10, worldIn, new BlockPos((8+((cell.cellID*16))), 3, (8+((cell.cellID*16))))); }}		    
+			cell.loc.set(cell.cellID, pos);
+			}else{ TeleportEntity.tpMobToDim(entityIn, -10, worldIn, new BlockPos((8+((cell.cellID*16))), 3, (8+((cell.cellID*16))))); }}
+        WorldServer worldserver1 = MinecraftServer.getServer().worldServerForDimension(-10);
+        worldserver1.setBlockState(new BlockPos((8+((cell.cellID*16))), 0,(8+((cell.cellID*16)))), ModBlocks.tpBlock.getDefaultState());
+        
 	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		TileEntityAlienCell cell = (TileEntityAlienCell) worldIn.getTileEntity(pos);
-		
+		TileEntityAlienCell cell = (TileEntityAlienCell) worldIn.getTileEntity(pos);	
 		if (playerIn instanceof EntityPlayerMP) {
 			worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, playerIn.posX, playerIn.posY, playerIn.posZ, 0, 0, 0, new int[0]);
 		      ((EntityLivingBase) playerIn).addChatMessage(new ChatComponentTranslation(EnumChatFormatting.RED + playerIn.getName() + " is entering cell " + cell.cellID));
 		      ((EntityPlayerMP) playerIn).mcServer.getConfigurationManager().transferPlayerToDimension(((EntityPlayerMP) playerIn), -10, new CellTeleporter(((EntityPlayerMP) playerIn).mcServer.worldServerForDimension(1)));
 		      ((EntityPlayerMP) playerIn).setPosition(4+((cell.cellID*16)-16), 1, 4+((cell.cellID*16)-16));
 				worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, playerIn.posX, playerIn.posY, playerIn.posZ, 0, 0, 0, new int[0]);
-		      System.out.println("cell id: " + cell.cellID + " posX:" + pos.getX() + " posY:" + pos.getY() + " posZ:" + pos.getZ());
+				cell.loc.set(cell.cellID, pos);
+				System.out.println("cell id: " + cell.cellID + " posX:" + pos.getX() + " posY:" + pos.getY() + " posZ:" + pos.getZ());
 		}
-
+		 WorldServer worldserver1 = MinecraftServer.getServer().worldServerForDimension(-10);
+	        worldserver1.setBlockState(new BlockPos((8+((cell.cellID*16))), 0,(8+((cell.cellID*16)))), ModBlocks.tpBlock.getDefaultState());
 		return super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
 	}
 	
