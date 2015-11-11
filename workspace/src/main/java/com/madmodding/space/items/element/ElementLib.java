@@ -322,7 +322,7 @@ public class ElementLib {
 			return 1;
 		if (name.equals("MadHatInjection"))
 			return 2;
-		if (name.equals("Harpcode"))
+		if (name.equals("HarpCode"))
 			return 3;
 		if (name.equals("Samuel"))
 			return 4;

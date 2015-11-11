@@ -71,7 +71,7 @@ public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPl
 			                {
 			                	if(!playerIn.isSneaking())
 			                	{
-			                		worldIn.setBlockState(Upos, ModFluids.blockNormal.getDefaultState());
+			                		worldIn.setBlockState(Upos, ModFluids.blockAcid.getDefaultState());
 			         	           	return new ItemStack(ModItems.acidTank);
 
 			                	}
