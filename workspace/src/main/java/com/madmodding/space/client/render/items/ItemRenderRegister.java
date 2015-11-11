@@ -28,6 +28,7 @@ public final class ItemRenderRegister {
 		reg(ModItems.acidTank);
 		reg(ModItems.acidTankfull);
 		reg(ModItems.dust);
+		reg(Item.getItemFromBlock(ModBlocks.tpBlock));
 		reg(Item.getItemFromBlock(ModBlocks.aluminiumOre));
 		reg(Item.getItemFromBlock(ModBlocks.bauxiteOre));
 		reg(Item.getItemFromBlock(ModBlocks.copperOre));
@@ -45,8 +46,7 @@ public final class ItemRenderRegister {
 		reg(Item.getItemFromBlock(ModBlocks.titaniumOre));
 		reg(Item.getItemFromBlock(ModBlocks.uraniumOre));
 		reg(Item.getItemFromBlock(ModBlocks.zincOre));
-		reg(Item.getItemFromBlock(ModBlocks.ice));
-		
+		reg(Item.getItemFromBlock(ModBlocks.ice));		
 	}
 
 	// ==========================================================================

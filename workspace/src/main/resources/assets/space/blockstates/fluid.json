@@ -6,6 +6,13 @@
 			"custom": {
 				"fluid": "normal"
 			}
+		},
+		"normalgas": {
+			"model": "forge:fluid",
+			"custom": {
+				"fluid": "normalgas"
+			}
 		}
 	}
 }
+

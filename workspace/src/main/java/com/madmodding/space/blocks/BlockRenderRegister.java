@@ -5,6 +5,7 @@ import com.madmodding.space.Main;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 
 public class BlockRenderRegister {

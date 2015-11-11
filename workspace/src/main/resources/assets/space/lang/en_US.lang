@@ -77,7 +77,8 @@ tile.titaniumOre.name=Titanium Ore
 tile.bauxiteOre.name=Bauxite Ore
 tile.rareMetalMeteorite.name=Rare Metal Meteorite
 tile.platinumMeteorite.name=Platinoid Meteorite
-tile.fluid.normal.name=Acid Fluid
+tile.fluid.normal.name=Acid
+tile.fluid.normalgas.name=Gas
 
 commands.empower.usage=/empower
 

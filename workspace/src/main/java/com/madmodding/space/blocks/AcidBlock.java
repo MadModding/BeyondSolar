@@ -7,10 +7,8 @@ import com.madmodding.space.Main;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidFinite;
 import net.minecraftforge.fluids.Fluid;
@@ -23,20 +21,28 @@ public class AcidBlock extends BlockFluidFinite {
 		setUnlocalizedName(fluidName);
 		setCreativeTab(Main.aliensTabBlock);
 	}
-    
+	
+    //Start attacking entity standing on acid block
 	@Override
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-
-				DamageSource burn=new DamageSource(fluidName);
+				super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
+				DamageSource burn=new DamageSource(fluidName).setDamageBypassesArmor();
 				entityIn.attackEntityFrom(burn, 1.5F);
 			    
-		}
+	}
+	//render the block full size to render it tile size use 1
+	@Override
+	public int getMaxRenderHeightMeta()
+	{
+       return 0;
+	}
 	/*
-     * Called randomly when setTickRandomly is set to true (used by e.g. crops to grow, etc.)
+     * Called randomly to break blocks
      */
 	@Override
     public void randomTick(World worldIn, BlockPos pos, IBlockState state, Random random)
     {
+		super.randomTick(worldIn, pos, state, random);
 		IBlockState iblockstate = worldIn.getBlockState(pos.down());
         if ((iblockstate.getBlock().getBlockHardness(worldIn, pos.down())>0F))
         {

@@ -43,9 +43,11 @@ public final class ModBlocks {
 	public static final Block rareMetalMeteorite = new SpaceOre(Material.rock).setUnlocalizedName("rareMetalMeteorite").setHardness(12.0F);
 	public static final Block platinumMeteorite = new SpaceOre(Material.rock).setUnlocalizedName("platinumMeteorite").setHardness(15.0F);
 	public static Block blockOil;
+	public static final Block tpBlock=new TpBlock();
 	
 	public static void init() {
 		FluidRegistry.registerFluid(fluidOil);
+		GameRegistry.registerBlock(tpBlock, tpBlock.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(alienCell, alienCell.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(ice, ice.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(cellBlock, cellBlock.getUnlocalizedName().substring(5));
