@@ -332,7 +332,12 @@ public class ElementLib {
 			return 6;
 		return 0;
 	}
-
+	public static List toList(Object[] array) {
+		List list = new ArrayList();
+		for(int i = 0; i < array.length; i ++)
+			list.add(array[i]);
+		return list;
+	}
 	private static String modid = Main.MODID;
 
 	private static void reg(Item item, int i, String nameadd) {

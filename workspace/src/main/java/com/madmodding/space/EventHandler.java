@@ -20,32 +20,39 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EventHandler {
-	//@SubscribeEvent
-	//public void serverLoad(FMLServerStartingEvent event) {
-	//	event.registerServerCommand(new CommandPush());
-	//}
+	// @SubscribeEvent
+	// public void serverLoad(FMLServerStartingEvent event) {
+	// event.registerServerCommand(new CommandPush());
+	// }
 
 	@SubscribeEvent
 	public void onCellPlaced(BlockEvent.PlaceEvent event) {
-		
-		if(event.placedBlock == ModBlocks.alienCell.getDefaultState()) {
+
+		if (event.placedBlock == ModBlocks.alienCell.getDefaultState()) {
 			TileEntityAlienCell cell = (TileEntityAlienCell) event.world.getTileEntity(event.pos);
 			cell.cellID = TileEntityAlienCell.worldID;
 			TileEntityAlienCell.worldID++;
-			
+
 			System.out.println("world id: " + TileEntityAlienCell.worldID);
 			System.out.println("cell id: " + cell.cellID);
+
+		}
+
+	}
+
+	@SubscribeEvent
+	public void onRenderLivingEvent(RenderLivingEvent.Pre event) {
+		if(event.entity instanceof EntityPlayer){
 			
 		}
-		
 	}
-	
 
 	@SubscribeEvent
 	public void onEntityTick(LivingUpdateEvent event) {
@@ -139,7 +146,7 @@ public class EventHandler {
 									.setAir(((EntityPlayer) event.entityLiving).getAir() - 3);
 					} else
 						((EntityPlayer) event.entityLiving).setAir(((EntityPlayer) event.entityLiving).getAir() - 3);
-					}
+				}
 			}
 		}
 		if (event.entityLiving.dimension != 71) {

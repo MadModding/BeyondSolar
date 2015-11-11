@@ -26,7 +26,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.actors.threadpool.Arrays;
+
 
 public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
 
@@ -134,7 +134,7 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
 			stack.getTagCompound().setString("Name", name);
 		}
 		stack.getTagCompound().setInteger("Mode", 0);
-		if (Arrays.asList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
+		if (ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
 			stack.getTagCompound().setInteger("Color1", 0xC89632);
 		else
 			stack.getTagCompound().setInteger("Color1", 0x444444);

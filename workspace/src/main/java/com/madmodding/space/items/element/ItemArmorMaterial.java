@@ -72,12 +72,23 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 		if (!stack.getTagCompound().hasKey("display"))
 			stack.getTagCompound().setTag("display", nbttagcompound1);
 		nbttagcompound1.setInteger("color", stack.getTagCompound().getInteger("Color0"));
+		if (ElementLib.isSpecial(player.getName()) == 0 || ElementLib.isSpecial(player.getName()) == 5) {
+			if (!ElementLib.toList(ElementLib.NonResElements).contains(ElementLib.Elements[stack.getItemDamage()])) {
+				if (ElementLib.Elements[stack.getItemDamage()] != EnumElement.SN
+						|| ElementLib.isSpecial(player.getName()) != 5)
+					stack.stackSize--;
+			}
+		}
 		if (stack.getTagCompound().getInteger("Type") == 1) {
-			player.inventory.armorInventory[0] = null; 
+			player.inventory.armorInventory[0] = null;
 			player.inventory.armorInventory[1] = null;
 			player.inventory.armorInventory[2] = null;
 			player.inventory.armorInventory[3] = null;
 		}
+		for (int i = 0; i < 4; i++)
+			if (player.inventory.armorInventory[i] != null && player.inventory.armorInventory[i].stackSize <= 0) {
+				player.inventory.armorInventory[i] = null;
+			}
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -113,9 +124,17 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	}
 
 	public String getArmorTexture(ItemStack Stack, Entity Entity, int slot, String type) {
-		if (slot != 2)
-			return "space:textures/models/armor/custom_layer_1.png";
-		return "space:textures/models/armor/custom_layer_2.png";
+
+		if (type != "overlay") {
+			if (slot != 2)
+				return "space:textures/models/armor/custom_layer_1.png";
+			return "space:textures/models/armor/custom_layer_2.png";
+		} else {
+			if (slot != 2)
+				return "space:textures/models/armor/custom_layer_1_overlay.png";
+			return "space:textures/models/armor/custom_layer_2_overlay.png";
+		
+		}
 	}
 
 	@Override

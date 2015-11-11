@@ -1,5 +1,64 @@
 Changelog:
-Build 1551:
+Build 1562:
+	LexManos:
+		Merge pull request #2179 from arideus101/patch-1
+		
+		Fixed issue where custom colored armor wouldn't be colored. (reverted from commit dee0b2084b519419bbf97d8ad177204830ea2b07)
+
+Build 1.8-11.14.3.1561:
+	jasondoyle528: Allows Custom Armor Coloring to be done easily
+
+Build 1.8-11.14.3.1560:
+	gabizou:
+		Fix a possible NPE when checking supertypes of interfaces. Closes #2176.
+		
+		Signed-off-by: Gabriel Harris-Rouquette <gabizou@me.com>
+
+Build 1.8-11.14.3.1559:
+	bjoern:
+		Fix possible crash in EventBus
+		
+		There is currently no way to check if an event handler has been registered or not.
+		But when trying to unregister a not-registered event handler, Minecraft crashes with a NullPointerException.
+		This is a simple fix to prevent such crashes.
+	cpw: Fix substitutions for recipes and oredict recipes. Should mean that substitutions start working properly.
+	cpw:
+		OreDictionary will warn if there's an invalid ore being registered now, rather than just
+		using -1 and doing weird things with the list as a result.
+	cpw: Two more corner cases in the oredictionary. Should work for all cases now.
+	cpw:
+		Fix firing the remap event. It always fires now, and additionally fires when the registry reverts to frozen.
+		Most mods refer to the gameregistry for ids they care about, so this shouldn't affect anything significantly,
+		but if your mod was dependent on their being content in the remap event, and only acting on that content,
+		empty content means it's "reverted to frozen" state - the state at the start of the game.
+
+Build 1.7.10-10.13.4.1558-1.7.10:
+	cpw:
+		Fix firing the remap event. It always fires now, and additionally fires when the registry reverts to frozen.
+		Most mods refer to the gameregistry for ids they care about, so this shouldn't affect anything significantly,
+		but if your mod was dependent on their being content in the remap event, and only acting on that content,
+		empty content means it's "reverted to frozen" state - the state at the start of the game.
+
+Build 1.7.10-10.13.4.1557-1.7.10:
+	cpw: Two more corner cases in the oredictionary. Should work for all cases now.
+
+Build 1.8-11.14.3.1556:
+	LexManos: Fixed Open url confirm screen not showing URL.
+	LexManos: Fixed Stronghold Library not having anything in it's chests.
+
+Build 1.8-11.14.3.1555:
+	diesieben07: Fix GameData.findBlock
+
+Build 1.8-11.14.3.1554:
+	fry: Fixed anaglyph transformation not being applied in the forge lighting fully.
+
+Build 1.8-11.14.3.1553:
+	fry: Provide ItemCameraTransforms for vanilla models when possible.
+
+Build 1.8-11.14.3.1552:
+	fry: OBJ loader: reworked texture resolution: keys now have to start with #, like every other model loader; models without explicit library now work, remapping is possible by using the key "#OBJModel.Default.Texture.Name"; in addition to remapping by material name, remapping by texture name works too, like in other model formats.
+
+Build 1.8-11.14.3.1551:
 	fry: Performace fix for item rendering.
 
 Build 1.8-11.14.3.1550:
