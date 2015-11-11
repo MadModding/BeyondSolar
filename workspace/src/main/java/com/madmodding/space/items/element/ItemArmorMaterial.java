@@ -130,9 +130,7 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 				return "space:textures/models/armor/custom_layer_1.png";
 			return "space:textures/models/armor/custom_layer_2.png";
 		} else {
-			if (slot != 2)
-				return "space:textures/models/armor/custom_layer_1_overlay.png";
-			return "space:textures/models/armor/custom_layer_2_overlay.png";
+			return "space:textures/models/armor/custom_layer_overlay.png";
 		
 		}
 	}
