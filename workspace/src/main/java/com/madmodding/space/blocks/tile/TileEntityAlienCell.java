@@ -19,11 +19,11 @@ public class TileEntityAlienCell extends TileEntity implements ITickable {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		compound.getInteger("CellID");
-		compound.getInteger("WorldID");
+		cellID=compound.getInteger("CellID");
+		worldID=compound.getInteger("WorldID");
 		if(init)
 		{
-			for(int i=0;i<(worldID+1);i++)
+			for(int i=0;i<(worldID);i++)
 			{
 				loc.add(orgin);
 			}
