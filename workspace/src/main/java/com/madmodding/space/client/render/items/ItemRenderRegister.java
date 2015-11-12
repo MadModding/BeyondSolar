@@ -28,6 +28,7 @@ public final class ItemRenderRegister {
 		reg(ModItems.acidTank);
 		reg(ModItems.acidTankfull);
 		reg(ModItems.dust);
+		reg(ModItems.acidSquirter);
 		reg(Item.getItemFromBlock(ModBlocks.tpBlock));
 		reg(Item.getItemFromBlock(ModBlocks.aluminiumOre));
 		reg(Item.getItemFromBlock(ModBlocks.bauxiteOre));

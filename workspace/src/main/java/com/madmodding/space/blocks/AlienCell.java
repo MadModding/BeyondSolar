@@ -40,7 +40,6 @@ public class AlienCell extends BlockContainer {
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 		
 		TileEntityAlienCell cell = (TileEntityAlienCell) worldIn.getTileEntity(pos);
-		
 		if(entityIn.ridingEntity == null && entityIn.riddenByEntity == null) {
 			if (entityIn instanceof EntityPlayerMP) {
 				worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, entityIn.posX, entityIn.posY, entityIn.posZ, 0, 0, 0, new int[0]);
@@ -66,7 +65,6 @@ public class AlienCell extends BlockContainer {
 		      ((EntityPlayerMP) playerIn).setPosition(4+((cell.cellID*16)-16), 1, 4+((cell.cellID*16)-16));
 				worldIn.spawnParticle(EnumParticleTypes.SPELL_MOB, playerIn.posX, playerIn.posY, playerIn.posZ, 0, 0, 0, new int[0]);
 				cell.loc.set(cell.cellID, pos);
-				System.out.println("cell id: " + cell.cellID + " posX:" + pos.getX() + " posY:" + pos.getY() + " posZ:" + pos.getZ());
 		}
 		 WorldServer worldserver1 = MinecraftServer.getServer().worldServerForDimension(-10);
 	        worldserver1.setBlockState(new BlockPos((8+((cell.cellID*16))), 0,(8+((cell.cellID*16)))), ModBlocks.tpBlock.getDefaultState());

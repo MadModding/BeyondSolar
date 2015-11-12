@@ -29,7 +29,6 @@ public class TpBlock extends Block{
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		int cellid=(pos.getX()-8)/16;
-		System.out.println("recieved:"+cellid);
 		BlockPos over=TileEntityAlienCell.loc.get(cellid);
 		int x=over.getX()+4;
 		int y=over.getY()+3;

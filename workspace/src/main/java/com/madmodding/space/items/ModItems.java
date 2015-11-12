@@ -29,13 +29,15 @@ public final class ModItems {
 	public static final Item dust = new Item().setCreativeTab(Main.aliensTabUnRef).setUnlocalizedName("dust");
 	public static final Item dustcrusher = new ItemCrusher("dustcrusher").setCreativeTab(Main.aliensTabTech)
 			.setMaxStackSize(1);
+	public static final Item acidSquirter=new acidSquirter("acidsquirter");
 	public static final Item acidTank = new AcidTank("acidtank");
 	public static final Item acidTankfull = new AcidTankfull("acidtankfull");
 	public static final Item drill = new ItemDrill("drill").setCreativeTab(Main.aliensTabTech).setMaxStackSize(1);
 	public static final Item enderpouch = new EnderItem("enderpouch");
 	public static final Item pouch = new ItemBag("pouch");
 
-	public static void init() {
+	public static void init() 
+	{
 		GameRegistry.registerItem(pouch, "pouch");
 		GameRegistry.registerItem(enderpouch, "enderpouch");
 		GameRegistry.registerItem(dust, "dust");
@@ -49,7 +51,7 @@ public final class ModItems {
 		GameRegistry.registerItem(warp, "warp");
 		GameRegistry.registerItem(acidTank, "acidtank");
 		GameRegistry.registerItem(acidTankfull, "acidtankfull");
-
+		GameRegistry.registerItem(acidSquirter, "acidsquirter");
 	}
 
 }

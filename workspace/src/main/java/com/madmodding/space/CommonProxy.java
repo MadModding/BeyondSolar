@@ -4,6 +4,7 @@ import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.blocks.ModFluids;
 import com.madmodding.space.cell.WorldProviderCell;
 import com.madmodding.space.client.render.items.RenderDrillLaser;
+import com.madmodding.space.entity.item.EntityAcidAttack;
 import com.madmodding.space.entity.item.EntityDrillLaser;
 import com.madmodding.space.items.ModItems;
 import com.madmodding.space.items.element.ElementLib;
@@ -13,7 +14,8 @@ import com.madmodding.space.items.element.RecipesToolDye;
 import com.madmodding.space.space.WorldProviderSpace;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.init.Items;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -53,6 +55,7 @@ public class CommonProxy {
 		Main.network.registerMessage(MessagePushZ.Handler.class, MessagePushZ.class, packetId++, Side.CLIENT);
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDrillLaser.class, new RenderDrillLaser());
+		RenderingRegistry.registerEntityRenderingHandler(EntityAcidAttack.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),Items.slime_ball,Minecraft.getMinecraft().getRenderItem()));
 		DimensionManager.registerProviderType(71, WorldProviderSpace.class, true);
 		DimensionManager.registerDimension(71, 71);
 		DimensionManager.registerProviderType(-10, WorldProviderCell.class, true);
