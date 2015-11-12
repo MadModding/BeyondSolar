@@ -123,15 +123,20 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 		}
 	}
 
-	public String getArmorTexture(ItemStack Stack, Entity Entity, int slot, String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 
 		if (type != "overlay") {
-			if (slot != 2)
+			if (slot != 2) {
+				if (entity.dimension == 71 && !ElementLib.toList(ElementLib.BaseElements)
+						.contains(ElementLib.Elements[stack.getItemDamage() % ElementLib.Elements.length]))
+					return "space:textures/models/armor/custom_layer_spec.png";
 				return "space:textures/models/armor/custom_layer_1.png";
+			}
 			return "space:textures/models/armor/custom_layer_2.png";
 		} else {
 			return "space:textures/models/armor/custom_layer_overlay.png";
 		}
+
 	}
 
 	@Override

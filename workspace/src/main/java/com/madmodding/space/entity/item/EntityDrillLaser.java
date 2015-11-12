@@ -4,6 +4,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,7 +15,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
+import net.minecraft.server.management.ItemInWorldManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
@@ -24,6 +29,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,6 +53,43 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 	/** The amount of knockback an arrow applies when it hits a mob. */
 	private int knockbackStrength;
 	private static final String __OBFID = "CL_00001715";
+
+	// Code from TC
+	protected void breakExtraBlock(World world, BlockPos pos, int sidehit, EntityPlayer playerEntity,
+			IBlockState state) {
+		if (world.isAirBlock(pos))
+			return;
+		if (!(playerEntity instanceof EntityPlayerMP))
+			return;
+		EntityPlayerMP player = (EntityPlayerMP) playerEntity;
+		Block block = world.getBlockState(pos).getBlock();
+		int event = ForgeHooks.onBlockBreakEvent(world, player.theItemInWorldManager.getGameType(), player, pos);
+		if (player.capabilities.isCreativeMode) {
+			block.onBlockHarvested(world, pos, state, player);
+			if (block.removedByPlayer(world, pos, player, false))
+				block.onBlockDestroyedByPlayer(world, pos, state);
+
+			if (!world.isRemote) {
+				player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(world, pos));
+			}
+			return;
+		}
+		if (!world.isRemote) {
+			block.onBlockHarvested(world, pos, state, player);
+			if (block.removedByPlayer(world, pos, player, true)) {
+				block.onBlockDestroyedByPlayer(world, pos, state);
+				block.harvestBlock(world, player, pos, state, worldObj.getTileEntity(pos));
+				block.dropXpOnBlockBreak(world, pos, event);
+			}
+			player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(world, pos));
+		} else {
+			world.playAuxSFX(2001, pos, Block.getIdFromBlock(block));
+			if (block.removedByPlayer(world, pos, player, true)) {
+				block.onBlockDestroyedByPlayer(world, pos, state);
+			}
+			Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging());
+		}
+	}
 
 	public EntityDrillLaser(World worldIn) {
 		super(worldIn);
@@ -196,7 +240,9 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 		if (block.getMaterial() != Material.air) {
 			block.setBlockBoundsBasedOnState(this.worldObj, blockpos);
 			AxisAlignedBB axisalignedbb = block.getCollisionBoundingBox(this.worldObj, blockpos, iblockstate);
-			worldObj.setBlockToAir(blockpos);
+			breakExtraBlock(worldObj, blockpos, 0, (EntityPlayer) this.shootingEntity,
+					worldObj.getBlockState(blockpos));
+			
 			if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3(this.posX, this.posY, this.posZ))) {
 				this.inGround = true;
 			}
@@ -209,12 +255,7 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 			if (block == this.inTile && j == this.inData) {
 				this.setDead();
 			} else {
-				this.inGround = false;
-				this.motionX *= (double) (this.rand.nextFloat() * 0.2F);
-				this.motionY *= (double) (this.rand.nextFloat() * 0.2F);
-				this.motionZ *= (double) (this.rand.nextFloat() * 0.2F);
-				this.ticksInGround = 0;
-				this.ticksInAir = 0;
+				this.setDead();
 			}
 		} else {
 			++this.ticksInAir;
@@ -274,12 +315,7 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 			float f4;
 			if (movingobjectposition != null) {
 				if (movingobjectposition.entityHit != null) {
-					this.motionX *= -0.10000000149011612D;
-					this.motionY *= -0.10000000149011612D;
-					this.motionZ *= -0.10000000149011612D;
-					this.rotationYaw += 180.0F;
-					this.prevRotationYaw += 180.0F;
-					this.ticksInAir = 0;
+					this.setDead();
 				} else {
 					BlockPos blockpos1 = movingobjectposition.getBlockPos();
 					this.xTile = blockpos1.getX();

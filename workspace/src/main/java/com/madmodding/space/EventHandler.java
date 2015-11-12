@@ -96,7 +96,13 @@ public class EventHandler {
 				boolean td = false;
 				for (int i = 0; i < 4; i++) {
 					if (!(event.entityLiving.getCurrentArmor(i) != null
-							&& event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorCustom)) {
+							&& (event.entityLiving
+									.getCurrentArmor(
+											i)
+									.getItem() instanceof ItemArmorMaterial
+									&& !ElementLib.toList(ElementLib.BaseElements)
+											.contains(ElementLib.Elements[event.entityLiving.getCurrentArmor(i)
+													.getItemDamage() % ElementLib.Elements.length])))) {
 						td = true;
 					}
 				}
@@ -107,8 +113,20 @@ public class EventHandler {
 			event.entityLiving.jumpMovementFactor = 0.04f;
 			int l = 0;
 			for (int i = 0; i < 4; i++) {
-				if ((event.entityLiving.getCurrentArmor(i) != null
-						&& event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorCustom)) {
+				if ((event.entityLiving
+						.getCurrentArmor(
+								i) != null
+						&& (event.entityLiving
+								.getCurrentArmor(
+										i)
+								.getItem() instanceof ItemArmorCustom
+								|| (event.entityLiving
+										.getCurrentArmor(
+												i)
+										.getItem() instanceof ItemArmorMaterial
+										&& !ElementLib.toList(ElementLib.BaseElements)
+												.contains(ElementLib.Elements[event.entityLiving.getCurrentArmor(i)
+														.getItemDamage() % ElementLib.Elements.length]))))) {
 					l++;
 				}
 			}
@@ -133,8 +151,13 @@ public class EventHandler {
 					int p = 0;
 					for (int i = 0; i < 4; i++) {
 						if ((((EntityPlayer) event.entityLiving).getCurrentArmor(i) != null
-								&& ((EntityPlayer) event.entityLiving).getCurrentArmor(i)
-										.getItem() instanceof ItemArmorCustom)) {
+								&& (((EntityPlayer) event.entityLiving).getCurrentArmor(i)
+										.getItem() instanceof ItemArmorCustom
+										|| (event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorMaterial
+												&& !ElementLib.toList(ElementLib.BaseElements)
+														.contains(ElementLib.Elements[event.entityLiving
+																.getCurrentArmor(i).getItemDamage()
+																% ElementLib.Elements.length]))))) {
 							l++;
 						}
 					}
@@ -150,20 +173,8 @@ public class EventHandler {
 		if (event.entityLiving.dimension != 71) {
 			int l = 0;
 			for (int i = 0; i < 4; i++) {
-				if ((event.entityLiving
-						.getCurrentArmor(
-								i) != null
-						&& (event.entityLiving
-								.getCurrentArmor(
-										i)
-								.getItem() instanceof ItemArmorCustom
-								|| (event.entityLiving
-										.getCurrentArmor(
-												i)
-										.getItem() instanceof ItemArmorMaterial
-										&& !ElementLib.toList(ElementLib.BaseElements)
-												.contains(ElementLib.Elements[event.entityLiving.getCurrentArmor(i)
-														.getItemDamage() % ElementLib.Elements.length]))))) {
+				if ((event.entityLiving.getCurrentArmor(i) != null
+						&& (event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorCustom))) {
 					l++;
 				}
 			}

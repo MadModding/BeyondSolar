@@ -2,6 +2,7 @@ package com.madmodding.space.items.element;
 
 import java.util.List;
 
+import com.madmodding.space.items.BasicItem;
 import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemRefined extends Item implements IFirstTick {
+public class ItemRefined extends BasicItem implements IFirstTick {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		return ElementLib.getRarity(stack);
@@ -45,7 +46,7 @@ public class ItemRefined extends Item implements IFirstTick {
 	}
 
 	public ItemRefined(String unlocalizedName) {
-		super();
+		super(unlocalizedName);
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(unlocalizedName);
 	}

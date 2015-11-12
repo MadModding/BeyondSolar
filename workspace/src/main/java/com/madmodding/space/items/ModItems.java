@@ -26,7 +26,7 @@ public final class ModItems {
 			.setCreativeTab(Main.aliensTabTech);
 	public static final Item ColorBoots = new ItemArmorCustom("spaceboots", ArmorMaterial.LEATHER, 3)
 			.setCreativeTab(Main.aliensTabTech);
-	public static final Item dust = new Item().setCreativeTab(Main.aliensTabUnRef).setUnlocalizedName("dust");
+	public static final Item dust = new BasicItem("dust").setCreativeTab(Main.aliensTabUnRef);
 	public static final Item dustcrusher = new ItemCrusher("dustcrusher").setCreativeTab(Main.aliensTabTech)
 			.setMaxStackSize(1);
 	public static final Item acidSquirter=new acidSquirter("acidsquirter");

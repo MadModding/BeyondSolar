@@ -2,6 +2,7 @@ package com.madmodding.space.items.element;
 
 import java.util.List;
 
+import com.madmodding.space.items.BasicItem;
 import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.client.Minecraft;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFragment extends Item implements IFirstTick {
+public class ItemFragment extends BasicItem implements IFirstTick {
 
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
@@ -41,7 +42,7 @@ public class ItemFragment extends Item implements IFirstTick {
 	}
 
 	public ItemFragment(String unlocalizedName) {
-		super();
+		super(unlocalizedName);
 		this.setHasSubtypes(true);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(CreativeTabs.tabMaterials);
