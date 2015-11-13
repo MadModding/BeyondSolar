@@ -1,9 +1,13 @@
 package com.madmodding.space;
 
+import java.util.Map;
+import java.util.Random;
+
 import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
 import com.madmodding.space.items.ItemArmorCustom;
 import com.madmodding.space.items.element.ElementLib;
+import com.madmodding.space.items.element.EnumElement;
 import com.madmodding.space.items.element.ItemArmorMaterial;
 import com.madmodding.space.items.element.ItemDyeSpec;
 import com.madmodding.space.space.SpaceTeleporter;
@@ -13,8 +17,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
@@ -22,6 +30,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -46,9 +55,26 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public void onRenderLivingEvent(RenderLivingEvent.Pre event) {
-		if (event.entity instanceof EntityPlayer) {
-
+	public void onDevHurtEvent(LivingHurtEvent event) {
+		if (event.entityLiving instanceof EntityPlayer) {
+			boolean td = false;
+			for (int i = 0; i < 4; i++) {
+				if (!(event.entityLiving.getCurrentArmor(i) != null
+						&& (event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorMaterial
+								&& ElementLib.Elements[event.entityLiving.getCurrentArmor(i).getItemDamage()
+										% ElementLib.Elements.length] == EnumElement.AR))) {
+					td = true;
+				}
+			}
+			if (!td) {
+				event.setCanceled(true);
+				int lvl = EnchantmentHelper.getEnchantmentLevel(92,
+						((EntityPlayer) event.entity).inventory.armorInventory[2]);
+				if (event.source.getEntity() != null && lvl > 0) {
+					Main.network.sendTo(new MessageDivinity(event.source.getEntity().getEntityId()),
+							((EntityPlayerMP) event.entityLiving));
+				}
+			}
 		}
 	}
 
@@ -96,13 +122,10 @@ public class EventHandler {
 				boolean td = false;
 				for (int i = 0; i < 4; i++) {
 					if (!(event.entityLiving.getCurrentArmor(i) != null
-							&& (event.entityLiving
-									.getCurrentArmor(
-											i)
-									.getItem() instanceof ItemArmorMaterial
-									&& !ElementLib.toList(ElementLib.BaseElements)
-											.contains(ElementLib.Elements[event.entityLiving.getCurrentArmor(i)
-													.getItemDamage() % ElementLib.Elements.length])))) {
+							&& (event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorMaterial
+									&& !ElementLib.toList(ElementLib.BaseElements).contains(
+											ElementLib.Elements[event.entityLiving.getCurrentArmor(i).getItemDamage()
+													% ElementLib.Elements.length])))) {
 						td = true;
 					}
 				}

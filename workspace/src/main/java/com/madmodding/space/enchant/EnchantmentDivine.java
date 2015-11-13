@@ -9,16 +9,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
-public class EnchantmentMadness extends Enchantment {
+public class EnchantmentDivine extends Enchantment {
 	private static final String __OBFID = "CL_00000103";
 
-	protected EnchantmentMadness(int enchID, ResourceLocation enchName, int enchWeight) {
+	protected EnchantmentDivine(int enchID, ResourceLocation enchName, int enchWeight) {
 		super(enchID, enchName, enchWeight, EnumEnchantmentType.BREAKABLE);
-		this.setName("madness");
+		this.setName("divine");
 	}
 
 	/**
@@ -57,11 +58,26 @@ public class EnchantmentMadness extends Enchantment {
 		ItemStack itemstack = EnchantmentHelper.getEnchantedItem(ModEnchants.madhat, user);
 
 		if (func_92094_a(getTrueLevel(level), random)) {
-			attacker.attackEntityFrom(DamageSource.causeThornsDamage(user),
-					(float) func_92095_b(getTrueLevel(level), random));
-			attacker.playSound("damage.thorns", 0.5F, 1.0F);
-
+			int x = (int) (user.posX + random.nextInt(8) - 4);
+			int z = (int) (user.posZ + random.nextInt(8) - 4);
+			int y = user.worldObj.getTopSolidOrLiquidBlock(new BlockPos(x, user.posY, z)).getY();
+			user.setPosition(x, y, z);
+			setThrowableHeading(user, random, user.posX - attacker.posX, user.posY - attacker.posY,
+					user.posZ - attacker.posZ, 1);
 		}
+	}
+
+	public void setThrowableHeading(EntityLivingBase elb, Random rand, double x, double y, double z, float velocity) {
+		float f2 = MathHelper.sqrt_double(x * x + y * y + z * z);
+		x /= (double) f2;
+		y /= (double) f2;
+		z /= (double) f2;
+		x *= (double) velocity;
+		y *= (double) velocity;
+		z *= (double) velocity;
+		float f3 = MathHelper.sqrt_double(x * x + z * z);
+		elb.prevRotationYaw = elb.rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
+		elb.prevRotationPitch = elb.rotationPitch = (float) (Math.atan2(y, (double) f3) * 180.0D / Math.PI);
 	}
 
 	public static int getTrueLevel(int level) {
@@ -73,7 +89,7 @@ public class EnchantmentMadness extends Enchantment {
 			return 0;
 		} else {
 			float f = (float) (6 + getTrueLevel(level) * getTrueLevel(level)) / 3.0F;
-			return MathHelper.floor_float(f * 1.5F);
+			return MathHelper.floor_float(f * 150F);
 		}
 	}
 

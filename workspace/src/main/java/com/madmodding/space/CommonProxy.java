@@ -44,7 +44,7 @@ public class CommonProxy {
 		CraftingManager.getInstance().addRecipe(new RecipesToolDye());
 		CraftingManager.getInstance().addRecipe(new RecipesDyeAdv());
 		CraftingManager.getInstance().addRecipe(new RecipesDyeCustom());
-		
+
 	}
 
 	public void init(FMLInitializationEvent e) {
@@ -53,6 +53,7 @@ public class CommonProxy {
 		Main.network.registerMessage(MessagePushX.Handler.class, MessagePushX.class, packetId++, Side.CLIENT);
 		Main.network.registerMessage(MessagePushY.Handler.class, MessagePushY.class, packetId++, Side.CLIENT);
 		Main.network.registerMessage(MessagePushZ.Handler.class, MessagePushZ.class, packetId++, Side.CLIENT);
+		Main.network.registerMessage(MessageDivinity.Handler.class, MessageDivinity.class, packetId++, Side.CLIENT);
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDrillLaser.class, new RenderDrillLaser());
 		RenderingRegistry.registerEntityRenderingHandler(EntityAcidAttack.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),Items.slime_ball,Minecraft.getMinecraft().getRenderItem()));
