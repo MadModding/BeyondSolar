@@ -11,23 +11,18 @@
     },
 	"display": {
         "thirdperson": {
-<<<<<<< HEAD
-            "rotation": [ 90, 180, 0 ],
-            "translation": [ 0, 1.25, -2.5 ],
-            "scale": [ 0.85, 0.85, 0.85 ]
-=======
             "rotation": [ -40, 180, 180 ],
             "translation": [ 0, 0.25, -3.5 ],
-            "scale": [ 1.1, 1.1, 1.1 ]
->>>>>>> origin/master
+            "scale": [ 1.6, 1.1, 1.1 ]
         },
         "firstperson": {
             "rotation": [ 0, 150, 0 ],
             "translation": [ 0, 5, 0 ],
-            "scale": [ 1.7, 1.7, 1.7 ]
+            "scale": [ 5.7, 1.7, 1.7 ]
         }
 
 	},
+
 
     "elements": [
         {
