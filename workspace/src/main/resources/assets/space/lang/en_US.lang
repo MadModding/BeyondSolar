@@ -1,5 +1,7 @@
 item.evilstaff.name=Evil Staff
 
+element.hydrogen.name=Hydrogen
+element.helium.name=Helium
 
 tile.alienEgg.name=Alien Egg 
 tile.blockNekmunnitOre.name=Meteor
@@ -82,8 +84,10 @@ tile.titaniumOre.name=Titanium Ore
 tile.bauxiteOre.name=Bauxite Ore
 tile.rareMetalMeteorite.name=Rare Metal Meteorite
 tile.platinumMeteorite.name=Platinoid Meteorite
-tile.fluid.norMal.name=Acid
-tile.fluid.norMalgas.name=Gas
+tile.fluid.normal.name=Acid
+tile.fluid.normalgas.name=Gas
+
+item.acidsquirter.name=Acid Pquirter
 
 commands.empower.usage=/empower
 

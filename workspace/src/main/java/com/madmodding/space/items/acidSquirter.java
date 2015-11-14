@@ -8,11 +8,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class acidSquirter extends Item
+public class acidSquirter extends SpecialItem
 {
 	public acidSquirter(String name) 
 	{
-		super();
+		super(name);
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(Main.aliensTabTech);
 		this.setMaxStackSize(1);

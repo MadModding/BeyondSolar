@@ -70,12 +70,7 @@ public class ItemRefined extends BasicItem implements IFirstTick {
 			onFirstTick(stack);
 		if (!stack.hasTagCompound())
 			return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
-		String name = "";
-		if (stack.getTagCompound().getBoolean("neg"))
-			name += "Negative ";
-		if (stack.getTagCompound().getBoolean("anti"))
-			name += "Anti-";
-		name += stack.getTagCompound().getString("name");
+		String name = stack.getTagCompound().getString("Name");
 		name += "";
 		return name;
 	}
@@ -94,12 +89,13 @@ public class ItemRefined extends BasicItem implements IFirstTick {
 			stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
 			boolean neg = i % 2 == 0;
 			boolean anti = i > 2;
-			stack.getTagCompound().setString("name", ElementLib.Elements[stack.getItemDamage()].getName());
 			stack.getTagCompound().setDouble("amass", ElementLib.Elements[stack.getItemDamage()].getMass());
 			stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
 			stack.getTagCompound().setBoolean("neg", neg);
 			stack.getTagCompound().setBoolean("anti", anti);
-			stack.getTagCompound().setBoolean("ore", false);
+			{
+				stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+			}
 		}
 	}
 

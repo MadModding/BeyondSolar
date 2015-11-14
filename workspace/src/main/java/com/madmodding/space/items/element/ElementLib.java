@@ -15,8 +15,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.util.StatCollector;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -25,41 +25,41 @@ public class ElementLib {
 	// A File that will eventually be used for all of Arideus' Code and its
 	// implementation
 	public static final EnumElement[] Elements = EnumElement.values();
-	public static final EnumElement[] BaseElements = new EnumElement[] { EnumElement.H, EnumElement.He, EnumElement.Li,
-			EnumElement.Be, EnumElement.B, EnumElement.C, EnumElement.N, EnumElement.O, EnumElement.F, EnumElement.Ne,
-			EnumElement.Na, EnumElement.Mg, EnumElement.Al, EnumElement.Si, EnumElement.P, EnumElement.S,
-			EnumElement.Cl, EnumElement.Ar, EnumElement.K, EnumElement.Ca, EnumElement.Sc, EnumElement.Ti,
-			EnumElement.V, EnumElement.Cr, EnumElement.Mn, EnumElement.Fe, EnumElement.Co, EnumElement.Ni,
-			EnumElement.Cu, EnumElement.Zn, EnumElement.Ga, EnumElement.Ge, EnumElement.As, EnumElement.Se,
-			EnumElement.Br, EnumElement.Kr, EnumElement.Rb, EnumElement.Sr, EnumElement.Y, EnumElement.Zr,
-			EnumElement.Nb, EnumElement.Mo, EnumElement.Tc, EnumElement.Ru, EnumElement.Rh, EnumElement.Pd,
-			EnumElement.Ag, EnumElement.Cd, EnumElement.In, EnumElement.Sn, EnumElement.Sb, EnumElement.Te,
-			EnumElement.I, EnumElement.Xe, EnumElement.Cs, EnumElement.Ba, EnumElement.La, EnumElement.Ce,
-			EnumElement.Pr, EnumElement.Nd, EnumElement.Pm, EnumElement.Sm, EnumElement.Eu, EnumElement.Gd,
-			EnumElement.Tb, EnumElement.Dy, EnumElement.Ho, EnumElement.Er, EnumElement.Tm, EnumElement.Yb,
-			EnumElement.Lu, EnumElement.Hf, EnumElement.Ta, EnumElement.W, EnumElement.Re, EnumElement.Os,
-			EnumElement.Ir, EnumElement.Pt, EnumElement.Au, EnumElement.Hg, EnumElement.Tl, EnumElement.Pb,
-			EnumElement.Bi, EnumElement.Po, EnumElement.At, EnumElement.Rn, EnumElement.Fr, EnumElement.Ra,
-			EnumElement.Ac, EnumElement.Th, EnumElement.Pa, EnumElement.U, EnumElement.Np, EnumElement.Pu,
-			EnumElement.Am, EnumElement.Cm, EnumElement.Bk, EnumElement.Cf, EnumElement.Es, EnumElement.Fm };
-	public static final EnumElement[] NonResElements = new EnumElement[] { EnumElement.H, EnumElement.He,
-			EnumElement.Li, EnumElement.Be, EnumElement.B, EnumElement.C, EnumElement.N, EnumElement.O, EnumElement.F,
-			EnumElement.Ne, EnumElement.Na, EnumElement.Mg, EnumElement.Al, EnumElement.Si, EnumElement.P,
-			EnumElement.S, EnumElement.Cl, EnumElement.Ar, EnumElement.K, EnumElement.Ca, EnumElement.Sc,
-			EnumElement.Ti, EnumElement.V, EnumElement.Cr, EnumElement.Mn, EnumElement.Fe, EnumElement.Co,
-			EnumElement.Ni, EnumElement.Cu, EnumElement.Zn, EnumElement.Ga, EnumElement.Ge, EnumElement.As,
-			EnumElement.Se, EnumElement.Br, EnumElement.Kr, EnumElement.Rb, EnumElement.Sr, EnumElement.Y,
-			EnumElement.Zr, EnumElement.Nb, EnumElement.Mo, EnumElement.Tc, EnumElement.Ru, EnumElement.Rh,
-			EnumElement.Pd, EnumElement.Ag, EnumElement.Cd, EnumElement.In, EnumElement.Sn, EnumElement.Sb,
-			EnumElement.Te, EnumElement.I, EnumElement.Xe, EnumElement.Cs, EnumElement.Ba, EnumElement.La,
-			EnumElement.Ce, EnumElement.Pr, EnumElement.Nd, EnumElement.Pm, EnumElement.Sm, EnumElement.Eu,
-			EnumElement.Gd, EnumElement.Tb, EnumElement.Dy, EnumElement.Ho, EnumElement.Er, EnumElement.Tm,
-			EnumElement.Yb, EnumElement.Lu, EnumElement.Hf, EnumElement.Ta, EnumElement.W, EnumElement.Re,
-			EnumElement.Os, EnumElement.Ir, EnumElement.Pt, EnumElement.Au, EnumElement.Hg, EnumElement.Tl,
-			EnumElement.Pb, EnumElement.Bi, EnumElement.Po, EnumElement.At, EnumElement.Rn, EnumElement.Fr,
-			EnumElement.Ra, EnumElement.Ac, EnumElement.Th, EnumElement.Pa, EnumElement.U, EnumElement.Np,
-			EnumElement.Pu, EnumElement.Am, EnumElement.Cm, EnumElement.Bk, EnumElement.Cf, EnumElement.Es,
-			EnumElement.Fm, EnumElement.DM, EnumElement.EM };
+	public static final EnumElement[] BaseElements = new EnumElement[] { EnumElement.h, EnumElement.he, EnumElement.li,
+			EnumElement.be, EnumElement.b, EnumElement.c, EnumElement.n, EnumElement.o, EnumElement.f, EnumElement.ne,
+			EnumElement.na, EnumElement.mg, EnumElement.al, EnumElement.si, EnumElement.p, EnumElement.s,
+			EnumElement.cl, EnumElement.ar, EnumElement.k, EnumElement.ca, EnumElement.sc, EnumElement.ti,
+			EnumElement.v, EnumElement.cr, EnumElement.mn, EnumElement.fe, EnumElement.co, EnumElement.ni,
+			EnumElement.cu, EnumElement.zn, EnumElement.ga, EnumElement.ge, EnumElement.as, EnumElement.se,
+			EnumElement.br, EnumElement.kr, EnumElement.rb, EnumElement.sr, EnumElement.y, EnumElement.zr,
+			EnumElement.nb, EnumElement.mo, EnumElement.tc, EnumElement.ru, EnumElement.rh, EnumElement.pd,
+			EnumElement.ag, EnumElement.cd, EnumElement.in, EnumElement.sn, EnumElement.sb, EnumElement.te,
+			EnumElement.i, EnumElement.xe, EnumElement.cs, EnumElement.ba, EnumElement.la, EnumElement.ce,
+			EnumElement.pr, EnumElement.nd, EnumElement.pm, EnumElement.sm, EnumElement.eu, EnumElement.gd,
+			EnumElement.tb, EnumElement.dy, EnumElement.ho, EnumElement.er, EnumElement.tm, EnumElement.yb,
+			EnumElement.lu, EnumElement.hf, EnumElement.ta, EnumElement.w, EnumElement.re, EnumElement.os,
+			EnumElement.ir, EnumElement.pt, EnumElement.au, EnumElement.hg, EnumElement.tl, EnumElement.pb,
+			EnumElement.bi, EnumElement.po, EnumElement.at, EnumElement.rn, EnumElement.fr, EnumElement.ra,
+			EnumElement.ac, EnumElement.th, EnumElement.pa, EnumElement.u, EnumElement.np, EnumElement.pu,
+			EnumElement.am, EnumElement.cm, EnumElement.bk, EnumElement.cf, EnumElement.es, EnumElement.fm };
+	public static final EnumElement[] NonResElements = new EnumElement[] { EnumElement.h, EnumElement.he,
+			EnumElement.li, EnumElement.be, EnumElement.b, EnumElement.c, EnumElement.n, EnumElement.o, EnumElement.f,
+			EnumElement.ne, EnumElement.na, EnumElement.mg, EnumElement.al, EnumElement.si, EnumElement.p,
+			EnumElement.s, EnumElement.cl, EnumElement.ar, EnumElement.k, EnumElement.ca, EnumElement.sc,
+			EnumElement.ti, EnumElement.v, EnumElement.cr, EnumElement.mn, EnumElement.fe, EnumElement.co,
+			EnumElement.ni, EnumElement.cu, EnumElement.zn, EnumElement.ga, EnumElement.ge, EnumElement.as,
+			EnumElement.se, EnumElement.br, EnumElement.kr, EnumElement.rb, EnumElement.sr, EnumElement.y,
+			EnumElement.zr, EnumElement.nb, EnumElement.mo, EnumElement.tc, EnumElement.ru, EnumElement.rh,
+			EnumElement.pd, EnumElement.ag, EnumElement.cd, EnumElement.in, EnumElement.sn, EnumElement.sb,
+			EnumElement.te, EnumElement.i, EnumElement.xe, EnumElement.cs, EnumElement.ba, EnumElement.la,
+			EnumElement.ce, EnumElement.pr, EnumElement.nd, EnumElement.pm, EnumElement.sm, EnumElement.eu,
+			EnumElement.gd, EnumElement.tb, EnumElement.dy, EnumElement.ho, EnumElement.er, EnumElement.tm,
+			EnumElement.yb, EnumElement.lu, EnumElement.hf, EnumElement.ta, EnumElement.w, EnumElement.re,
+			EnumElement.os, EnumElement.ir, EnumElement.pt, EnumElement.au, EnumElement.hg, EnumElement.tl,
+			EnumElement.pb, EnumElement.bi, EnumElement.po, EnumElement.at, EnumElement.rn, EnumElement.fr,
+			EnumElement.ra, EnumElement.ac, EnumElement.th, EnumElement.pa, EnumElement.u, EnumElement.np,
+			EnumElement.pu, EnumElement.am, EnumElement.cm, EnumElement.bk, EnumElement.cf, EnumElement.es,
+			EnumElement.fm, EnumElement.DM, EnumElement.EM };
 	protected static final ToolMaterial material = EnumHelper.addToolMaterial("SpaceMaterial", 4, 18054, 20.0f, 16.0f,
 			0);
 	public static final Item ElementSword = new ItemSwordMaterial("colorsword", material)
@@ -80,47 +80,88 @@ public class ElementLib {
 			.setCreativeTab(Main.aliensTabTech);
 	public static final Item ElementBoots = new ItemArmorMaterial("colorboots", ArmorMaterial.LEATHER, 3)
 			.setCreativeTab(Main.aliensTabTech);
-	public static final EnumRarity COMMON = EnumRarity.COMMON;
-	public static final EnumRarity UNCOMMON = EnumRarity.UNCOMMON;
-	public static final EnumRarity RARE = EnumRarity.RARE;
-	public static final EnumRarity EPIC = EnumRarity.EPIC;
-	public static final EnumRarity ULTRARARE = EnumHelper.addRarity("SpaceRareUltra", EnumChatFormatting.GOLD,
-			"Ultra Rare");
-	public static final EnumRarity LEGENDARY = EnumHelper.addRarity("SpaceLegend", EnumChatFormatting.DARK_PURPLE,
-			"Legendary");
-	public static final EnumRarity PLUS = EnumHelper.addRarity("SpaceBeyond", EnumChatFormatting.BOLD,
-			"Beyond Legendary");
 
 	public static int rarityToInt(EnumRarity er) {
-		if (er == EnumRarity.COMMON)
+		if (er == Main.COMMON)
 			return 0;
-		else if (er == EnumRarity.UNCOMMON)
+		else if (er == Main.UNCOMMON)
 			return 1;
-		else if (er == EnumRarity.RARE)
+		else if (er == Main.RARE)
 			return 2;
-		else if (er == EnumRarity.EPIC)
+		else if (er == Main.EPIC)
 			return 3;
+		else if (er == Main.ULTRARARE)
+			return 4;
+		else if (er == Main.LEGENDARY)
+			return 5;
+		else if (er == Main.PLUS)
+			return 6;
 		else
 			return -1;
 	}
 
+	public static String getName(ItemStack stack) {
+		String elename = ("" + StatCollector
+				.translateToLocal("element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name")).trim();
+		if (elename == "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name")
+			elename = ElementLib.Elements[stack.getItemDamage()].getName();
+		String name = "";
+		if (stack.getTagCompound().getBoolean("neg") && stack.getTagCompound().getBoolean("anti")) {
+			if (("" + StatCollector.translateToLocal(
+					"anti.neg." + "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name"))
+							.trim() == "anti.neg." + "element." + ElementLib.Elements[stack.getItemDamage()].getName()
+									+ ".name") {
+				name = ("" + StatCollector.translateToLocal(
+						"anti.neg." + "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name"))
+								.trim();
+			} else {
+				name += "Negative-Anti-";
+				name += elename;
+			}
+		} else if (stack.getTagCompound().getBoolean("neg")) {
+			if (("" + StatCollector.translateToLocal(
+					"neg." + "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name"))
+							.trim() == "neg." + "element." + ElementLib.Elements[stack.getItemDamage()].getName()
+									+ ".name") {
+				name = ("" + StatCollector.translateToLocal(
+						"neg." + "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name")).trim();
+			} else {
+				name += "Negative ";
+				name += elename;
+			}
+		} else if (stack.getTagCompound().getBoolean("anti")) {
+			if (("" + StatCollector.translateToLocal(
+					"anti." + "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name"))
+							.trim() == "anti." + "element." + ElementLib.Elements[stack.getItemDamage()].getName()
+									+ ".name") {
+				name = ("" + StatCollector.translateToLocal(
+						"anti." + "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name")).trim();
+			} else {
+				name += "Anti-";
+				name += elename;
+			}
+		} else
+			name += elename;
+		return name;
+	}
+
 	public static EnumRarity intToRarity(int er) {
 		if (er == 0)
-			return EnumRarity.COMMON;
+			return Main.COMMON;
 		else if (er == 1)
-			return EnumRarity.UNCOMMON;
+			return Main.UNCOMMON;
 		else if (er == 2)
-			return EnumRarity.RARE;
+			return Main.RARE;
 		else if (er == 3)
-			return EnumRarity.EPIC;
+			return Main.EPIC;
 		else if (er == 4)
-			return ULTRARARE;
+			return Main.ULTRARARE;
 		else if (er == 5)
-			return LEGENDARY;
+			return Main.LEGENDARY;
 		else if (er > 1)
-			return PLUS;
+			return Main.PLUS;
 		else
-			return EnumRarity.COMMON;
+			return Main.COMMON;
 	}
 
 	protected static EnumRarity getRarity(ItemStack stack) {
@@ -131,6 +172,7 @@ public class ElementLib {
 			r++;
 		if (stack.getItem() == Fragment)
 			r--;
+		// return Elements[stack.getItemDamage() % Elements.length].getRarity();
 		return intToRarity(r);
 	}
 
@@ -332,12 +374,14 @@ public class ElementLib {
 			return 6;
 		return 0;
 	}
+
 	public static List toList(Object[] array) {
 		List list = new ArrayList();
-		for(int i = 0; i < array.length; i ++)
+		for (int i = 0; i < array.length; i++)
 			list.add(array[i]);
 		return list;
 	}
+
 	private static String modid = Main.MODID;
 
 	private static void reg(Item item, int i, String nameadd) {

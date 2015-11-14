@@ -155,15 +155,8 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 			stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setBoolean("neg", neg);
 		stack.getTagCompound().setBoolean("anti", anti);
-		if (!stack.getTagCompound().hasKey("Name")) {
-			String name = "";
-			if (stack.getTagCompound().getBoolean("neg"))
-				name += "Negative ";
-			if (stack.getTagCompound().getBoolean("anti"))
-				name += "Anti-";
-			name += ElementLib.Elements[stack.getItemDamage()].getName();
-			name += "";
-			stack.getTagCompound().setString("Name", name);
+		{
+			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
 		}
 		stack.getTagCompound().setInteger("Color0", ElementLib.Elements[stack.getItemDamage()].getColor());
 		stack.getTagCompound().setInteger("Color1", 16777215);

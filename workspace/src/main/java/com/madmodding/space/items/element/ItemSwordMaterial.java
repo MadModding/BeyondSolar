@@ -112,15 +112,8 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 			stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setBoolean("neg", neg);
 		stack.getTagCompound().setBoolean("anti", anti);
-		if (!stack.getTagCompound().hasKey("Name")) {
-			String name = "";
-			if (stack.getTagCompound().getBoolean("neg"))
-				name += "Negative ";
-			if (stack.getTagCompound().getBoolean("anti"))
-				name += "Anti-";
-			name += ElementLib.Elements[stack.getItemDamage()].getName();
-			name += "";
-			stack.getTagCompound().setString("Name", name);
+		{
+			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
 		}
 		stack.getTagCompound().setInteger("Mode", 0);
 		if (ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))

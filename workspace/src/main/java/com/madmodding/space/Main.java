@@ -8,10 +8,13 @@ import com.madmodding.space.space.BiomeGenSpace;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -24,6 +27,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid = Main.MODID, name = Main.MODNAME, version = Main.VERSION)
 public class Main {
+	public static final EnumRarity COMMON = EnumRarity.COMMON;
+	public static final EnumRarity UNCOMMON = EnumRarity.UNCOMMON;
+	public static final EnumRarity RARE = EnumRarity.RARE;
+	public static final EnumRarity EPIC = EnumRarity.EPIC;
+	public static final EnumRarity ULTRARARE = EnumHelper.addRarity("SpaceRareUltra", EnumChatFormatting.GOLD,
+			"Ultra Rare");
+	public static final EnumRarity LEGENDARY = EnumHelper.addRarity("SpaceLegend", EnumChatFormatting.DARK_PURPLE,
+			"Legendary");
+	public static final EnumRarity PLUS = EnumHelper.addRarity("SpaceBeyond", EnumChatFormatting.GRAY,
+			"Beyond Legendary");
 
 	public static final String MODID = "space";
 	public static final String MODNAME = "Beyond Solar Mod";

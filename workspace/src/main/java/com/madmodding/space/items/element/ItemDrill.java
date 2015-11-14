@@ -1,25 +1,20 @@
 package com.madmodding.space.items.element;
 
 import com.madmodding.space.entity.item.EntityDrillLaser;
+import com.madmodding.space.items.SpecialItem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 
-public class ItemDrill extends Item {
+public class ItemDrill extends SpecialItem {
 
 	public ItemDrill(String unlocalizedName) {
-		super();
+		super(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(CreativeTabs.tabTools);
 		this.setMaxDamage(50);
