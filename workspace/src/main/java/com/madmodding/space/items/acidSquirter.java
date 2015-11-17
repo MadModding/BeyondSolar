@@ -26,6 +26,10 @@ public class acidSquirter extends SpecialItem {
 		return stack;
 	}
 
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 72000;
+	}
+
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityPlayer playerIn, int timeLeft) {
 		worldIn.spawnEntityInWorld(new EntityAcidAttack(worldIn, playerIn));
 	}
