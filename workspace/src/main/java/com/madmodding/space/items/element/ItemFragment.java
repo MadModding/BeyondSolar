@@ -59,7 +59,7 @@ public class ItemFragment extends BasicItem implements IFirstTick {
 			onFirstTick(stack);
 		if (stack.hasTagCompound()) {
 			if (!stack.getTagCompound().getBoolean("ore")) {
-				info.add("Element Name: " + stack.getTagCompound().getString("name"));
+				info.add("Element Name: " + stack.getTagCompound().getString("Name"));
 				if (stack.getItemDamage() < 100)
 					info.add("Atomic Number: " + (stack.getItemDamage() + 1));
 				else

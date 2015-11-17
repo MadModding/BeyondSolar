@@ -150,8 +150,8 @@ tile.fluid.normal.name=Acid Fluid
 tile.spaceIce.name=Space Ice
 tile.alienCell.name=Alien ContainMent Unit
 tile.cellBlock.name=Alien ContainMent Cell Wall
-tile.acidTank.name=Acid Tank
-tile.acidTankFull.name=Acid Tank (Full)
+item.acidtank.name=Acid Tank
+item.acidtankfull.name=Acid Tank (Full)
 
 container.spacepouch=Quantum Storage Device
 itemGroup.Aliens1=BeyondSolar: Technology
@@ -179,7 +179,7 @@ item.spec_dye_ultra.name=CoMpound TiO2
 tile.ferrousOre.name=Ferrous Ore
 tile.nickelOre.name=Nickel Ore
 tile.cobaltOre.name=Cobalt Ore
-tile.MagnesiumOre.name=Magnesium Ore
+tile.magnesiumOre.name=Magnesium Ore
 tile.siliconOre.name=Silicon Ore
 tile.silverOre.name=Silver Ore
 tile.platinumOre.name=Platinum Ore
@@ -195,6 +195,8 @@ tile.rareMetalMeteorite.name=Rare Metal Meteorite
 tile.platinumMeteorite.name=Platinoid Meteorite
 tile.fluid.normal.name=Acid
 tile.fluid.normalgas.name=Gas
+tile.normalgas.name=Gas
+tile.TpBlock.name=Teleporter
 
 item.acidsquirter.name=Acid Pquirter
 
