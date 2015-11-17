@@ -28,11 +28,15 @@ public class ItemDrill extends SpecialItem {
 	}
 
 	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-		if (count < 0 || count > getMaxItemUseDuration(stack))
-			player.stopUsingItem();
-		if (count % 3 == 0) {
-			EntityDrillLaser entityarrow = new EntityDrillLaser(player.worldObj, player, 4);
-			player.worldObj.spawnEntityInWorld(entityarrow);
+		if (stack.getItemDamage() == 0) {
+			if (count < 0 || count > getMaxItemUseDuration(stack)) {
+				player.stopUsingItem();
+				stack.setItemDamage(getMaxItemUseDuration(stack) - count);
+			}
+			if (count % 3 == 0) {
+				EntityDrillLaser entityarrow = new EntityDrillLaser(player.worldObj, player, 4);
+				player.worldObj.spawnEntityInWorld(entityarrow);
+			}
 		}
 	}
 
