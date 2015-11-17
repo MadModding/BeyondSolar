@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.madmodding.space.Main;
 import com.madmodding.space.client.models.ModelSpaceSuit;
+import com.madmodding.space.items.element.ElementLib;
+import com.madmodding.space.items.element.EnumElement;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
@@ -196,7 +198,11 @@ public class ItemArmorCustom extends ItemArmor implements ISpecialArmor, IColora
 	}
 
 	public String getArmorTexture(ItemStack Stack, Entity Entity, int slot, String type) {
-		return "space:textures/models/armor/SpacePNG.png";
+		if (type != "overlay") {
+			return "space:textures/models/armor/SpacePNG.png";
+		} else {
+			return "space:textures/models/armor/custom_layer_overlay.png";
+		}
 		// if (slot != 2)
 		// return "space:textures/models/armor/custom_layer_1.png";
 		// return "space:textures/models/armor/custom_layer_2.png";

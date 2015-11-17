@@ -2,12 +2,15 @@ package com.madmodding.space.items.element;
 
 import java.util.List;
 
+import com.madmodding.space.client.models.ModelSpaceSuit;
 import com.madmodding.space.items.IFirstTick;
 
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -55,7 +58,12 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
 		if (!stack.hasTagCompound())
 			onFirstTick(stack);
-		return ElementLib.getColorFromItemStack(stack, renderPass, 1);
+		int clr = ElementLib.getColorFromItemStack(stack, renderPass, 1);
+		NBTTagCompound nbttagcompound1 = stack.getTagCompound().getCompoundTag("display");
+		if (!stack.getTagCompound().hasKey("display"))
+			stack.getTagCompound().setTag("display", nbttagcompound1);
+		nbttagcompound1.setInteger("color", clr);
+		return clr;
 	}
 
 	/**
@@ -124,8 +132,11 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	}
 
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-
 		if (type != "overlay") {
+			if (ElementLib.Elements[stack.getItemDamage() % ElementLib.Elements.length] == EnumElement.MD) {
+				return "space:textures/models/armor/WhiteArmor.png";
+			}
+
 			if (slot != 2) {
 				if (entity.dimension == 71 && !ElementLib.toList(ElementLib.BaseElements)
 						.contains(ElementLib.Elements[stack.getItemDamage() % ElementLib.Elements.length]))
@@ -142,6 +153,61 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		return ElementLib.getRarity(stack);
+	}
+
+	ModelBiped model1 = null;
+	ModelBiped model2 = null;
+	ModelBiped model = null;
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ModelBiped getArmorModel(EntityLivingBase player, ItemStack stack, int armorSlot) {
+		if (ElementLib.Elements[stack.getItemDamage()] == EnumElement.MD) {
+			int type = ((ItemArmor) stack.getItem()).armorType;
+			if (this.model1 == null) {
+				this.model1 = new MadArmor(1.0f, true, true, false, true);
+			}
+			if (this.model2 == null) {
+				this.model2 = new MadArmor(0.5f, false, false, true, false);
+			}
+
+			if (type == 1 || type == 3 || type == 0) {
+				this.model = model1;
+			} else {
+				this.model = model2;
+			}
+
+			if (this.model != null) {
+				this.model.bipedHead.showModel = (type == 0);
+				this.model.bipedHeadwear.showModel = (type == 0);
+				this.model.bipedBody.showModel = ((type == 1) || (type == 2));
+				this.model.bipedLeftArm.showModel = (type == 1);
+				this.model.bipedRightArm.showModel = (type == 1);
+				this.model.bipedLeftLeg.showModel = (type == 2 || type == 3);
+				this.model.bipedRightLeg.showModel = (type == 2 || type == 3);
+				this.model.isSneak = player.isSneaking();
+				this.model.swingProgress = player.swingProgress;
+				this.model.isRiding = player.isRiding();
+				this.model.isChild = player.isChild();
+
+				this.model.aimedBow = false;
+				this.model.heldItemRight = (player.getHeldItem() != null ? 1 : 0);
+
+				if ((player instanceof EntityPlayer)) {
+					if (((EntityPlayer) player).getItemInUseDuration() > 0) {
+						EnumAction enumaction = ((EntityPlayer) player).getItemInUse().getItemUseAction();
+						if (enumaction == EnumAction.BLOCK) {
+							this.model.heldItemRight = 3;
+						} else if (enumaction == EnumAction.BOW) {
+							this.model.aimedBow = true;
+						}
+					}
+				}
+			}
+
+			return model;
+		} else
+			return super.getArmorModel(player, stack, armorSlot);
 	}
 
 	@Override
