@@ -2,10 +2,11 @@ package com.madmodding.space.items.element;
 
 import java.util.List;
 
-import com.madmodding.space.client.models.ModelSpaceSuit;
 import com.madmodding.space.items.IFirstTick;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +17,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
@@ -82,10 +86,62 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 		nbttagcompound1.setInteger("color", stack.getTagCompound().getInteger("Color0"));
 		if (ElementLib.isSpecial(player.getName()) == 0 || ElementLib.isSpecial(player.getName()) == 5) {
 			if (!ElementLib.toList(ElementLib.NonResElements).contains(ElementLib.Elements[stack.getItemDamage()])) {
-				if (ElementLib.Elements[stack.getItemDamage()] != EnumElement.SN
+				if (ElementLib.Elements[stack.getItemDamage()] != Element.SN
 						|| ElementLib.isSpecial(player.getName()) != 5)
 					stack.stackSize--;
+
 			}
+		}
+		if (!ElementLib.toList(ElementLib.NonResElements).contains(ElementLib.Elements[stack.getItemDamage()])) {
+			if (!player.isSneaking() && stack.getItem() == ElementLib.ElementChest
+					&& ElementLib.Elements[stack.getItemDamage()] == Element.AR) {
+				player.jumpMovementFactor = (float) 0.8;
+				player.addPotionEffect(new PotionEffect(Potion.moveSpeed.getId(), 5, 1));
+				player.addPotionEffect(new PotionEffect(Potion.jump.getId(), 5, 1));
+				if (0.8 != 0) {
+					double ax = Math.abs(player.motionX);
+					double az = Math.abs(player.motionZ);
+					if (Math.sqrt(Math.pow(ax, 2) + Math.pow(az, 2)) <= 4) {
+						player.addVelocity(player.motionX * (0.8 - 1), 0, player.motionZ * (0.8 - 1));
+					}
+				}
+				player.fallDistance = 0;
+				float pitch = player.rotationPitch;
+				double percent = 0;
+				percent = -pitch / 90;
+				if (Math.abs(percent) > 0.15)
+					player.motionY += percent * 0.15;
+				if (percent > -0.25)
+					player.motionY += 0.075;
+				if (Math.abs(percent) > 0.15) {
+				} else if (Math.abs(player.motionX) <= 0.25 && Math.abs(player.motionZ) <= 0.25) {
+					player.motionY = 0;
+					if (world.isRemote && world.getTotalWorldTime() % 1 == 0 && !player.isSneaking()
+							&& (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0
+									|| Minecraft.getMinecraft().thePlayer != player)) {
+						double xp = 0.25 * (double) (-MathHelper.sin(player.rotationYaw / 180.0F * (float) Math.PI)
+								* MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI));
+						double yp = 0.25 * (double) (-MathHelper.sin(player.rotationPitch / 180.0F * (float) Math.PI));
+						double zp = 0.25 * (double) (MathHelper.cos(player.rotationYaw / 180.0F * (float) Math.PI)
+								* MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI));
+						double x1 = xp + player.posX + (double) (-MathHelper
+								.sin(((player.rotationYaw + 90) % 360) / 180.0F * (float) Math.PI) / 7);
+						double y1 = yp + player.posY + 1.6625;
+						double z1 = zp + player.posZ
+								+ (double) (MathHelper.cos(((player.rotationYaw + 90) % 360) / 180.0F * (float) Math.PI)
+										/ 7);
+						double x2 = xp + player.posX - 0.625 * (double) (-MathHelper
+								.sin(((player.rotationYaw + 90) % 360) / 180.0F * (float) Math.PI) / 7);
+						double y2 = yp + player.posY + 1.6625;
+						double z2 = zp + player.posZ - 0.625
+								* (double) (MathHelper.cos(((player.rotationYaw + 90) % 360) / 180.0F * (float) Math.PI)
+										/ 7);
+						generateClientsideParticles(x1, y1, z1, 0, 0, 0);
+						generateClientsideParticles(x2, y2, z2, 0, 0, 0);
+					}
+				}
+			}
+
 		}
 		if (stack.getTagCompound().getInteger("Type") == 1) {
 			player.inventory.armorInventory[0] = null;
@@ -97,11 +153,25 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 			if (player.inventory.armorInventory[i] != null && player.inventory.armorInventory[i].stackSize <= 0) {
 				player.inventory.armorInventory[i] = null;
 			}
+
+	}
+
+	public void generateClientsideParticles(double xCoord, double yCoord, double zCoord, double xOffset, double yOffset,
+			double zOffset) {
+		double motionX = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextGaussian() * 0.02D;
+		double motionY = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextGaussian() * 0.02D;
+		double motionZ = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextGaussian() * 0.02D;
+		EntityFX particleMysterious = new EntityFlameFX(Minecraft.getMinecraft().thePlayer.worldObj, xCoord, yCoord,
+				zCoord, xOffset, yOffset, zOffset);
+		Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
-
+		list.add(ElementLib.getRarity(stack).rarityName);
+		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
+		list.add(((double) (int) (100 * (stack.getTagCompound().getDouble("Prot") - 1)
+				/ stack.getTagCompound().getDouble("Prot") / 4 * 100)) / 100 + "% Damage Reduction");
 	}
 
 	public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
@@ -133,7 +203,7 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		if (type != "overlay") {
-			if (ElementLib.Elements[stack.getItemDamage() % ElementLib.Elements.length] == EnumElement.MD) {
+			if (ElementLib.Elements[stack.getItemDamage() % ElementLib.Elements.length] == Element.MD) {
 				return "space:textures/models/armor/WhiteArmor.png";
 			}
 
@@ -162,7 +232,7 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase player, ItemStack stack, int armorSlot) {
-		if (ElementLib.Elements[stack.getItemDamage()] == EnumElement.MD) {
+		if (ElementLib.Elements[stack.getItemDamage()] == Element.MD) {
 			int type = ((ItemArmor) stack.getItem()).armorType;
 			if (this.model1 == null) {
 				this.model1 = new MadArmor(1.0f, true, true, false, true);

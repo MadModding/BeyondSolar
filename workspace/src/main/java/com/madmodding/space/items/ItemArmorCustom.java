@@ -5,7 +5,7 @@ import java.util.List;
 import com.madmodding.space.Main;
 import com.madmodding.space.client.models.ModelSpaceSuit;
 import com.madmodding.space.items.element.ElementLib;
-import com.madmodding.space.items.element.EnumElement;
+import com.madmodding.space.items.element.Element;
 
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;

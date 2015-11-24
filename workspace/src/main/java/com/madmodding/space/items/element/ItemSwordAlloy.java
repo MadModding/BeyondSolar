@@ -7,8 +7,6 @@ import com.google.common.collect.Multimap;
 import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,9 +15,8 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.StatCollector;
@@ -27,7 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
+public class ItemSwordAlloy extends ItemSword implements IFirstTick, IAlloy {
 
 	private double attackDamage;
 
@@ -41,16 +38,10 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
-		list.add(ElementLib.getRarity(stack).rarityName);
-		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
-		list.add("Mining Speed: " + ((double) (int) (100 * stack.getTagCompound().getDouble("Speed"))) / 100);
-	}
-
-	public ItemAxeMaterial(String string, ToolMaterial material) {
+	public ItemSwordAlloy(String string, ToolMaterial material) {
 		super(material);
 		this.setUnlocalizedName(string);
+		this.attackDamage = 4.0F + material.getDamageVsEntity();
 	}
 
 	public Multimap getAttributeModifiers(ItemStack stack) {
@@ -63,20 +54,8 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
 		return multimap;
 	}
 
-	public float getStrVsBlock(ItemStack stack, Block block) {
-		return block.getMaterial() != Material.wood && block.getMaterial() != Material.plants
-				&& block.getMaterial() != Material.vine ? super.getStrVsBlock(stack, block)
-						: (float) stack.getTagCompound().getDouble("Speed");
-	}
-
-	@Override
-	public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
-		for (String type : getToolClasses(stack)) {
-			if (state.getBlock().isToolEffective(type, state)) {
-				return (float) stack.getTagCompound().getDouble("Speed");
-			}
-		}
-		return super.getDigSpeed(stack, state);
+	public double getAttackDamage() {
+		return attackDamage;
 	}
 
 	public String getItemStackDisplayName(ItemStack stack) {
@@ -86,7 +65,7 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
 				|| stack.getTagCompound().getString("Name").contains("Hidden"))
 			return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
 		else {
-			return stack.getTagCompound().getString("Name") + " Axe";
+			return stack.getTagCompound().getString("Name") + " Sword";
 		}
 	}
 
@@ -97,7 +76,7 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
 
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack stack, int renderPass) {
-		return ElementLib.getColorFromItemStack(stack, renderPass, 1);
+		return ElementLib.getColorFromItemStack(stack, renderPass, 3);
 	}
 
 	/**
@@ -118,36 +97,31 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick {
 		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
+		list.add(ElementLib.getRarity(stack).rarityName);
+		list.add("Made of " + stack.getTagCompound().getString("Name"));
+	}
+
 	@Override
 	public void onFirstTick(ItemStack stack) {
-
-		int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length) + 1;
-		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
-		boolean neg = i % 2 == 0;
-		boolean anti = i > 2;
-		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		stack.getTagCompound().setBoolean("neg", neg);
-		stack.getTagCompound().setBoolean("anti", anti);
+		stack.setTagCompound(new NBTTagCompound());
 		{
 			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
 		}
 		stack.getTagCompound().setInteger("Mode", 0);
-		if (ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
-			stack.getTagCompound().setInteger("Color1", 0xC89632);
-		else
-			stack.getTagCompound().setInteger("Color1", 0x444444);
-		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
-		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
-		dmg *= 0.5;
-		if (anti)
-			dmg *= 2;
+		stack.getTagCompound().setInteger("Color3", 0x444444);
+		stack.getTagCompound().setInteger("color", EnumAlloy.values()[stack.getItemDamage()].getColor());
+		double dmg = EnumAlloy.values()[stack.getItemDamage()].getHardness();
 		stack.getTagCompound().setDouble("Damage", dmg);
-		double spd = ElementLib.Elements[stack.getItemDamage()].getHardness();
-		if (anti)
-			spd *= 2;
-		spd *= 1.8;
-		stack.getTagCompound().setDouble("Speed", spd);
+		stack.getTagCompound().setDouble("Speed", 1.2d * EnumAlloy.values()[stack.getItemDamage()].getHardness());
 		stack.getTagCompound().setBoolean("Unbreakable", true);
+		stack.getTagCompound().setBoolean("Alloy", true);
+		}
+
+	@Override
+	public void Null() {
+		// TODO Auto-generated method stub
+		
 	}
 }

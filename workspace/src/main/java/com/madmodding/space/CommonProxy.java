@@ -47,16 +47,23 @@ public class CommonProxy {
 
 	}
 
+	public void registerKeyBindings() {
+	}
+
 	public void init(FMLInitializationEvent e) {
 		Main.network = NetworkRegistry.INSTANCE.newSimpleChannel("SpaceChannelPush");
 		int packetId = 0;
 		Main.network.registerMessage(MessagePushX.Handler.class, MessagePushX.class, packetId++, Side.CLIENT);
 		Main.network.registerMessage(MessagePushY.Handler.class, MessagePushY.class, packetId++, Side.CLIENT);
 		Main.network.registerMessage(MessagePushZ.Handler.class, MessagePushZ.class, packetId++, Side.CLIENT);
-		Main.network.registerMessage(MessageDivinity.Handler.class, MessageDivinity.class, packetId++, Side.CLIENT);
+		Main.network2 = NetworkRegistry.INSTANCE.newSimpleChannel("SpaceChannelDivine");
+		int packetId2 = 0;
+		Main.network2.registerMessage(MessageDivinity.Handler.class, MessageDivinity.class, packetId++, Side.CLIENT);
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDrillLaser.class, new RenderDrillLaser());
-		RenderingRegistry.registerEntityRenderingHandler(EntityAcidAttack.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(),Items.slime_ball,Minecraft.getMinecraft().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityAcidAttack.class,
+				new RenderSnowball(Minecraft.getMinecraft().getRenderManager(), Items.slime_ball,
+						Minecraft.getMinecraft().getRenderItem()));
 		DimensionManager.registerProviderType(71, WorldProviderSpace.class, true);
 		DimensionManager.registerDimension(71, 71);
 		DimensionManager.registerProviderType(-10, WorldProviderCell.class, true);
@@ -66,4 +73,5 @@ public class CommonProxy {
 	public void postInit(FMLPostInitializationEvent e) {
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
+
 }

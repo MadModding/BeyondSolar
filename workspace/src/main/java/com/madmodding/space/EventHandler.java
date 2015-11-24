@@ -7,7 +7,7 @@ import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
 import com.madmodding.space.items.ItemArmorCustom;
 import com.madmodding.space.items.element.ElementLib;
-import com.madmodding.space.items.element.EnumElement;
+import com.madmodding.space.items.element.Element;
 import com.madmodding.space.items.element.ItemArmorMaterial;
 import com.madmodding.space.items.element.ItemDyeSpec;
 import com.madmodding.space.space.SpaceTeleporter;
@@ -62,7 +62,7 @@ public class EventHandler {
 				if (!(event.entityLiving.getCurrentArmor(i) != null
 						&& (event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorMaterial
 								&& ElementLib.Elements[event.entityLiving.getCurrentArmor(i).getItemDamage()
-										% ElementLib.Elements.length] == EnumElement.AR))) {
+										% ElementLib.Elements.length] == Element.AR))) {
 					td = true;
 				}
 			}
@@ -71,7 +71,7 @@ public class EventHandler {
 				int lvl = EnchantmentHelper.getEnchantmentLevel(92,
 						((EntityPlayer) event.entity).inventory.armorInventory[2]);
 				if (event.source.getEntity() != null && lvl > 0) {
-					Main.network.sendTo(new MessageDivinity(event.source.getEntity().getEntityId()),
+					Main.network2.sendTo(new MessageDivinity(event.source.getEntity().getEntityId()),
 							((EntityPlayerMP) event.entityLiving));
 				}
 			}

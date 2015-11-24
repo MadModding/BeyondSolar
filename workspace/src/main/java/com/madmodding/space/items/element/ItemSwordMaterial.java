@@ -101,6 +101,12 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
+		list.add(ElementLib.getRarity(stack).rarityName);
+		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
+	}
+
 	@Override
 	public void onFirstTick(ItemStack stack) {
 

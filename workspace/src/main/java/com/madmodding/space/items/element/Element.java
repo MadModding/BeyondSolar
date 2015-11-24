@@ -4,7 +4,7 @@ import com.madmodding.space.Main;
 
 import net.minecraft.item.EnumRarity;
 
-public enum EnumElement {
+public enum Element {
 
 	h("hydrogen", 1, 1.0079, 0xdcdcff, 3, 0, -259, -253, 0.09, Main.COMMON), 
 	he("helium", 2, 4.0026, 0xffdcff, 3, 0, -272, -269, 0.18, Main.COMMON), 
@@ -79,26 +79,26 @@ public enum EnumElement {
 	lu( "lutetium", 71, 174.967, 0xa89eb2, 2, 0, 1656, 3315, 9.84, Main.UNCOMMON), 
 	hf( "hafnium", 72, 178.49, 0xa8a8a8, 1, 5.5, 2150, 5400, 13.31, Main.UNCOMMON), 
 	ta( "tantalum", 73, 180.9479, 0xa8a8a8, 1, 6.5, 2996, 5425, 16.65, Main.UNCOMMON), 
-	w( "tungsten", 74, 183.84, 0xbcada8, 1, 7.5, 3410, 5660, 19.35, Main.RARE),
+	w( "tungsten", 74, 183.84, 0xbcada8, 1, 7.5, 3410, 5660, 19.35, Main.RARE), 
 	re( "rhenium", 75, 186.207, 0x1c1c1c, 1, 7.0, 3180, 5627, 21.04, Main.RARE), 
 	os( "osmium", 76, 190.23, 0x8a809e, 1, 7.0, 3045, 5027, 22.6, Main.RARE), 
 	ir( "iridium", 77, 192.217, 0xffffff, 1, 6.5, 2410, 4527, 22.4, Main.RARE), 
 	pt( "platinum", 78, 195.078, 0x9e8a80, 1, 3.5, 1772, 3827, 21.45, Main.RARE), 
 	au( "gold", 79, 196.9665, 0xc6bc1c, 1, 2.5, 1064, 2807, 19.32, Main.RARE), 
-	hg( "mercury", 80, 200.59, 0x808080, 3, 0, -39, 357, 13.55, Main.RARE),
+	hg( "mercury", 80, 200.59, 0x808080, 3, 0, -39, 357, 13.55, Main.RARE), 
 	tl( "thallium", 81, 204.3833, 0xa88a80, 2, 1.0, 303, 1457, 11.85, Main.UNCOMMON), 
-	pb( "lead", 82, 207.2, 0x80808a, 1, 1.5, 327, 1740, 11.35, Main.UNCOMMON),
+	pb( "lead", 82, 207.2, 0x80808a, 1, 1.5, 327, 1740, 11.35, Main.UNCOMMON), 
 	bi( "bismuth", 83, 208.9804, 0x80bc80, 2, 2.5, 271, 1560, 9.75, Main.UNCOMMON), 
 	po( "polonium", 84, 209, 0xc6bc44, 2, 0, 254, 962, 9.3, Main.UNCOMMON), 
 	at( "astatine", 85, 210, 0x44bc1c, 3, 0, 302, 337, 15, Main.UNCOMMON), 
-	rn( "radon", 86, 222, 0xa88080, 3, 0, -71, -62, 9.73, Main.UNCOMMON),
-	fr( "francium", 87, 223, 0xbc8058, 3, 0, 27, 677, 15, Main.UNCOMMON),
+	rn( "radon", 86, 222, 0xa88080, 3, 0, -71, -62, 9.73, Main.UNCOMMON), 
+	fr( "francium", 87, 223, 0xbc8058, 3, 0, 27, 677, 15, Main.UNCOMMON), 
 	ra( "radium", 88, 226, 0x00ffff, 2, 0, 700, 1737, 5.5, Main.UNCOMMON), 
-	ac( "actinium", 89, 227, 0xebebeb, 3, 0, 1050, 3200, 10.07, Main.UNCOMMON),
-	th( "thorium", 90, 231.0359, 0x505050, 3, 3.0, 1750, 4790, 11.72, Main.UNCOMMON),
-	pa( "protactinium", 91, 232.0381, 0x50fab4, 3, 0, 1568, 8000, 15.4, Main.UNCOMMON),
+	ac( "actinium", 89, 227, 0xebebeb, 3, 0, 1050, 3200, 10.07, Main.UNCOMMON), 
+	th( "thorium", 90, 231.0359, 0x505050, 3, 3.0, 1750, 4790, 11.72, Main.UNCOMMON), 
+	pa( "protactinium", 91, 232.0381, 0x50fab4, 3, 0, 1568, 8000, 15.4, Main.UNCOMMON), 
 	u( "uranium", 92, 237, 0x50ff50, 3, 6.0, 1132, 3818, 18.95, Main.RARE), 
-	np( "neptunium", 93, 238.0289, 0x64a0a0, 3, 0, 640, 3902, 20.2, Main.RARE),
+	np( "neptunium", 93, 238.0289, 0x64a0a0, 3, 0, 640, 3902, 20.2, Main.RARE), 
 	pu( "plutonium", 94, 243, 0xffb464, 3, 0, 640, 3235, 19.84, Main.RARE), 
 	am( "americium", 95, 244, 0xb4a064, 3, 0, 994, 2607, 13.67, Main.UNCOMMON), 
 	cm( "curium", 96, 247, 0xe68278, 3, 0, 1340, 8000, 13.5, Main.UNCOMMON), 
@@ -109,74 +109,75 @@ public enum EnumElement {
 	DM( "darkmatter", -1, 10000, 0x000000, 1, 11, 1000000000, 1000000000, 10000, Main.EPIC), 
 	EM( "exoticmatter", -2, -1, -1, 1, 20, 1000000000, 1000000000, -1, Main.EPIC), 
 	SN( "dev.donator", -3, 0, -2, 1, 15, 1000000000, 1000000000, -1, Main.PLUS), 
-	AR( "dev.arideus", -3, 1337, -3, 1, 100, 1000000000, 1000000000, -1, Main.PLUS),
-	MD("dev.madhat",-3,1337,-4,1,100,1000000000,1000000000,-1,Main.PLUS), 
-	HP("dev.singh",-3,-1,0x0000FF,1,100,1000000000,1000000000,-1,Main.PLUS), 
-	MR("dev.moor",-3,-1,0x73059C,1,100,1000000000,1000000000,-1,Main.PLUS), 
-	JA("dev.grundahl",-3,-1,-5,1,80,1000000000,1000000000,-1,Main.PLUS);
-private String Name;
-private int Number;
-private double Mass;
-private int Color;
-private int Type;
-private double Hardness;
-private int BoilingPoint;
-private int MeltingPoint;
-private double Density;
-private int Rarity;
+	AR( "dev.arideus", -3, 1337, -3, 1, 100, 1000000000, 1000000000, -1, Main.PLUS), 
+	MD("dev.madhat", -3, 1337, -4, 1, 100, 1000000000, 1000000000, -1, Main.PLUS), 
+	HP("dev.singh", -3, -1, 0x0000FF, 1, 100, 1000000000, 1000000000, -1, Main.PLUS), 
+	MR("dev.moor", -3, -1, 0x73059C, 1, 100, 1000000000, 1000000000, -1, Main.PLUS), 
+	JA("dev.grundahl", -3, -1, -5, 1, 80, 1000000000, 1000000000, -1, Main.PLUS);
+	
+	private String Name;
+	private int Number;
+	private double Mass;
+	private int Color;
+	private int Type;
+	private double Hardness;
+	private int BoilingPoint;
+	private int MeltingPoint;
+	private double Density;
+	private int Rarity;
 
-private EnumElement(String n, int nm, double m, int c, int t, double h, int bp, int mp, double d, EnumRarity r) {
-Name = n;
-Number = nm;
-Mass = m;
-Color = c;
-Type = t;
-Hardness = h;
-BoilingPoint = bp;
-MeltingPoint = mp;
-Density = d;
-Rarity = ElementLib.rarityToInt(r);
-System.out.println(n + " - " + r.rarityName);
-}
+	private Element(String n, int nm, double m, int c, int t, double h, int bp, int mp, double d, EnumRarity r) {
+		Name = n;
+		Number = nm;
+		Mass = m;
+		Color = c;
+		Type = t;
+		Hardness = h;
+		BoilingPoint = bp;
+		MeltingPoint = mp;
+		Density = d;
+		Rarity = ElementLib.rarityToInt(r);
+		System.out.println(n + " - " + r.rarityName);
+	}
 
-public String getName() {
-return Name;
-}
+	public String getName() {
+		return Name;
+	}
 
-public int getNumber() {
-return Number;
-}
+	public int getNumber() {
+		return Number;
+	}
 
-public int getColor() {
-return Color;
-}
+	public int getColor() {
+		return Color;
+	}
 
-public int getType() {
-return Type;
-}
+	public int getType() {
+		return Type;
+	}
 
-public double getHardness() {
-return Hardness;
-}
+	public double getHardness() {
+		return Hardness;
+	}
 
-public int getBoilingPoint() {
-return BoilingPoint;
-}
+	public int getBoilingPoint() {
+		return BoilingPoint;
+	}
 
-public int getMeltingPoint() {
-return MeltingPoint;
-}
+	public int getMeltingPoint() {
+		return MeltingPoint;
+	}
 
-public double getMass() {
-return Mass;
-}
+	public double getMass() {
+		return Mass;
+	}
 
-public double getDensity() {
-return Density;
-}
+	public double getDensity() {
+		return Density;
+	}
 
-public EnumRarity getRarity() {
-return ElementLib.intToRarity(Rarity);
-}
+	public EnumRarity getRarity() {
+		return ElementLib.intToRarity(Rarity);
+	}
 
 }

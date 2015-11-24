@@ -112,6 +112,11 @@ element.dev.moor.name=Moorium
 element.dev.grundahl.name=Jurassicalienthiumtium
 element.dev.batman.name=Batmunobtainium
 
+alloy.bronze.name=Bronze
+alloy.brass.name=Brass
+alloy.aluminumbrass.name=Aluminum-Brass
+alloy.meteoriciron.name=Meteoric Iron
+
 tile.alienEgg.name=Alien Egg 
 tile.blockNekmunnitOre.name=Meteor
 

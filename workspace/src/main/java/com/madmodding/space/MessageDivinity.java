@@ -19,20 +19,6 @@ public class MessageDivinity implements IMessage {
 	public MessageDivinity() {
 	}
 
-	public static void setThrowableHeading(EntityLivingBase elb, Random rand, double x, double y, double z,
-			float velocity) {
-		float f2 = MathHelper.sqrt_double(x * x + y * y + z * z);
-		x /= (double) f2;
-		y /= (double) f2;
-		z /= (double) f2;
-		x *= (double) velocity;
-		y *= (double) velocity;
-		z *= (double) velocity;
-		float f3 = MathHelper.sqrt_double(x * x + z * z);
-		elb.prevRotationYaw = elb.rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
-		elb.prevRotationPitch = elb.rotationPitch = (float) (Math.atan2(y, (double) f3) * 180.0D / Math.PI);
-	}
-
 	public MessageDivinity(int id) {
 		entityid = id;
 	}
@@ -56,10 +42,6 @@ public class MessageDivinity implements IMessage {
 			int z = (int) (player.posZ + player.getRNG().nextInt(8) - 4);
 			int y = player.worldObj.getTopSolidOrLiquidBlock(new BlockPos(x, player.posY, z)).getY();
 			player.setPosition(x, y, z);
-			//setThrowableHeading((EntityLivingBase) player, player.getRNG(),
-			//        player.posX - player.worldObj.getEntityByID(message.entityid).posX,
-			//        player.posY - player.worldObj.getEntityByID(message.entityid).posY,
-			//        player.posZ - player.worldObj.getEntityByID(message.entityid).posZ, 1);
 			player.setVelocity(0, 0, 0);
 			return null;
 		}

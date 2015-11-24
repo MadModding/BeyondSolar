@@ -104,6 +104,13 @@ public class ItemSpadeMaterial extends ItemSpade implements IFirstTick {
 		return false;
 	}
 
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
+		list.add(ElementLib.getRarity(stack).rarityName);
+		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
+		list.add("Mining Speed: " + ((double) (int) (100 * stack.getTagCompound().getDouble("Speed")))/100);
+	}
+
 	@Override
 	public void onFirstTick(ItemStack stack) {
 

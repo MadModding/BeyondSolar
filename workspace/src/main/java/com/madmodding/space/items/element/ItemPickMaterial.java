@@ -58,10 +58,13 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 
 		return multimap;
 	}
-	public float getStrVsBlock(ItemStack stack, Block block)
-    {
-        return block.getMaterial() != Material.iron && block.getMaterial() != Material.anvil && block.getMaterial() != Material.rock ? super.getStrVsBlock(stack, block) : (float) stack.getTagCompound().getDouble("Speed");
-    }
+
+	public float getStrVsBlock(ItemStack stack, Block block) {
+		return block.getMaterial() != Material.iron && block.getMaterial() != Material.anvil
+				&& block.getMaterial() != Material.rock ? super.getStrVsBlock(stack, block)
+						: (float) stack.getTagCompound().getDouble("Speed");
+	}
+
 	@Override
 	public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
 		for (String type : getToolClasses(stack)) {
@@ -109,6 +112,13 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 
 	public boolean onDroppedByPlayer(ItemStack item, EntityPlayer player) {
 		return false;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
+		list.add(ElementLib.getRarity(stack).rarityName);
+		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
+		list.add("Mining Speed: " + ((double) (int) (100 * stack.getTagCompound().getDouble("Speed")))/100);
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.madmodding.space.Main;
 import com.madmodding.space.items.IFirstTick;
+import com.madmodding.space.items.boost.ItemArmorBoost;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -15,8 +16,8 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.util.StatCollector;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -24,42 +25,31 @@ public class ElementLib {
 	private final static String[] typenames = new String[] { "blankingot", "blankdust", "blankpot" };
 	// A File that will eventually be used for all of Arideus' Code and its
 	// implementation
-	public static final EnumElement[] Elements = EnumElement.values();
-	public static final EnumElement[] BaseElements = new EnumElement[] { EnumElement.h, EnumElement.he, EnumElement.li,
-			EnumElement.be, EnumElement.b, EnumElement.c, EnumElement.n, EnumElement.o, EnumElement.f, EnumElement.ne,
-			EnumElement.na, EnumElement.mg, EnumElement.al, EnumElement.si, EnumElement.p, EnumElement.s,
-			EnumElement.cl, EnumElement.ar, EnumElement.k, EnumElement.ca, EnumElement.sc, EnumElement.ti,
-			EnumElement.v, EnumElement.cr, EnumElement.mn, EnumElement.fe, EnumElement.co, EnumElement.ni,
-			EnumElement.cu, EnumElement.zn, EnumElement.ga, EnumElement.ge, EnumElement.as, EnumElement.se,
-			EnumElement.br, EnumElement.kr, EnumElement.rb, EnumElement.sr, EnumElement.y, EnumElement.zr,
-			EnumElement.nb, EnumElement.mo, EnumElement.tc, EnumElement.ru, EnumElement.rh, EnumElement.pd,
-			EnumElement.ag, EnumElement.cd, EnumElement.in, EnumElement.sn, EnumElement.sb, EnumElement.te,
-			EnumElement.i, EnumElement.xe, EnumElement.cs, EnumElement.ba, EnumElement.la, EnumElement.ce,
-			EnumElement.pr, EnumElement.nd, EnumElement.pm, EnumElement.sm, EnumElement.eu, EnumElement.gd,
-			EnumElement.tb, EnumElement.dy, EnumElement.ho, EnumElement.er, EnumElement.tm, EnumElement.yb,
-			EnumElement.lu, EnumElement.hf, EnumElement.ta, EnumElement.w, EnumElement.re, EnumElement.os,
-			EnumElement.ir, EnumElement.pt, EnumElement.au, EnumElement.hg, EnumElement.tl, EnumElement.pb,
-			EnumElement.bi, EnumElement.po, EnumElement.at, EnumElement.rn, EnumElement.fr, EnumElement.ra,
-			EnumElement.ac, EnumElement.th, EnumElement.pa, EnumElement.u, EnumElement.np, EnumElement.pu,
-			EnumElement.am, EnumElement.cm, EnumElement.bk, EnumElement.cf, EnumElement.es, EnumElement.fm };
-	public static final EnumElement[] NonResElements = new EnumElement[] { EnumElement.h, EnumElement.he,
-			EnumElement.li, EnumElement.be, EnumElement.b, EnumElement.c, EnumElement.n, EnumElement.o, EnumElement.f,
-			EnumElement.ne, EnumElement.na, EnumElement.mg, EnumElement.al, EnumElement.si, EnumElement.p,
-			EnumElement.s, EnumElement.cl, EnumElement.ar, EnumElement.k, EnumElement.ca, EnumElement.sc,
-			EnumElement.ti, EnumElement.v, EnumElement.cr, EnumElement.mn, EnumElement.fe, EnumElement.co,
-			EnumElement.ni, EnumElement.cu, EnumElement.zn, EnumElement.ga, EnumElement.ge, EnumElement.as,
-			EnumElement.se, EnumElement.br, EnumElement.kr, EnumElement.rb, EnumElement.sr, EnumElement.y,
-			EnumElement.zr, EnumElement.nb, EnumElement.mo, EnumElement.tc, EnumElement.ru, EnumElement.rh,
-			EnumElement.pd, EnumElement.ag, EnumElement.cd, EnumElement.in, EnumElement.sn, EnumElement.sb,
-			EnumElement.te, EnumElement.i, EnumElement.xe, EnumElement.cs, EnumElement.ba, EnumElement.la,
-			EnumElement.ce, EnumElement.pr, EnumElement.nd, EnumElement.pm, EnumElement.sm, EnumElement.eu,
-			EnumElement.gd, EnumElement.tb, EnumElement.dy, EnumElement.ho, EnumElement.er, EnumElement.tm,
-			EnumElement.yb, EnumElement.lu, EnumElement.hf, EnumElement.ta, EnumElement.w, EnumElement.re,
-			EnumElement.os, EnumElement.ir, EnumElement.pt, EnumElement.au, EnumElement.hg, EnumElement.tl,
-			EnumElement.pb, EnumElement.bi, EnumElement.po, EnumElement.at, EnumElement.rn, EnumElement.fr,
-			EnumElement.ra, EnumElement.ac, EnumElement.th, EnumElement.pa, EnumElement.u, EnumElement.np,
-			EnumElement.pu, EnumElement.am, EnumElement.cm, EnumElement.bk, EnumElement.cf, EnumElement.es,
-			EnumElement.fm, EnumElement.DM, EnumElement.EM };
+	public static final Element[] Elements = Element.values();
+	public static final Element[] BaseElements = new Element[] { Element.h, Element.he, Element.li, Element.be,
+			Element.b, Element.c, Element.n, Element.o, Element.f, Element.ne, Element.na, Element.mg, Element.al,
+			Element.si, Element.p, Element.s, Element.cl, Element.ar, Element.k, Element.ca, Element.sc, Element.ti,
+			Element.v, Element.cr, Element.mn, Element.fe, Element.co, Element.ni, Element.cu, Element.zn, Element.ga,
+			Element.ge, Element.as, Element.se, Element.br, Element.kr, Element.rb, Element.sr, Element.y, Element.zr,
+			Element.nb, Element.mo, Element.tc, Element.ru, Element.rh, Element.pd, Element.ag, Element.cd, Element.in,
+			Element.sn, Element.sb, Element.te, Element.i, Element.xe, Element.cs, Element.ba, Element.la, Element.ce,
+			Element.pr, Element.nd, Element.pm, Element.sm, Element.eu, Element.gd, Element.tb, Element.dy, Element.ho,
+			Element.er, Element.tm, Element.yb, Element.lu, Element.hf, Element.ta, Element.w, Element.re, Element.os,
+			Element.ir, Element.pt, Element.au, Element.hg, Element.tl, Element.pb, Element.bi, Element.po, Element.at,
+			Element.rn, Element.fr, Element.ra, Element.ac, Element.th, Element.pa, Element.u, Element.np, Element.pu,
+			Element.am, Element.cm, Element.bk, Element.cf, Element.es, Element.fm };
+	public static final Element[] NonResElements = new Element[] { Element.h, Element.he, Element.li, Element.be,
+			Element.b, Element.c, Element.n, Element.o, Element.f, Element.ne, Element.na, Element.mg, Element.al,
+			Element.si, Element.p, Element.s, Element.cl, Element.ar, Element.k, Element.ca, Element.sc, Element.ti,
+			Element.v, Element.cr, Element.mn, Element.fe, Element.co, Element.ni, Element.cu, Element.zn, Element.ga,
+			Element.ge, Element.as, Element.se, Element.br, Element.kr, Element.rb, Element.sr, Element.y, Element.zr,
+			Element.nb, Element.mo, Element.tc, Element.ru, Element.rh, Element.pd, Element.ag, Element.cd, Element.in,
+			Element.sn, Element.sb, Element.te, Element.i, Element.xe, Element.cs, Element.ba, Element.la, Element.ce,
+			Element.pr, Element.nd, Element.pm, Element.sm, Element.eu, Element.gd, Element.tb, Element.dy, Element.ho,
+			Element.er, Element.tm, Element.yb, Element.lu, Element.hf, Element.ta, Element.w, Element.re, Element.os,
+			Element.ir, Element.pt, Element.au, Element.hg, Element.tl, Element.pb, Element.bi, Element.po, Element.at,
+			Element.rn, Element.fr, Element.ra, Element.ac, Element.th, Element.pa, Element.u, Element.np, Element.pu,
+			Element.am, Element.cm, Element.bk, Element.cf, Element.es, Element.fm, Element.DM, Element.EM };
 	protected static final ToolMaterial material = EnumHelper.addToolMaterial("SpaceMaterial", 4, 18054, 20.0f, 16.0f,
 			0);
 	public static final Item ElementSword = new ItemSwordMaterial("colorsword", material)
@@ -80,6 +70,17 @@ public class ElementLib {
 			.setCreativeTab(Main.aliensTabTech);
 	public static final Item ElementBoots = new ItemArmorMaterial("colorboots", ArmorMaterial.LEATHER, 3)
 			.setCreativeTab(Main.aliensTabTech);
+	public static final Item AlloySword = new ItemSwordAlloy("alloysword", material).setCreativeTab(Main.aliensTabTech);
+	public static final Item AlloyIngot = new ItemRefinedAlloy("alloyingot").setCreativeTab(Main.aliensTabRef);
+	public static final Item StrongChest = new ItemArmorBoost("strongchest", 1,
+			new double[][] { { 0, -0.2 }, { 1, 0.5 }, { 2, 0.25 }, { 3, 1 }, { 4, 0 } })
+					.setCreativeTab(Main.aliensTabTech);
+	public static final Item SturdyPants = new ItemArmorBoost("sturdypants", 2,
+			new double[][] { { 5, -0.1 }, { 6, -0.1 }, { 7, 1 }, { 8, 0.25 }, { 9, 0 } })
+					.setCreativeTab(Main.aliensTabTech);
+	public static final Item QuickBoots = new ItemArmorBoost("quickboots", 3,
+			new double[][] { { 10, 1.3 }, { 11, 0.3 }, { 12, -0.25 }, { 13, 0.25 }, { 14, 0 } })
+					.setCreativeTab(Main.aliensTabTech);
 
 	public static int rarityToInt(EnumRarity er) {
 		if (er == Main.COMMON)
@@ -101,6 +102,14 @@ public class ElementLib {
 	}
 
 	public static String getName(ItemStack stack) {
+		if (stack.getItem() instanceof IAlloy) {
+			String name = ("" + StatCollector
+					.translateToLocal("alloy." + EnumAlloy.values()[stack.getItemDamage()].getName() + ".name")).trim();
+			if (stack.getItemDamage() >= 0)
+				return name;
+			else
+				return "Alloy";
+		}
 		String elename = ("" + StatCollector
 				.translateToLocal("element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name")).trim();
 		if (elename == "element." + ElementLib.Elements[stack.getItemDamage()].getName() + ".name")
@@ -178,6 +187,11 @@ public class ElementLib {
 
 	public static void initCommon() {
 		{
+			GameRegistry.registerItem(StrongChest, "strongchest");
+			GameRegistry.registerItem(SturdyPants, "sturdypants");
+			GameRegistry.registerItem(QuickBoots, "quickboots");
+			GameRegistry.registerItem(AlloySword, "alloysword");
+			GameRegistry.registerItem(AlloyIngot, "alloyingot");
 			GameRegistry.registerItem(Dye, "spec_dye");
 			GameRegistry.registerItem(Refined, "blankingot");
 			GameRegistry.registerItem(Fragment, "fragment");
@@ -197,6 +211,13 @@ public class ElementLib {
 	}
 
 	public static void initClient() {
+		reg(StrongChest);
+		reg(SturdyPants);
+		reg(QuickBoots);
+		for (int i = 0; i < EnumAlloy.values().length; i++) {
+			reg(AlloySword, i);
+			reg(AlloyIngot, i);
+		}
 		for (int i = 0; i < Elements.length * 4; i++) {
 			reg(ElementSword, i);
 			reg(ElementPick, i);
@@ -222,6 +243,14 @@ public class ElementLib {
 	}
 
 	protected static void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
+		if (itemIn instanceof IAlloy) {
+			for (int i = 0; i < EnumAlloy.values().length; i++) {
+				ItemStack stack = new ItemStack(itemIn, 1, i);
+				((IFirstTick) itemIn).onFirstTick(stack);
+				subItems.add(stack);
+			}
+			return;
+		}
 		for (int i = 0; i < NonResElements.length; i++) {
 			if (NonResElements[i].getHardness() != 0 && NonResElements[i].getType() == 1) {
 				for (int t = 0; t < 4; t++) {
@@ -324,13 +353,13 @@ public class ElementLib {
 
 		} else if (type == -3) {// Arideum
 			double t = (int) ((time / 32) % 100);
-			r = 100;
+			r = b = 100;
 			if (t >= 0 && t < 50)
-				r += (int) ((t) / 50d * 100d);
+				r = b += (int) ((t) / 50d * 100d);
 			else if (t >= 50 && t < 100)
-				r += (int) (-(t - 100d) / 50d * 100d);
+				b = r += (int) (-(t - 100d) / 50d * 100d);
 			else
-				r = 200;
+				b = r = 200;
 
 		} else if (type == -4) {// Madhatium
 			double t = (int) ((time / 32) % 100);
