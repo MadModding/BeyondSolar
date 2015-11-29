@@ -105,7 +105,11 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 						player.addVelocity(player.motionX * (0.8 - 1), 0, player.motionZ * (0.8 - 1));
 					}
 				}
+				if (player.dimension == 71) {
+					player.motionY -= 0.075 / 4 * 3;
+				}
 				player.fallDistance = 0;
+
 				float pitch = player.rotationPitch;
 				double percent = 0;
 				percent = -pitch / 90;
@@ -163,6 +167,9 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 		double motionZ = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextGaussian() * 0.02D;
 		EntityFX particleMysterious = new EntityFlameFX(Minecraft.getMinecraft().thePlayer.worldObj, xCoord, yCoord,
 				zCoord, xOffset, yOffset, zOffset);
+		float f = Minecraft.getMinecraft().thePlayer.worldObj.rand.nextFloat() * 0.5F + 0.35F;
+		particleMysterious.setRBGColorF(1.0F * f, 0.0F * f, 1.0F * f);
+		((EntityFlameFX) particleMysterious).setBaseSpellTextureIndex(144);
 		Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
 	}
 

@@ -81,13 +81,13 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onEntityTick(LivingUpdateEvent event) {
 
-		if (event.entityLiving.posY >= 500) {
+		if (event.entityLiving.posY >= 1000) {
 			if (event.entityLiving.ridingEntity == null && event.entityLiving.riddenByEntity == null
 					&& !event.entityLiving.worldObj.isRemote) {
 				if (event.entityLiving.dimension != 71) {
 					event.entityLiving.setAir(300);
 					// event.entityLiving.travelToDimension(71);
-					event.entityLiving.posY -= 450;
+					event.entityLiving.posY -= 950;
 					if (event.entityLiving instanceof EntityPlayerMP)
 						((EntityPlayerMP) event.entityLiving).mcServer.getConfigurationManager()
 								.transferPlayerToDimension(((EntityPlayerMP) event.entityLiving), 71,
@@ -101,7 +101,7 @@ public class EventHandler {
 			if (event.entityLiving.ridingEntity == null && event.entityLiving.riddenByEntity == null
 					&& !event.entityLiving.worldObj.isRemote) {
 				if (event.entityLiving.dimension == 71) {
-					event.entityLiving.posY += 490;
+					event.entityLiving.posY += 990;
 					if (event.entityLiving instanceof EntityPlayerMP)
 						((EntityPlayerMP) event.entityLiving).mcServer.getConfigurationManager()
 								.transferPlayerToDimension(((EntityPlayerMP) event.entityLiving), 0,
