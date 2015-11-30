@@ -35,7 +35,6 @@ public class ItemArmorBoost extends ItemArmor {
 
 	public Multimap getAttributeModifiers(ItemStack stack) {
 		Multimap multimap = HashMultimap.create();
-		
 		if(stats[0][1]!=0)
 		multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(),
 				new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5"+((int)stats[0][0])), "Armor Modifier "+stats[0][0], stats[0][1], 1));

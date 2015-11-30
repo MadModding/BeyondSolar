@@ -1,4 +1,10 @@
-item.evilstaff.name=Evil Staff
+﻿item.evilstaff.name=Evil Staff
+
+attribute.name.space.radiationDamage=Radiation Damage
+attribute.name.space.fireDamage=Fire Damage
+attribute.name.space.antimatterDamage=Antimatter Damage
+attribute.name.space.divineDamage=Divine Damage
+attribute.name.space.armorPercent=Armor Percent
 
 element.hydrogen.name=Hydrogen
 element.helium.name=Helium

@@ -185,7 +185,14 @@ public class ElementLib {
 		return intToRarity(r);
 	}
 
+	private static List coolpeople = new ArrayList();
+
 	public static void initCommon() {
+		coolpeople.add("Arideus");
+		coolpeople.add("MadHatInjection");
+		coolpeople.add("HarpCode");
+		coolpeople.add("Samuel");
+		coolpeople.add("JurassicAlien");
 		{
 			GameRegistry.registerItem(StrongChest, "strongchest");
 			GameRegistry.registerItem(SturdyPants, "sturdypants");
@@ -260,24 +267,29 @@ public class ElementLib {
 				}
 			}
 		}
-		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1) // ==
-																			// "Arideus")
-			subItems.add(new ItemStack(itemIn, 1, 103));
-		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2) // ==
-																			// "Arideus")
-			subItems.add(new ItemStack(itemIn, 1, 104));
-		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3) // ==
-																			// "Arideus")
-			subItems.add(new ItemStack(itemIn, 1, 105));
-		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4) // ==
-																			// "Arideus")
-			subItems.add(new ItemStack(itemIn, 1, 106));
-		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 6) // ==
-																			// "Arideus")
-			subItems.add(new ItemStack(itemIn, 1, 107));
-		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5) // ==
-																			// "Arideus")
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1) {
 			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 103));
+		}
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 104));
+		}
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 105));
+		}
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 106));
+		}
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 6) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 107));
+		}
+		if (isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+		}
 	}
 
 	protected static int getColorFromItemStack(ItemStack stack, int renderPass, int ignorepass) {
@@ -397,10 +409,10 @@ public class ElementLib {
 			return 3;
 		if (name.equals("Samuel"))
 			return 4;
-		if (name.contains("9"))
-			return 5;
 		if (name.equals("JurassicAlien"))
 			return 6;
+		if (coolpeople.contains(name))
+			return 5;
 		return 0;
 	}
 

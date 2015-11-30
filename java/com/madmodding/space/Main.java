@@ -10,11 +10,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.EnumHelper;
@@ -30,8 +32,23 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid = Main.MODID, name = Main.MODNAME, version = Main.VERSION)
 public class Main {
-	public static final IAttribute jump = (new RangedAttribute((IAttribute)null, "generic.jump", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Jump").setShouldWatch(true);
-    public static final EnumRarity COMMON = EnumRarity.COMMON;
+	public static final IAttribute fireDamage = new RangedAttribute((IAttribute) null, "space.fireDamage", 0.0D, 0.0D,
+			Double.MAX_VALUE);
+	public static final IAttribute radiationDamage = new RangedAttribute((IAttribute) null, "space.radiationDamage",
+			0.0D, 0.0D, Double.MAX_VALUE);
+	public static final IAttribute antimatterDamage = new RangedAttribute((IAttribute) null, "space.antimatterDamage",
+			0.0D, 0.0D, Double.MAX_VALUE);
+	public static final IAttribute armorPercent = new RangedAttribute((IAttribute) null, "space.armorPercent", 0.0D,
+			0.0D, Double.MAX_VALUE);
+	public static final IAttribute divineDamage = new RangedAttribute((IAttribute) null, "space.divineDamage", 0.0D,
+			0.0D, Double.MAX_VALUE);
+
+	public static DamageSource causeDivinePlayerDamage(EntityPlayer player) {
+		return new EntityDamageSource("player", player).setDamageBypassesArmor().setDamageIsAbsolute()
+				.setDamageAllowedInCreativeMode();
+	}
+
+	public static final EnumRarity COMMON = EnumRarity.COMMON;
 	public static final EnumRarity UNCOMMON = EnumRarity.UNCOMMON;
 	public static final EnumRarity RARE = EnumRarity.RARE;
 	public static final EnumRarity EPIC = EnumRarity.EPIC;
@@ -41,8 +58,7 @@ public class Main {
 			"Legendary");
 	public static final EnumRarity PLUS = EnumHelper.addRarity("SpaceBeyond", EnumChatFormatting.GRAY,
 			"Beyond Legendary");
-	public static final int GUI = 0;
-	
+
 	public static final String MODID = "space";
 	public static final String MODNAME = "Beyond Solar Mod";
 	public static final String VERSION = "0.1.8";

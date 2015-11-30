@@ -33,16 +33,29 @@ public class ItemRefined extends BasicItem implements IFirstTick {
 				subItems.add(stack);
 			}
 		}
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1)
-			subItems.add(new ItemStack(itemIn, 1, 103));
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2)
-			subItems.add(new ItemStack(itemIn, 1, 104));
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3)
-			subItems.add(new ItemStack(itemIn, 1, 105));
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4)
-			subItems.add(new ItemStack(itemIn, 1, 106));
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5)
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1) {
 			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 103));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 104));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 105));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 106));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 6) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 107));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+		}
 	}
 
 	public ItemRefined(String unlocalizedName) {

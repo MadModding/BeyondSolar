@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.madmodding.space.Main;
 import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.block.Block;
@@ -52,9 +53,27 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 		if (!stack.hasTagCompound())
 			onFirstTick(stack);
 		Multimap multimap = HashMultimap.create();
-		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(
-				itemModifierUUID, "Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
+		if (stack.getTagCompound().getBoolean("anti"))
+			multimap.put(Main.antimatterDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID,
+					"Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
+		else if (stack.getItemDamage() == 42 || stack.getItemDamage() == 60
+				|| (stack.getItemDamage() >= 83 && stack.getItemDamage() <= 99))
+			multimap.put(Main.radiationDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID,
+					"Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
+		else if (ElementLib.Elements[stack.getItemDamage()] == Element.SN)
+			multimap.put(Main.fireDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID,
+					"Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
+		else if (!ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()])) {
+			multimap.put(Main.divineDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID,
+					"Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
+		} else
+			multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(
+					itemModifierUUID, "Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
 
+		if (ElementLib.Elements[stack.getItemDamage()] == Element.EM) {
+			multimap.put(Main.radiationDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID,
+					"Weapon modifier", (double) stack.getTagCompound().getDouble("Damage") / 4, 0));
+		}
 		return multimap;
 	}
 

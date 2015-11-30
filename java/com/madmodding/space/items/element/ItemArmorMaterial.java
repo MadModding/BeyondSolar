@@ -1,7 +1,11 @@
 package com.madmodding.space.items.element;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.madmodding.space.Main;
 import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.client.Minecraft;
@@ -10,6 +14,8 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
@@ -28,11 +34,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirstTick {
+	private final int slot;
 
 	public ItemArmorMaterial(String unlocalizedName, ArmorMaterial material, int slot) {
 		super(material, slot, slot);
+		this.slot = slot;
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(CreativeTabs.tabCombat);
+	}
+
+	public Multimap getAttributeModifiers(ItemStack stack) {
+		Multimap multimap = HashMultimap.create();
+		if (ElementLib.Elements[stack.getItemDamage()] == Element.SN)
+			multimap.put(Main.fireDamage.getAttributeUnlocalizedName(), new AttributeModifier(
+					UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB59" + slot), "Armor Modifier 9" + slot, 2, 0));
+		return multimap;
 	}
 
 	@SideOnly(Side.CLIENT)
