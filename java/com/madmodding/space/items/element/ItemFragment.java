@@ -2,6 +2,7 @@ package com.madmodding.space.items.element;
 
 import java.util.List;
 
+import com.madmodding.space.blocks.tile.forge.IForgeable;
 import com.madmodding.space.items.BasicItem;
 import com.madmodding.space.items.IFirstTick;
 
@@ -12,45 +13,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFragment extends BasicItem implements IFirstTick {
+public class ItemFragment extends BasicItem implements IFirstTick, IForgeable {
 
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-		for (int i = 0; i < ElementLib.NonResElements.length; i++) {
-			for (int t = 0; t < 4; t++) {
-				ItemStack stack = new ItemStack(itemIn, 1, i + (t * ElementLib.Elements.length));
-				this.onFirstTick(stack);
-				subItems.add(stack);
-			}
-		}
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1) {
-			subItems.add(new ItemStack(itemIn, 1, 102));
-			subItems.add(new ItemStack(itemIn, 1, 103));
-		}
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2) {
-			subItems.add(new ItemStack(itemIn, 1, 102));
-			subItems.add(new ItemStack(itemIn, 1, 104));
-		}
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3) {
-			subItems.add(new ItemStack(itemIn, 1, 102));
-			subItems.add(new ItemStack(itemIn, 1, 105));
-		}
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4) {
-			subItems.add(new ItemStack(itemIn, 1, 102));
-			subItems.add(new ItemStack(itemIn, 1, 106));
-		}
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 6) {
-			subItems.add(new ItemStack(itemIn, 1, 102));
-			subItems.add(new ItemStack(itemIn, 1, 107));
-		}
-		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5) {
-			subItems.add(new ItemStack(itemIn, 1, 102));
-		}
+		ElementLib.fragmentInv(itemIn, subItems);
 	}
 
 	public ItemFragment(String unlocalizedName) {
@@ -83,6 +56,14 @@ public class ItemFragment extends BasicItem implements IFirstTick {
 					info.add("Atomic Mass: -" + mass);
 				else
 					info.add("Atomic Mass: " + mass);
+				if (stack.getTagCompound().getShort("Level") == 0)
+					info.add("Condition: Poor");
+				if (stack.getTagCompound().getShort("Level") == 1)
+					info.add("Condition: Fair");
+				if (stack.getTagCompound().getShort("Level") == 2)
+					info.add("Condition: Rich");
+				if (stack.getTagCompound().getShort("Level") == 3)
+					info.add("Condition: Very Rich");
 			}
 		}
 	}
@@ -104,21 +85,33 @@ public class ItemFragment extends BasicItem implements IFirstTick {
 
 	@Override
 	public void onFirstTick(ItemStack stack) {
+		ElementLib.setupFragment(stack);
+	}
+	@Override
+	public int[][] getElementRatio(ItemStack stack) {
 		int d = stack.getItemDamage();
-		stack.setTagCompound(new NBTTagCompound());
-		if (d < (ElementLib.Elements.length * 4)) {
-			int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length) + 1;
-			stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
-			boolean neg = i % 2 == 0;
-			boolean anti = i > 2;
-			stack.getTagCompound().setDouble("amass", ElementLib.Elements[stack.getItemDamage()].getMass());
-			stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
-			stack.getTagCompound().setBoolean("neg", neg);
-			stack.getTagCompound().setBoolean("anti", anti);
-			{
-				stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+		if (d < (ElementLib.Elements.length * 4) && !stack.getTagCompound().getBoolean("Complex")) {
+			int give = 0;
+			int lvl = stack.getTagCompound().getShort("Level");
+			if(lvl == 0) give = 36;
+			if(lvl == 1) give = 72;
+			if(lvl == 2) give = 144;
+			if(lvl == 3) give = 288;
+			
+			return new int[][] { { give }, { d } };
+		} else {
+			NBTTagList list = stack.getTagCompound().getTagList("Elements", 10);
+			int[][] elem = new int[2][list.tagCount()];
+			for (int i = 0; i < elem[0].length; i++) {
+				elem[0][i] = ((NBTTagCompound) list.get(i)).getInteger("Amt");
+				elem[1][i] = ((NBTTagCompound) list.get(i)).getInteger("Ele");
 			}
+			return elem;
 		}
 	}
 
+	@Override
+	public double getMB(ItemStack stack) {
+		return 0;
+	}
 }

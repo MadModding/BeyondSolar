@@ -2,12 +2,12 @@ package com.madmodding.space;
 
 import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.cell.BiomeGenCell;
+import com.madmodding.space.items.IFirstTick;
 import com.madmodding.space.items.ModItems;
 import com.madmodding.space.items.element.ElementLib;
 import com.madmodding.space.space.BiomeGenSpace;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,10 +38,12 @@ public class Main {
 			0.0D, 0.0D, Double.MAX_VALUE);
 	public static final IAttribute antimatterDamage = new RangedAttribute((IAttribute) null, "space.antimatterDamage",
 			0.0D, 0.0D, Double.MAX_VALUE);
-	public static final IAttribute armorPercent = new RangedAttribute((IAttribute) null, "space.armorPercent", 0.0D,
-			0.0D, Double.MAX_VALUE);
 	public static final IAttribute divineDamage = new RangedAttribute((IAttribute) null, "space.divineDamage", 0.0D,
 			0.0D, Double.MAX_VALUE);
+	public static final IAttribute armorPercent = new RangedAttribute((IAttribute) null, "space.armorPercent", 0.0D,
+			0.0D, Double.MAX_VALUE);
+	public static final IAttribute miningSpeed = new RangedAttribute((IAttribute) null, "space.miningSpeed", 0.0D, 0.0D,
+			Double.MAX_VALUE);
 
 	public static DamageSource causeDivinePlayerDamage(EntityPlayer player) {
 		return new EntityDamageSource("player", player).setDamageBypassesArmor().setDamageIsAbsolute()
@@ -102,6 +104,18 @@ public class Main {
 	public static CreativeTabs aliensTabRef = new CreativeTabs("Aliens4") {
 		public ItemStack getIconItemStack() {
 			return new ItemStack(ElementLib.Refined, 1, 404);
+		}
+
+		@Override
+		public Item getTabIconItem() {
+			return Items.apple;
+		}
+	};
+	public static CreativeTabs aliensTabCast = new CreativeTabs("Aliens5") {
+		public ItemStack getIconItemStack() {
+			ItemStack stack = new ItemStack(ElementLib.cast, 1, 101 + 28 * ElementLib.Elements.length);
+			((IFirstTick) stack.getItem()).onFirstTick(stack);
+			return stack;
 		}
 
 		@Override

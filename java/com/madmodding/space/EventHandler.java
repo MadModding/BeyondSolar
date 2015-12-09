@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 
 import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
+import com.madmodding.space.enchant.ModEnchants;
 import com.madmodding.space.items.ItemArmorCustom;
 import com.madmodding.space.items.element.Element;
 import com.madmodding.space.items.element.ElementLib;
+import com.madmodding.space.items.element.IToolSpec;
 import com.madmodding.space.items.element.ItemArmorMaterial;
 import com.madmodding.space.items.element.ItemDyeSpec;
 import com.madmodding.space.space.SpaceTeleporter;
@@ -47,7 +49,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public class EventHandler {
 	// @SubscribeEvent
@@ -62,6 +63,7 @@ public class EventHandler {
 		event.entityPlayer.getAttributeMap().registerAttribute(Main.radiationDamage);
 		event.entityPlayer.getAttributeMap().registerAttribute(Main.divineDamage);
 		event.entityPlayer.getAttributeMap().registerAttribute(Main.armorPercent);
+		event.entityPlayer.getAttributeMap().registerAttribute(Main.miningSpeed);
 
 		NBTTagCompound nbttagcompound = null;
 
@@ -128,10 +130,14 @@ public class EventHandler {
 					++j;
 				}
 				if (f > 0.0F || f1 > 0.0F) {
-					boolean flag = event.entityPlayer.fallDistance > 0.0F && !event.entityPlayer.onGround
+					boolean flag = ((event.entityPlayer.fallDistance > 0.0F && !event.entityPlayer.onGround
 							&& !event.entityPlayer.isOnLadder() && !event.entityPlayer.isInWater()
 							&& !event.entityPlayer.isPotionActive(Potion.blindness)
-							&& event.entityPlayer.ridingEntity == null && targetEntity instanceof EntityLivingBase;
+							&& event.entityPlayer.ridingEntity == null)
+							|| (EnchantmentHelper.getEnchantmentLevel(ModEnchants.gungho.effectId,
+									event.entityPlayer.getHeldItem()) != 0
+									&& event.entityPlayer.getRNG().nextDouble() > 0.2))
+							&& targetEntity instanceof EntityLivingBase;
 					if (flag && f > 0.0F) {
 						f *= 1.5F;
 					}
@@ -160,9 +166,12 @@ public class EventHandler {
 									0.1D,
 									(double) (MathHelper.cos(event.entityPlayer.rotationYaw * (float) Math.PI / 180.0F)
 											* (float) j * 0.5F));
-							event.entityPlayer.motionX *= 0.6D;
-							event.entityPlayer.motionZ *= 0.6D;
-							event.entityPlayer.setSprinting(false);
+							if (EnchantmentHelper.getEnchantmentLevel(ModEnchants.gungho.effectId,
+									event.entityPlayer.getHeldItem()) == 0) {
+								event.entityPlayer.motionX *= 0.6D;
+								event.entityPlayer.motionZ *= 0.6D;
+								event.entityPlayer.setSprinting(false);
+							}
 						}
 						if (targetEntity instanceof EntityPlayerMP && targetEntity.velocityChanged) {
 							((EntityPlayerMP) targetEntity).playerNetServerHandler
@@ -250,8 +259,27 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public void onDevHurtEvent(LivingHurtEvent event) {
+	public void onPlayerMine(PlayerEvent.BreakSpeed event) {
+		for (String type : event.entityPlayer.getHeldItem().getItem()
+				.getToolClasses(event.entityPlayer.getHeldItem())) {
+			if (event.state.getBlock().isToolEffective(type, event.state)
+					&& event.entityPlayer.getHeldItem().getItem() instanceof IToolSpec) {
+				event.newSpeed = (float) ((IToolSpec) (event.entityPlayer.getHeldItem().getItem()))
+						.getSpeed(event.entityPlayer.getHeldItem());
+				continue;
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onHurtEvent(LivingHurtEvent event) {
 		if (event.entityLiving instanceof EntityPlayer) {
+
+			if (EnchantmentHelper.getEnchantmentLevel(ModEnchants.gungho.effectId,
+					((EntityPlayer) event.entity).getHeldItem()) > 0) {
+				event.entityLiving.motionX /= 1.7;
+				event.entityLiving.motionZ /= 1.7;
+			}
 			boolean td = false;
 			for (int i = 0; i < 4; i++) {
 				if (!(event.entityLiving.getCurrentArmor(i) != null
@@ -269,6 +297,88 @@ public class EventHandler {
 					Main.network2.sendTo(new MessageDivinity(event.source.getEntity().getEntityId()),
 							((EntityPlayerMP) event.entityLiving));
 				}
+			}
+			// Apply Modded Armor Modifier
+			if (event.entity instanceof EntityPlayer && !event.isCanceled() && event.isCancelable()) {
+				event.setCanceled(true);
+				if (!event.entity.isEntityInvulnerable(event.source)) {
+					if (event.ammount <= 0)
+						return;
+					if (!event.source.isUnblockable() && ((EntityPlayer) event.entity).isBlocking()
+							&& event.ammount > 0.0F) {
+						event.ammount = (1.0F + event.ammount) * 0.5F;
+					}
+
+					event.ammount = net.minecraftforge.common.ISpecialArmor.ArmorProperties.applyArmor(
+							((EntityPlayer) event.entity), ((EntityPlayer) event.entity).inventory.armorInventory,
+							event.source, event.ammount);
+					float ap = 0;
+					try {
+						ap = ((float) (((EntityPlayer) event.entity).getEntityAttribute(Main.armorPercent)
+								.getAttributeValue())) / 100F;
+					} catch (NullPointerException exception) {
+						System.out
+								.println("Armor Percent Data Didnt load, isRemote = " + event.entity.worldObj.isRemote);
+					}
+					event.ammount -= event.ammount * ap;
+					if (event.ammount <= 0)
+						return;
+					event.ammount = applyPotionDamageCalculations(((EntityPlayer) event.entity), event.source,
+							event.ammount);
+					float f1 = event.ammount;
+					event.ammount = Math.max(event.ammount - ((EntityPlayer) event.entity).getAbsorptionAmount(), 0.0F);
+					((EntityPlayer) event.entity).setAbsorptionAmount(
+							((EntityPlayer) event.entity).getAbsorptionAmount() - (f1 - event.ammount));
+
+					if (event.ammount != 0.0F) {
+						((EntityPlayer) event.entity).addExhaustion(event.source.getHungerDamage());
+						float f2 = ((EntityPlayer) event.entity).getHealth();
+						((EntityPlayer) event.entity)
+								.setHealth(((EntityPlayer) event.entity).getHealth() - event.ammount);
+						((EntityPlayer) event.entity).getCombatTracker().func_94547_a(event.source, f2, event.ammount);
+
+						if (event.ammount < 3.4028235E37F) {
+							((EntityPlayer) event.entity).addStat(StatList.damageTakenStat,
+									Math.round(event.ammount * 10.0F));
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	protected float applyPotionDamageCalculations(EntityPlayer ep, DamageSource p_70672_1_, float p_70672_2_) {
+		if (p_70672_1_.isDamageAbsolute()) {
+			return p_70672_2_;
+		} else {
+			int i;
+			int j;
+			float f1;
+
+			if (ep.isPotionActive(Potion.resistance) && p_70672_1_ != DamageSource.outOfWorld) {
+				i = (ep.getActivePotionEffect(Potion.resistance).getAmplifier() + 1) * 5;
+				j = 25 - i;
+				f1 = p_70672_2_ * (float) j;
+				p_70672_2_ = f1 / 25.0F;
+			}
+
+			if (p_70672_2_ <= 0.0F) {
+				return 0.0F;
+			} else {
+				i = EnchantmentHelper.getEnchantmentModifierDamage(ep.getInventory(), p_70672_1_);
+
+				if (i > 20) {
+					i = 20;
+				}
+
+				if (i > 0 && i <= 20) {
+					j = 25 - i;
+					f1 = p_70672_2_ * (float) j;
+					p_70672_2_ = f1 / 25.0F;
+				}
+
+				return p_70672_2_;
 			}
 		}
 	}
@@ -297,6 +407,16 @@ public class EventHandler {
 				((EntityPlayer) event.entityLiving).getEntityAttribute(Main.divineDamage).getAttributeValue();
 			} catch (NullPointerException exception) {
 				((EntityPlayer) event.entityLiving).getAttributeMap().registerAttribute(Main.divineDamage);
+			}
+			try {
+				((EntityPlayer) event.entityLiving).getEntityAttribute(Main.armorPercent).getAttributeValue();
+			} catch (NullPointerException exception) {
+				((EntityPlayer) event.entityLiving).getAttributeMap().registerAttribute(Main.armorPercent);
+			}
+			try {
+				((EntityPlayer) event.entityLiving).getEntityAttribute(Main.miningSpeed).getAttributeValue();
+			} catch (NullPointerException exception) {
+				((EntityPlayer) event.entityLiving).getAttributeMap().registerAttribute(Main.miningSpeed);
 			}
 		}
 		if (event.entityLiving.posY >= 1000) {

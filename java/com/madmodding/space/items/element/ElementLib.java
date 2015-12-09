@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.madmodding.space.Main;
+import com.madmodding.space.blocks.tile.forge.IForgeable;
 import com.madmodding.space.items.IFirstTick;
 import com.madmodding.space.items.boost.ItemArmorBoost;
 
@@ -17,14 +18,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+/**
+ * A File that will eventually be used for all of Arideus' Code and its
+ * implementation
+ **/
 public class ElementLib {
 	private final static String[] typenames = new String[] { "blankingot", "blankdust", "blankpot" };
-	// A File that will eventually be used for all of Arideus' Code and its
-	// implementation
+	public final static String[] castnames = new String[] { "cast_rod", "cast_pick", "cast_spade", "cast_axe",
+			"cast_helmet", "cast_chestplate", "cast_leggings", "cast_boots", "cast_sword", "sword_head", "spade_head",
+			"axe_head", "pick_head", "rod" };
 	public static final Element[] Elements = Element.values();
 	public static final Element[] BaseElements = new Element[] { Element.h, Element.he, Element.li, Element.be,
 			Element.b, Element.c, Element.n, Element.o, Element.f, Element.ne, Element.na, Element.mg, Element.al,
@@ -81,6 +88,7 @@ public class ElementLib {
 	public static final Item QuickBoots = new ItemArmorBoost("quickboots", 3,
 			new double[][] { { 10, 1.3 }, { 11, 0.3 }, { 12, -0.25 }, { 13, 0.25 }, { 14, 0 } })
 					.setCreativeTab(Main.aliensTabTech);
+	public static final Item cast = new ItemCast(castnames[0]).setCreativeTab(Main.aliensTabCast);
 
 	public static int rarityToInt(EnumRarity er) {
 		if (er == Main.COMMON)
@@ -154,6 +162,34 @@ public class ElementLib {
 		return name;
 	}
 
+	public static String getAlloyName(ItemStack stack) {
+		int total = 0;
+		int[][] composition = ((IForgeable) stack.getItem()).getElementRatio(stack);
+		for (int i = 0; i < composition[0].length; i++)
+			total += composition[0][i];
+		float[] percent = new float[composition[0].length];
+		for (int i = 0; i < composition[0].length; i++)
+			percent[i] = ((float) composition[0][i]) / ((float) total);
+		String name = "";
+		String prefix = "";
+		for (int i = 0; i < composition[0].length; i++) {
+			String elename = ("" + StatCollector
+					.translateToLocal("element." + ElementLib.Elements[composition[1][i]].getName() + ".name")).trim();
+			if (percent[i] > .40) {
+				if (!name.equals(""))
+					name += "-";
+				name += elename;
+			} else if (percent[i] > .20 && !prefix.contains("Rich")) {
+				prefix += elename + "-Rich ";
+			} else if (percent[i] > .10 && !prefix.contains("Impure")) {
+				prefix += "Impure ";
+			}
+		}
+		if (name.equals(""))
+			name += "Blend";
+		return prefix + name;
+	}
+
 	public static EnumRarity intToRarity(int er) {
 		if (er == 0)
 			return Main.COMMON;
@@ -174,7 +210,7 @@ public class ElementLib {
 	}
 
 	protected static EnumRarity getRarity(ItemStack stack) {
-		int r = rarityToInt(Elements[stack.getItemDamage() % Elements.length].getRarity());
+		int r = rarityToInt(Elements[stack.getTagCompound().getInteger("elem") % Elements.length].getRarity());
 		if (stack.getTagCompound().getBoolean("anti"))
 			r++;
 		if (stack.getTagCompound().getBoolean("neg"))
@@ -201,6 +237,7 @@ public class ElementLib {
 			GameRegistry.registerItem(AlloyIngot, "alloyingot");
 			GameRegistry.registerItem(Dye, "spec_dye");
 			GameRegistry.registerItem(Refined, "blankingot");
+			GameRegistry.registerItem(cast, castnames[0]);
 			GameRegistry.registerItem(Fragment, "fragment");
 			GameRegistry.registerItem(ElementSword, "colorsword");
 			GameRegistry.registerItem(ElementAxe, "coloraxe");
@@ -214,6 +251,11 @@ public class ElementLib {
 		{
 			ModelBakery.addVariantName(Refined,
 					new String[] { Main.MODID + ":blankingot", Main.MODID + ":blankdust", Main.MODID + ":blankpot" });
+			String[] castname = new String[castnames.length];
+			for (int i = 0; i < castname.length; i++) {
+				castname[i] = Main.MODID + ":" + castnames[i];
+			}
+			ModelBakery.addVariantName(cast, castname);
 		}
 	}
 
@@ -239,6 +281,8 @@ public class ElementLib {
 			reg(Dye, i);
 		for (int i = 0; i < Elements.length * 4; i++)
 			reg(Fragment, i);
+		for (int i = 0; i < castnames.length; i++)
+			reg(cast, i, castnames[i]);
 		for (int i = 0; i < Elements.length * 4; i++) {
 			int p = i / (i / Elements.length + 1);
 			reg(Refined, i, ElementLib.typenames[Elements[p].getType() - 1]);
@@ -423,6 +467,328 @@ public class ElementLib {
 		return list;
 	}
 
+	protected static void setupRefined(ItemStack stack) {
+		int d = stack.getItemDamage();
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		if (d < (ElementLib.Elements.length * 4) && !stack.getTagCompound().getBoolean("Complex")) {
+			int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length);
+			stack.setItemDamage(stack.getItemDamage() - (i) * ElementLib.Elements.length);
+			boolean neg = (i & 1) != 0;
+			boolean anti = (i & 2) != 0;
+			stack.getTagCompound().setDouble("amass", ElementLib.Elements[stack.getItemDamage()].getMass());
+			stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
+			stack.getTagCompound().setBoolean("neg", neg);
+			stack.getTagCompound().setBoolean("anti", anti);
+			stack.getTagCompound().setInteger("elem", stack.getItemDamage());
+			{
+				stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+			}
+		} else {
+			int[][] el = ((IForgeable) stack.getItem()).getElementRatio(stack);
+			if (EnumAlloy.getAlloy(el) != null) {
+				EnumAlloy This = EnumAlloy.getAlloy(el);
+				String name = ("" + StatCollector.translateToLocal("alloy." + This.getName() + ".name")).trim();
+				stack.getTagCompound().setString("Name", name);
+				stack.getTagCompound().setInteger("color", This.getColor());
+			} else {
+				stack.getTagCompound().setString("Name", ElementLib.getAlloyName(stack));
+				int total = 0;
+				int spec = -1;
+				for (int i = 0; i < el[0].length; i++)
+					total += el[0][i];
+				for (int i = 0; i < el[1].length; i++) {
+					el[1][i] = Elements[el[1][i]].getColor();
+					if (el[1][i] < 0)
+						spec = i;
+				}
+				if (spec != -1) {
+					stack.getTagCompound().setInteger("color", el[1][spec]);
+				} else {
+					int r = 0;
+					int g = 0;
+					int b = 0;
+					for (int i = 0; i < el[1].length; i++) {
+						int r1 = el[1][i] / 65536;
+						int g1 = (el[1][i] - r1 * 65536) / 256;
+						int b1 = (el[1][i] - r1 * 65536 - g1 * 256);
+						if (total != 0) {
+							r += (((float) r1) * (((float) el[0][i]) / ((float) total)));
+							g += (((float) g1) * (((float) el[0][i]) / ((float) total)));
+							b += (((float) b1) * (((float) el[0][i]) / ((float) total)));
+						}
+					}
+					int color = r * 65536 + g * 256 + b;
+					stack.getTagCompound().setInteger("color", color);
+				}
+			}
+		}
+	}
+
+	protected static void setupCast(ItemStack stack) {
+		int d = stack.getItemDamage();
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		if (d < (ElementLib.Elements.length * ItemCast.slots * 4) && !stack.getTagCompound().getBoolean("Complex")) {
+			int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length);
+			stack.setItemDamage(stack.getItemDamage() - (i) * ElementLib.Elements.length);
+			boolean neg = (i & 1) != 0;
+			boolean anti = (i & 2) != 0;
+			int type = i / 4;
+			stack.getTagCompound().setDouble("amass", ElementLib.Elements[stack.getItemDamage()].getMass());
+			stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
+			stack.getTagCompound().setBoolean("neg", neg);
+			stack.getTagCompound().setBoolean("anti", anti);
+			stack.getTagCompound().setInteger("type", type);
+			stack.getTagCompound().setInteger("elem", stack.getItemDamage());
+			{
+				stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+			}
+			stack.setItemDamage(type);
+		} else {
+			int[][] el = ((IForgeable) stack.getItem()).getElementRatio(stack);
+			if (EnumAlloy.getAlloy(el) != null) {
+				EnumAlloy This = EnumAlloy.getAlloy(el);
+				String name = ("" + StatCollector.translateToLocal("alloy." + This.getName() + ".name")).trim();
+				stack.getTagCompound().setString("Name", name);
+				stack.getTagCompound().setInteger("color", This.getColor());
+			} else {
+				stack.getTagCompound().setString("Name", ElementLib.getAlloyName(stack));
+				int total = 0;
+				int spec = -1;
+				for (int i = 0; i < el[0].length; i++)
+					total += el[0][i];
+				for (int i = 0; i < el[1].length; i++) {
+					el[1][i] = Elements[el[1][i]].getColor();
+					if (el[1][i] < 0)
+						spec = i;
+				}
+				if (spec != -1) {
+					stack.getTagCompound().setInteger("color", el[1][spec]);
+				} else {
+					int r = 0;
+					int g = 0;
+					int b = 0;
+					for (int i = 0; i < el[1].length; i++) {
+						int r1 = el[1][i] / 65536;
+						int g1 = (el[1][i] - r1 * 65536) / 256;
+						int b1 = (el[1][i] - r1 * 65536 - g1 * 256);
+						if (total != 0) {
+							r += (((float) r1) * (((float) el[0][i]) / ((float) total)));
+							g += (((float) g1) * (((float) el[0][i]) / ((float) total)));
+							b += (((float) b1) * (((float) el[0][i]) / ((float) total)));
+						}
+					}
+					int color = r * 65536 + g * 256 + b;
+					stack.getTagCompound().setInteger("color", color);
+				}
+			}
+		}
+	}
+
+	protected static void fragmentInv(Item itemIn, List subItems) {
+		for (int i = 0; i < ElementLib.NonResElements.length; i++) {
+			for (int t = 0; t < 16; t++) {
+				ItemStack stack = new ItemStack(itemIn, 1, i + (t * ElementLib.Elements.length));
+				((IFirstTick) itemIn).onFirstTick(stack);
+				subItems.add(stack);
+			}
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 1) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 103));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 2) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 104));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 3) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 105));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 4) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 106));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 6) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+			subItems.add(new ItemStack(itemIn, 1, 107));
+		}
+		if (ElementLib.isSpecial(Minecraft.getMinecraft().thePlayer.getName()) == 5) {
+			subItems.add(new ItemStack(itemIn, 1, 102));
+		}
+	}
+
+	protected static void setupFragment(ItemStack stack) {
+		int d = stack.getItemDamage();
+		stack.setTagCompound(new NBTTagCompound());
+		if (d < (ElementLib.Elements.length * 16)) {
+			int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length);
+			stack.setItemDamage(stack.getItemDamage() - (i) * ElementLib.Elements.length);
+			boolean neg = (i & 1) != 0;
+			boolean anti = (i & 2) != 0;
+			boolean fair1 = (i & 4) != 0;
+			boolean fair2 = (i & 8) != 0;
+			short lvl = 0;
+			if (fair1)
+				lvl += 1;
+			if (fair2)
+				lvl += 2;
+			stack.getTagCompound().setShort("Level", lvl);
+			stack.getTagCompound().setDouble("amass", ElementLib.Elements[stack.getItemDamage()].getMass());
+			stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
+			stack.getTagCompound().setInteger("elem", stack.getItemDamage());
+			if (lvl == 1 || lvl == 2)
+				stack.getTagCompound().setInteger("color0", 0xDDDDDD);
+			if (lvl == 3)
+				stack.getTagCompound().setInteger("color0", ElementLib.Elements[stack.getItemDamage()].getColor());
+
+			stack.getTagCompound().setBoolean("neg", neg);
+			stack.getTagCompound().setBoolean("anti", anti);
+			{
+				stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+			}
+		}
+	}
+
+	protected static void setupTool(ItemStack stack) {
+		int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length);
+		stack.setItemDamage(stack.getItemDamage() - (i) * ElementLib.Elements.length);
+		boolean neg = (i & 1) != 0;
+		boolean anti = (i & 2) != 0;
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		stack.getTagCompound().setBoolean("neg", neg);
+		stack.getTagCompound().setBoolean("anti", anti);
+		{
+			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+		}
+		stack.getTagCompound().setInteger("Mode", 0);
+		if (ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
+			stack.getTagCompound().setInteger("Color1", 0xC89632);
+		else
+			stack.getTagCompound().setInteger("Color1", 0x444444);
+		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
+		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
+		dmg *= 0.5;
+		if (anti)
+			dmg *= 2;
+		stack.getTagCompound().setDouble("Damage", dmg);
+		double spd = ElementLib.Elements[stack.getItemDamage()].getHardness();
+		if (anti)
+			spd *= 2;
+		spd *= 0.9;
+		stack.getTagCompound().setDouble("Speed", spd);
+		stack.getTagCompound().setInteger("elem", stack.getItemDamage());
+		stack.getTagCompound().setBoolean("Unbreakable", true);
+	}
+
+	protected static void setupArmor(ItemStack stack) {
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		if (!stack.getTagCompound().getBoolean("Complex")) {
+			int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length);
+			stack.setItemDamage(stack.getItemDamage() - (i) * ElementLib.Elements.length);
+			boolean neg = (i & 1) != 0;
+			boolean anti = (i & 2) != 0;
+			stack.getTagCompound().setBoolean("neg", neg);
+			stack.getTagCompound().setBoolean("anti", anti);
+			{
+				stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+			}
+			stack.getTagCompound().setInteger("Color0", ElementLib.Elements[stack.getItemDamage()].getColor());
+			stack.getTagCompound().setInteger("Color1", 16777215);
+			stack.getTagCompound().setInteger("Type", ElementLib.Elements[stack.getItemDamage()].getNumber());
+			stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
+			double prot = ElementLib.Elements[stack.getItemDamage()].getHardness();
+			stack.getTagCompound().setDouble("Prot", prot);
+			stack.getTagCompound().setInteger("elem", stack.getItemDamage());
+			stack.getTagCompound().setBoolean("Unbreakable", true);
+		} else {
+			int[][] el = ((IForgeable) stack.getItem()).getElementRatio(stack);
+			if (EnumAlloy.getAlloy(el) != null) {
+				EnumAlloy This = EnumAlloy.getAlloy(el);
+				String name = ("" + StatCollector.translateToLocal("alloy." + This.getName() + ".name")).trim();
+				double prot = This.getHardness();
+				stack.getTagCompound().setDouble("Prot", prot);
+				stack.getTagCompound().setString("Name", name);
+				stack.getTagCompound().setInteger("Color0", This.getColor());
+				stack.getTagCompound().setInteger("Color1", 16777215);
+				stack.getTagCompound().setInteger("color", This.getColor());
+				stack.getTagCompound().setBoolean("Unbreakable", true);
+			} else {
+				stack.getTagCompound().setString("Name", ElementLib.getAlloyName(stack));
+				stack.getTagCompound().setBoolean("Unbreakable", true);
+				int total = 0;
+				int spec = -1;
+				for (int i = 0; i < el[0].length; i++)
+					total += el[0][i];
+				{
+					double prot = 0;
+					for (int i = 0; i < el[1].length; i++) {
+						prot += ((float) Elements[el[1][i]].getHardness() * (((float) el[0][i]) / ((float) total)));
+					}
+					stack.getTagCompound().setDouble("Prot", prot);
+				}
+				for (int i = 0; i < el[1].length; i++) {
+					el[1][i] = Elements[el[1][i]].getColor();
+					if (el[1][i] < 0)
+						spec = i;
+				}
+				if (spec != -1) {
+					stack.getTagCompound().setInteger("Color0", el[1][spec]);
+					stack.getTagCompound().setInteger("Color1", 16777215);
+					stack.getTagCompound().setInteger("color", el[1][spec]);
+				} else {
+					int r = 0;
+					int g = 0;
+					int b = 0;
+					for (int i = 0; i < el[1].length; i++) {
+						int r1 = el[1][i] / 65536;
+						int g1 = (el[1][i] - r1 * 65536) / 256;
+						int b1 = (el[1][i] - r1 * 65536 - g1 * 256);
+						if (total != 0) {
+							r += (((float) r1) * (((float) el[0][i]) / ((float) total)));
+							g += (((float) g1) * (((float) el[0][i]) / ((float) total)));
+							b += (((float) b1) * (((float) el[0][i]) / ((float) total)));
+						}
+					}
+					int color = r * 65536 + g * 256 + b;
+					stack.getTagCompound().setInteger("Color0", color);
+					stack.getTagCompound().setInteger("Color1", 16777215);
+					stack.getTagCompound().setInteger("color", color);
+				}
+			}
+		}
+	}
+
+	protected static void setupSword(ItemStack stack) {
+		if (!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length);
+		stack.setItemDamage(stack.getItemDamage() - (i) * ElementLib.Elements.length);
+		boolean neg = (i & 1) != 0;
+		boolean anti = (i & 2) != 0;
+		stack.getTagCompound().setBoolean("neg", neg);
+		stack.getTagCompound().setBoolean("anti", anti);
+		{
+			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
+		}
+		stack.getTagCompound().setInteger("Mode", 0);
+		if (ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
+			stack.getTagCompound().setInteger("Color3", 0xC89632);
+		else
+			stack.getTagCompound().setInteger("Color3", 0x444444);
+		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
+		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
+		if (anti)
+			dmg *= 2;
+		stack.getTagCompound().setDouble("Damage", dmg);
+		stack.getTagCompound().setDouble("Speed", 1.2d * ElementLib.Elements[stack.getItemDamage()].getHardness());
+		stack.getTagCompound().setInteger("elem", stack.getItemDamage());
+		stack.getTagCompound().setBoolean("Unbreakable", true);
+	}
+
 	private static String modid = Main.MODID;
 
 	private static void reg(Item item, int i, String nameadd) {
@@ -450,5 +816,9 @@ public class ElementLib {
 		int i = 0;
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), i,
 				new ModelResourceLocation(modid + ":" + block.getUnlocalizedName().substring(5), "inventory"));
+	}
+
+	public static void smeltForge(ItemStack[] inventory) {
+
 	}
 }

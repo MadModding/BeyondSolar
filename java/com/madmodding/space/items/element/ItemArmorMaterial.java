@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.madmodding.space.Main;
+import com.madmodding.space.blocks.tile.forge.IForgeable;
 import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.client.Minecraft;
@@ -14,7 +15,6 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -23,6 +23,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -33,7 +34,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirstTick {
+public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirstTick, IForgeable {
 	private final int slot;
 
 	public ItemArmorMaterial(String unlocalizedName, ArmorMaterial material, int slot) {
@@ -45,9 +46,14 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 
 	public Multimap getAttributeModifiers(ItemStack stack) {
 		Multimap multimap = HashMultimap.create();
-		if (ElementLib.Elements[stack.getItemDamage()] == Element.SN)
+		if (ElementLib.Elements[stack.getItemDamage() % ElementLib.Elements.length] == Element.SN)
 			multimap.put(Main.fireDamage.getAttributeUnlocalizedName(), new AttributeModifier(
 					UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB59" + slot), "Armor Modifier 9" + slot, 2, 0));
+
+		multimap.put(Main.armorPercent.getAttributeUnlocalizedName(), new AttributeModifier(
+				UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB59" + slot), "Armor Modifier 8" + slot,
+				(stack.getTagCompound().getDouble("Prot") - 1) / stack.getTagCompound().getDouble("Prot") / 4 * 100,
+				0));
 		return multimap;
 	}
 
@@ -79,10 +85,6 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 		if (!stack.hasTagCompound())
 			onFirstTick(stack);
 		int clr = ElementLib.getColorFromItemStack(stack, renderPass, 1);
-		NBTTagCompound nbttagcompound1 = stack.getTagCompound().getCompoundTag("display");
-		if (!stack.getTagCompound().hasKey("display"))
-			stack.getTagCompound().setTag("display", nbttagcompound1);
-		nbttagcompound1.setInteger("color", clr);
 		return clr;
 	}
 
@@ -96,10 +98,6 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack) {
 		if (!stack.hasTagCompound())
 			onFirstTick(stack);
-		NBTTagCompound nbttagcompound1 = stack.getTagCompound().getCompoundTag("display");
-		if (!stack.getTagCompound().hasKey("display"))
-			stack.getTagCompound().setTag("display", nbttagcompound1);
-		nbttagcompound1.setInteger("color", stack.getTagCompound().getInteger("Color0"));
 		if (ElementLib.isSpecial(player.getName()) == 0 || ElementLib.isSpecial(player.getName()) == 5) {
 			if (!ElementLib.toList(ElementLib.NonResElements).contains(ElementLib.Elements[stack.getItemDamage()])) {
 				if (ElementLib.Elements[stack.getItemDamage()] != Element.SN
@@ -192,9 +190,16 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
 		list.add(ElementLib.getRarity(stack).rarityName);
-		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
-		list.add(((double) (int) (100 * (stack.getTagCompound().getDouble("Prot") - 1)
-				/ stack.getTagCompound().getDouble("Prot") / 4 * 100)) / 100 + "% Damage Reduction");
+		list.add("Name: " + stack.getTagCompound().getString("Name"));
+		if (stack.getTagCompound().getBoolean("Complex")) {
+			int[][] em = getElementRatio(stack);
+			for (int i = 0; i < em[0].length; i++) {
+				list.add(("" + StatCollector.translateToLocal(
+						"element." + ElementLib.Elements[em[1][i] % ElementLib.Elements.length].getName() + ".name"))
+								.trim()
+						+ ": " + em[0][i]);
+			}
+		}
 	}
 
 	public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
@@ -305,34 +310,7 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 
 	@Override
 	public void onFirstTick(ItemStack stack) {
-		stack.setTagCompound(new NBTTagCompound());
-		int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length) + 1;
-		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
-		boolean neg = i % 2 == 0;
-		boolean anti = i > 2;
-		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		stack.getTagCompound().setBoolean("neg", neg);
-		stack.getTagCompound().setBoolean("anti", anti);
-		{
-			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
-		}
-		stack.getTagCompound().setInteger("Color0", ElementLib.Elements[stack.getItemDamage()].getColor());
-		stack.getTagCompound().setInteger("Color1", 16777215);
-		stack.getTagCompound().setInteger("Type", ElementLib.Elements[stack.getItemDamage()].getNumber());
-		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
-		double prot = ElementLib.Elements[stack.getItemDamage()].getHardness();
-		stack.getTagCompound().setDouble("Prot", prot);
-		stack.getTagCompound().setBoolean("Unbreakable", true);
-	}
-
-	@Override
-	public ArmorProperties getProperties(EntityLivingBase player, ItemStack stack, DamageSource source, double damage,
-			int slot) {
-
-		return new ArmorProperties(1,
-				(stack.getTagCompound().getDouble("Prot") - 1) / stack.getTagCompound().getDouble("Prot") / 4,
-				(int) (stack.getTagCompound().getDouble("Prot") * 10));
+		ElementLib.setupArmor(stack);
 	}
 
 	@Override
@@ -343,5 +321,32 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
+	}
+
+	@Override
+	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+			int slot) {
+		return new ArmorProperties(0, 0, 0);
+	}
+
+	@Override
+	public int[][] getElementRatio(ItemStack stack) {
+		int d = stack.getItemDamage();
+		if (d < (ElementLib.Elements.length * 4) && !stack.getTagCompound().getBoolean("Complex")) {
+			return new int[][] { { 576 }, { d % ElementLib.Elements.length } };
+		} else {
+			NBTTagList list = stack.getTagCompound().getTagList("Elements", 10);
+			int[][] elem = new int[2][list.tagCount()];
+			for (int i = 0; i < elem[0].length; i++) {
+				elem[0][i] = ((NBTTagCompound) list.get(i)).getInteger("Amt");
+				elem[1][i] = ((NBTTagCompound) list.get(i)).getInteger("Ele");
+			}
+			return elem;
+		}
+	}
+
+	@Override
+	public double getMB(ItemStack stack) {
+		return 0;
 	}
 }

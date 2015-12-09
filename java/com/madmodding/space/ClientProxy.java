@@ -5,6 +5,8 @@ import com.madmodding.space.blocks.tile.TileEntityAcidContainer;
 import com.madmodding.space.blocks.tile.TileEntityAcidFull;
 import com.madmodding.space.blocks.tile.TileEntityAlienCell;
 import com.madmodding.space.blocks.tile.TileEntityAlienEgg;
+import com.madmodding.space.blocks.tile.forge.RenderForge;
+import com.madmodding.space.blocks.tile.forge.TileEntityForge;
 import com.madmodding.space.client.render.items.ItemRenderRegister;
 import com.madmodding.space.client.render.items.RenderAcidContainer;
 import com.madmodding.space.client.render.items.RenderAcidFull;
@@ -22,20 +24,22 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent e) {
 		super.preInit(e);
-		}
+	}
 
 	@Override
 	public void init(FMLInitializationEvent e) {
 		super.init(e);
 		ElementLib.initClient();
 		ItemRenderRegister.registerItemRenderer();
-	    BlockRenderRegister.registerBlockRenderer();
-		ClientRegistry.registerTileEntity(TileEntityAlienEgg.class, "space:alienegg",new RenderAlienEgg());
-		ClientRegistry.registerTileEntity(TileEntityAcidContainer.class, "space:acidcontainer",new RenderAcidContainer());
-		ClientRegistry.registerTileEntity(TileEntityAcidFull.class, "space:acidfull",new RenderAcidFull());
+		BlockRenderRegister.registerBlockRenderer();
+		ClientRegistry.registerTileEntity(TileEntityAlienEgg.class, "space:alienegg", new RenderAlienEgg());
+		ClientRegistry.registerTileEntity(TileEntityAcidContainer.class, "space:acidcontainer",
+				new RenderAcidContainer());
+		ClientRegistry.registerTileEntity(TileEntityAcidFull.class, "space:acidfull", new RenderAcidFull());
 
 		ClientRegistry.registerTileEntity(TileEntityAlienCell.class, "space:aliencell", new RenderAlienCell());
-		MinecraftForge.EVENT_BUS.register(new ItemRenderRegister());	
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityForge.class, new RenderForge());
+		MinecraftForge.EVENT_BUS.register(new ItemRenderRegister());
 	}
 
 	@Override

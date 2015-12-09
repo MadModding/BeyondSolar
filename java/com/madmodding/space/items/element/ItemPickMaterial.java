@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.madmodding.space.Main;
 import com.madmodding.space.items.IFirstTick;
 
 import net.minecraft.block.Block;
@@ -30,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
+public class ItemPickMaterial extends ItemPickaxe implements IFirstTick, IToolSpec {
 
 	private double attackDamage;
 
@@ -47,7 +48,14 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 	public ItemPickMaterial(String string, ToolMaterial material) {
 		super(material);
 		this.setUnlocalizedName(string);
+	}public float getSpeed(ItemStack stack) {
+		return (float) stack.getTagCompound().getDouble("Speed");
 	}
+	@Override
+    public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state)
+    {
+        return 1;
+    }
 
 	public Multimap getAttributeModifiers(ItemStack stack) {
 		if (!stack.hasTagCompound())
@@ -55,24 +63,9 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 		Multimap multimap = HashMultimap.create();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(
 				itemModifierUUID, "Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
-
+		multimap.put(Main.miningSpeed.getAttributeUnlocalizedName(), new AttributeModifier(
+				itemModifierUUID, "Weapon modifier", (double) stack.getTagCompound().getDouble("Speed"), 0));
 		return multimap;
-	}
-
-	public float getStrVsBlock(ItemStack stack, Block block) {
-		return block.getMaterial() != Material.iron && block.getMaterial() != Material.anvil
-				&& block.getMaterial() != Material.rock ? super.getStrVsBlock(stack, block)
-						: (float) stack.getTagCompound().getDouble("Speed");
-	}
-
-	@Override
-	public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
-		for (String type : getToolClasses(stack)) {
-			if (state.getBlock().isToolEffective(type, state)) {
-				return (float) stack.getTagCompound().getDouble("Speed");
-			}
-		}
-		return super.getDigSpeed(stack, state);
 	}
 
 	public String getItemStackDisplayName(ItemStack stack) {
@@ -118,39 +111,10 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick {
 	public void addInformation(ItemStack stack, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
 		list.add(ElementLib.getRarity(stack).rarityName);
 		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
-		list.add("Mining Speed: " + ((double) (int) (100 * stack.getTagCompound().getDouble("Speed")))/100);
 	}
 
 	@Override
 	public void onFirstTick(ItemStack stack) {
-
-		int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length) + 1;
-		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
-		boolean neg = i % 2 == 0;
-		boolean anti = i > 2;
-		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		stack.getTagCompound().setBoolean("neg", neg);
-		stack.getTagCompound().setBoolean("anti", anti);
-		{
-			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
-		}
-		stack.getTagCompound().setInteger("Mode", 0);
-		if (ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
-			stack.getTagCompound().setInteger("Color1", 0xC89632);
-		else
-			stack.getTagCompound().setInteger("Color1", 0x444444);
-		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
-		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
-		dmg *= 0.5;
-		if (anti)
-			dmg *= 2;
-		stack.getTagCompound().setDouble("Damage", dmg);
-		double spd = ElementLib.Elements[stack.getItemDamage()].getHardness();
-		if (anti)
-			spd *= 2;
-		spd *= 1.8;
-		stack.getTagCompound().setDouble("Speed", spd);
-		stack.getTagCompound().setBoolean("Unbreakable", true);
+		ElementLib.setupTool(stack);
 	}
 }

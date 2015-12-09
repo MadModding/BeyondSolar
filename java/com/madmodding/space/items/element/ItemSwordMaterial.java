@@ -128,29 +128,6 @@ public class ItemSwordMaterial extends ItemSword implements IFirstTick {
 
 	@Override
 	public void onFirstTick(ItemStack stack) {
-
-		int i = (int) ((stack.getItemDamage()) / ElementLib.Elements.length) + 1;
-		stack.setItemDamage(stack.getItemDamage() - (i - 1) * ElementLib.Elements.length);
-		boolean neg = i % 2 == 0;
-		boolean anti = i > 2;
-		if (!stack.hasTagCompound())
-			stack.setTagCompound(new NBTTagCompound());
-		stack.getTagCompound().setBoolean("neg", neg);
-		stack.getTagCompound().setBoolean("anti", anti);
-		{
-			stack.getTagCompound().setString("Name", ElementLib.getName(stack));
-		}
-		stack.getTagCompound().setInteger("Mode", 0);
-		if (ElementLib.toList(ElementLib.BaseElements).contains(ElementLib.Elements[stack.getItemDamage()]))
-			stack.getTagCompound().setInteger("Color3", 0xC89632);
-		else
-			stack.getTagCompound().setInteger("Color3", 0x444444);
-		stack.getTagCompound().setInteger("color", ElementLib.Elements[stack.getItemDamage()].getColor());
-		double dmg = ElementLib.Elements[stack.getItemDamage()].getHardness();
-		if (anti)
-			dmg *= 2;
-		stack.getTagCompound().setDouble("Damage", dmg);
-		stack.getTagCompound().setDouble("Speed", 1.2d * ElementLib.Elements[stack.getItemDamage()].getHardness());
-		stack.getTagCompound().setBoolean("Unbreakable", true);
+		ElementLib.setupSword(stack);
 	}
 }

@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "normal": { "model": "space:forge" },
+	"facing=north": { "model": "space:forge" },
+        "facing=south": { "model": "space:forge", "y": 180 },
+        "facing=west":  { "model": "space:forge", "y": 270 },
+        "facing=east":  { "model": "space:forge", "y": 90 }
+    }
+}

@@ -2,10 +2,13 @@ package com.madmodding.space;
 
 import com.madmodding.space.blocks.ModBlocks;
 import com.madmodding.space.blocks.ModFluids;
+import com.madmodding.space.blocks.tile.forge.TileEntityForge;
 import com.madmodding.space.cell.WorldProviderCell;
 import com.madmodding.space.client.render.items.RenderDrillLaser;
+import com.madmodding.space.enchant.ModEnchants;
 import com.madmodding.space.entity.item.EntityAcidAttack;
 import com.madmodding.space.entity.item.EntityDrillLaser;
+import com.madmodding.space.gui.ModGuis;
 import com.madmodding.space.items.ModItems;
 import com.madmodding.space.items.element.ElementLib;
 import com.madmodding.space.items.element.RecipesDyeAdv;
@@ -34,7 +37,9 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		ModFluids.init();
+		ModEnchants.init();
 		ElementLib.initCommon();
+		NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance, new ModGuis());
 		RecipeSorter.register("space:tooldye", RecipesToolDye.class, RecipeSorter.Category.SHAPELESS,
 				"before:minecraft:shapeless");
 		RecipeSorter.register("space:advtooldye", RecipesDyeAdv.class, RecipeSorter.Category.SHAPED,
@@ -44,7 +49,7 @@ public class CommonProxy {
 		CraftingManager.getInstance().addRecipe(new RecipesToolDye());
 		CraftingManager.getInstance().addRecipe(new RecipesDyeAdv());
 		CraftingManager.getInstance().addRecipe(new RecipesDyeCustom());
-
+		GameRegistry.registerTileEntity(TileEntityForge.class, "space:forge");
 	}
 
 	public void registerKeyBindings() {
