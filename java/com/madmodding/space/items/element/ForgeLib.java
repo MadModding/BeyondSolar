@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 
 public class ForgeLib {
 	public static ItemStack[] forgeItem(ItemStack[] inv) {
-		ItemStack[] inventory = new ItemStack[13];
-		for (int i = 0; i < 13; i++)
+		ItemStack[] inventory = new ItemStack[14];
+		for (int i = 0; i < 14; i++)
 			if (inv[i] != null)
 				inventory[i] = inv[i].copy();
 		try {

@@ -26,9 +26,9 @@ public class GuiForge extends GuiContainer {
 		this.mc.getTextureManager().bindTexture(new ResourceLocation("space:textures/gui/forge.png"));
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		int k = (this.width - this.xSize) / 2;
-	    int l = (this.height - this.ySize) / 2;
-	    int i1 = this.func_175381_h(24);
-		this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+		int l = (this.height - this.ySize) / 2;
+		int i1 = this.func_175381_h(24);
+		this.drawTexturedModalRect(k + 81, l + 34, 176, 14, i1 + 1, 16);
 	}
 
 	private int func_175381_h(int p_175381_1_) {

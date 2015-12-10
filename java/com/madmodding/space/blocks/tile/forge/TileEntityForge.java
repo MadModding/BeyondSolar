@@ -30,7 +30,7 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 
 	public void update() {
 		boolean flag1 = false;
-		if (!this.worldObj.isRemote) {
+		//if (!this.worldObj.isRemote) {
 			{
 				if (this.canSmelt()) {
 					++this.cookTime;
@@ -44,7 +44,7 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 				} else {
 					this.cookTime = 0;
 				}
-			}
+			//}
 		}
 
 		if (flag1) {
@@ -109,7 +109,7 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 
 	@Override
 	public int getSizeInventory() {
-		return 13;
+		return 14;
 	}
 
 	@Override
@@ -194,13 +194,26 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 		return true;
 	}
 
-	@Override
 	public int getField(int id) {
-		return 0;
+		switch (id) {
+		case 2:
+			return this.cookTime;
+		case 3:
+			return this.totalCookTime;
+		default:
+			return 0;
+		}
 	}
 
 	@Override
 	public void setField(int id, int value) {
+		switch (id) {
+		case 2:
+			this.cookTime = value;
+			break;
+		case 3:
+			this.totalCookTime = value;
+		}
 	}
 
 	@Override

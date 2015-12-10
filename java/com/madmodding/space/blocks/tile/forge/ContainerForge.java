@@ -32,7 +32,8 @@ public class ContainerForge extends Container {
 		this.addSlotToContainer(new Slot(te, 11, 77 + 4 * 18, 17 + 2 * 18));
 	
 		// Tile Entity, Slot 12, Slot ID 12
-		this.addSlotToContainer(new Slot(te, 12, 44 + 4 * 18, 35));
+		this.addSlotToContainer(new Slot(te, 12, 44 + 4 * 18, 27));
+		this.addSlotToContainer(new Slot(te, 13, 44 + 4 * 18, 49));
 		
 		// Player Inventory, Slot 9-35, Slot IDs 9-35
 		for (int y = 0; y < 3; ++y) {
@@ -61,7 +62,7 @@ public class ContainerForge extends Container {
 			ItemStack current = slot.getStack();
 			previous = current.copy();
 
-			if (fromSlot < 13) {
+			if (fromSlot < 14) {
 				// From TE Inventory to Player Inventory
 				if (!this.mergeItemStack(current, 9, 45, true))
 					return null;
