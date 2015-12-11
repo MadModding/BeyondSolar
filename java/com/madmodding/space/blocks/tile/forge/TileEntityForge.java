@@ -10,6 +10,7 @@ import com.madmodding.space.items.element.ItemArmorMaterial;
 import com.madmodding.space.items.element.ItemRefined;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -30,22 +31,21 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 
 	public void update() {
 		boolean flag1 = false;
-		//if (!this.worldObj.isRemote) {
-			{
-				if (this.canSmelt()) {
-					++this.cookTime;
+		// if (!this.worldObj.isRemote) {
+		if ((this.worldObj.getBlockState(this.getPos().down()) != null
+				&& this.worldObj.getBlockState(this.getPos().down()).getBlock() == Blocks.lava) && this.canSmelt()) {
+			++this.cookTime;
 
-					if (this.cookTime >= this.totalCookTime) {
-						this.cookTime = 0;
-						this.totalCookTime = this.getBurnTime(this.inventory[0]);
-						this.smeltItem();
-						flag1 = true;
-					}
-				} else {
-					this.cookTime = 0;
-				}
-			//}
+			if (this.cookTime >= this.totalCookTime) {
+				this.cookTime = 0;
+				this.totalCookTime = this.getBurnTime(this.inventory[0]);
+				this.smeltItem();
+				flag1 = true;
+			}
+		} else {
+			this.cookTime = 0;
 		}
+		// }
 
 		if (flag1) {
 			this.markDirty();
@@ -64,17 +64,37 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 		ItemStack[] stacks = ForgeLib.forgeItem(inventory);
 		if (stacks.length > 2) {
 			ItemStack itemstack = stacks[12];
-
+			int total = 0;
+			for (int i = 0; i < ((IForgeable) itemstack.getItem()).getElementRatio(itemstack)[0].length; i++)
+				total += ((IForgeable) itemstack.getItem()).getElementRatio(itemstack)[0][i];
+			this.totalCookTime = total / 9 * 50;
 			if (this.inventory[12] == null)
 				return true;
-			if (!(ItemStack.areItemStackTagsEqual(this.inventory[12], itemstack)
-					&& ItemStack.areItemsEqual(this.inventory[12], itemstack)))
+			if (!isItemStackEqual(inventory[12], itemstack))
 				return false;
 
 			int result = inventory[12].stackSize + itemstack.stackSize;
+
 			return result <= getInventoryStackLimit() && result <= this.inventory[12].getMaxStackSize(); // Forge
 		}
 		return false;
+	}
+
+	private boolean isItemStackEqual(ItemStack stack1, ItemStack stack2) {
+		return stack1.getItem() != stack2.getItem() ? false
+				: (stack1.getMetadata() != stack2.getMetadata() ? false
+						: (stack1.stackSize > stack1.getMaxStackSize() ? false
+								: ItemStack.areItemStackTagsEqual(stack1, stack2)));
+	}
+
+	private static boolean canCombine(ItemStack a, ItemStack other) {
+		return ((IForgeable) a.getItem()).getElementRatio(a) != ((IForgeable) other.getItem()).getElementRatio(other)
+				? false
+				: (a.getItem() != other.getItem() ? false
+						: (a.getItemDamage() != other.getItemDamage() ? false
+								: (a.getTagCompound() == null && other.getTagCompound() != null ? false
+										: a.getTagCompound() == null
+												|| a.getTagCompound().equals(other.getTagCompound()))));
 	}
 
 	/**
@@ -83,7 +103,17 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 	 */
 	public void smeltItem() {
 		if (this.canSmelt()) {
-			this.inventory = ForgeLib.forgeItem(inventory);
+			ItemStack[] stacks = ForgeLib.forgeItem(inventory);
+			if (inventory[12] == null) {
+			} else
+				stacks[12].stackSize += inventory[12].stackSize;
+			inventory = stacks;
+			for (int i = 0; i < 9; i++)
+				if (inventory[i] != null) {
+					inventory[i].stackSize--;
+					if (inventory[i].stackSize == 0)
+						inventory[i] = null;
+				}
 		}
 	}
 
@@ -149,13 +179,19 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int index) {
-		ItemStack stack = this.getStackInSlot(index);
-		this.setInventorySlotContents(index, null);
-		return stack;
+		if (this.inventory[index] != null) {
+			ItemStack itemstack = this.inventory[index];
+			this.inventory[index] = null;
+			return itemstack;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
+		boolean flag = stack != null && stack.isItemEqual(inventory[index])
+				&& ItemStack.areItemStackTagsEqual(stack, inventory[index]);
 		if (index < 0 || index >= this.getSizeInventory())
 			return;
 
@@ -167,7 +203,11 @@ public class TileEntityForge extends TileEntity implements IUpdatePlayerListBox,
 
 		this.inventory[index] = stack;
 
+		if (index < 12 && !flag) {
+			// this.cookTime = 0;
+		}
 		this.markDirty();
+
 	}
 
 	@Override

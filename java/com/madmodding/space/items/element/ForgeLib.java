@@ -57,16 +57,7 @@ public class ForgeLib {
 					return new ItemStack[0];
 			}
 			//System.out.println("Forge Item Created");
-			if (inventory[12] == null)
-				inventory[12] = itemstack.copy();
-			else
-				inventory[12].stackSize += itemstack.stackSize;
-			for (int i = 0; i < 9; i++)
-				if (inventory[i] != null) {
-					inventory[i].stackSize--;
-					if (inventory[i].stackSize == 0)
-						inventory[i] = null;
-				}
+			inventory[12] = itemstack.copy();
 			//System.out.println("Forge Returning Item");
 			return inventory;
 		} catch (Exception ex) {

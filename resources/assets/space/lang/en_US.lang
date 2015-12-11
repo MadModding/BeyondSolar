@@ -8,6 +8,11 @@ attribute.name.space.armorPercent=Percent Damage Reduction
 attribute.name.space.miningSpeed=Mining Speed
 
 container.tile_entity_forge=Metal Forge
+tile.forge.name=Metal Forge
+
+item.strongchest.name=Strong Chestplate
+item.sturdypants.name=Sturdy Leggings
+item.quickboots.name=Quick Boots
 
 element.hydrogen.name=Hydrogen
 element.helium.name=Helium
