@@ -61,7 +61,10 @@ public class ItemSpadeMaterial extends ItemSpade implements IFirstTick, IToolSpe
 	}
 	@Override
 	public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
-		return 1;
+		for (String type : getToolClasses(stack))
+			if (state.getBlock().isToolEffective(type, state))
+				return getSpeed(stack);
+		return super.getDigSpeed(stack, state);
 	}
 
 	public String getItemStackDisplayName(ItemStack stack) {

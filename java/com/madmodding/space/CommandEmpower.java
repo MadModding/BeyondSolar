@@ -117,33 +117,25 @@ public class CommandEmpower implements ICommand {
 		(player).inventory.armorInventory[2] = new ItemStack(ElementLib.ElementChest, 1, meta);
 		(player).inventory.armorInventory[1] = new ItemStack(ElementLib.ElementLegs, 1, meta);
 		(player).inventory.armorInventory[0] = new ItemStack(ElementLib.ElementBoots, 1, meta);
+		((ItemArmorMaterial) player.inventory.armorInventory[3].getItem())
+				.onFirstTick(player.inventory.armorInventory[3]);
+		((ItemArmorMaterial) player.inventory.armorInventory[2].getItem())
+				.onFirstTick(player.inventory.armorInventory[2]);
+		((ItemArmorMaterial) player.inventory.armorInventory[1].getItem())
+				.onFirstTick(player.inventory.armorInventory[1]);
+		((ItemArmorMaterial) player.inventory.armorInventory[0].getItem())
+				.onFirstTick(player.inventory.armorInventory[0]);
 		if (meta == 104 && level > 1) {
 			if (level >= 32768)
 				level = 32768;
 			if (level >= 1000)
 				level = 9002;
-			((ItemArmorMaterial) player.inventory.armorInventory[3].getItem())
-					.onFirstTick(player.inventory.armorInventory[3]);
-			((ItemArmorMaterial) player.inventory.armorInventory[2].getItem())
-					.onFirstTick(player.inventory.armorInventory[2]);
-			((ItemArmorMaterial) player.inventory.armorInventory[1].getItem())
-					.onFirstTick(player.inventory.armorInventory[1]);
-			((ItemArmorMaterial) player.inventory.armorInventory[0].getItem())
-					.onFirstTick(player.inventory.armorInventory[0]);
 			addEnchantment((player).inventory.armorInventory[3], ModEnchants.madhat, level - 1);
 			addEnchantment((player).inventory.armorInventory[2], ModEnchants.madhat, level - 1);
 			addEnchantment((player).inventory.armorInventory[1], ModEnchants.madhat, level - 1);
 			addEnchantment((player).inventory.armorInventory[0], ModEnchants.madhat, level - 1);
 		}
 		if (meta == 103) {
-			((ItemArmorMaterial) player.inventory.armorInventory[3].getItem())
-					.onFirstTick(player.inventory.armorInventory[3]);
-			((ItemArmorMaterial) player.inventory.armorInventory[2].getItem())
-					.onFirstTick(player.inventory.armorInventory[2]);
-			((ItemArmorMaterial) player.inventory.armorInventory[1].getItem())
-					.onFirstTick(player.inventory.armorInventory[1]);
-			((ItemArmorMaterial) player.inventory.armorInventory[0].getItem())
-					.onFirstTick(player.inventory.armorInventory[0]);
 			addEnchantment((player).inventory.armorInventory[3], ModEnchants.arideus, 32767);
 			addEnchantment((player).inventory.armorInventory[2], ModEnchants.arideus, 32767);
 			addEnchantment((player).inventory.armorInventory[1], ModEnchants.arideus, 32767);

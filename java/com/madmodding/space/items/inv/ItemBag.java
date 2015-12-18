@@ -3,6 +3,7 @@ package com.madmodding.space.items.inv;
 import org.lwjgl.input.Keyboard;
 
 import com.madmodding.space.Main;
+import com.madmodding.space.gui.ModGuis;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -33,16 +34,10 @@ public class ItemBag extends Item {
 	}
 
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-		if (!stack.hasTagCompound()) {
-			stack.setTagCompound(new NBTTagCompound());
-			InventoryItem iec = new InventoryItem();
-			player.displayGUIChest(iec);
-		} else {
-			InventoryItem iec = new InventoryItem();
-			iec.loadInventoryFromNBT((NBTTagList) stack.getTagCompound().getTag("inv"));
-			player.displayGUIChest(iec);
-		}
-		stack.getTagCompound().setBoolean("open", true);
+		if (!world.isRemote)
+			player.openGui(Main.instance, ModGuis.MOD_ITEM_CHEST_GUI_ID, world, (int) player.posX, (int) player.posY,
+					(int) player.posZ);
+		stack.setTagCompound(null);
 		return stack;
 	}
 }

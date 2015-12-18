@@ -47,11 +47,20 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 	public Multimap getAttributeModifiers(ItemStack stack) {
 		Multimap multimap = HashMultimap.create();
 		if (ElementLib.Elements[stack.getItemDamage() % ElementLib.Elements.length] == Element.SN)
-			multimap.put(Main.fireDamage.getAttributeUnlocalizedName(), new AttributeModifier(
-					UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB59" + slot), "Armor Modifier 9" + slot, 2, 0));
-
-		multimap.put(Main.armorPercent.getAttributeUnlocalizedName(), new AttributeModifier(
-				UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB59" + slot), "Armor Modifier 8" + slot,
+			multimap.put(
+					Main.fireDamage
+							.getAttributeUnlocalizedName(),
+					new AttributeModifier(
+							UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5" + slot
+									+ Integer.toString((int) ((int) 10 * stack.getTagCompound().getDouble("Prot")))),
+					"Armor Modifier 9" + slot, 2, 0));
+		multimap.put(
+				Main.armorPercent
+						.getAttributeUnlocalizedName(),
+				new AttributeModifier(
+						UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5" + slot
+								+ Integer.toString((int) ((int) 10 * stack.getTagCompound().getDouble("Prot")))),
+				"Armor Modifier 8" + slot,
 				(stack.getTagCompound().getDouble("Prot") - 1) / stack.getTagCompound().getDouble("Prot") / 4 * 100,
 				0));
 		return multimap;
@@ -109,16 +118,14 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 		if (!ElementLib.toList(ElementLib.NonResElements).contains(ElementLib.Elements[stack.getItemDamage()])) {
 			if (!player.isSneaking() && stack.getItem() == ElementLib.ElementChest
 					&& ElementLib.Elements[stack.getItemDamage()] == Element.AR) {
-				player.jumpMovementFactor = (float) 0.8;
 				player.addPotionEffect(new PotionEffect(Potion.moveSpeed.getId(), 5, 1));
 				player.addPotionEffect(new PotionEffect(Potion.jump.getId(), 5, 1));
-				if (0.8 != 0) {
-					double ax = Math.abs(player.motionX);
-					double az = Math.abs(player.motionZ);
-					if (Math.sqrt(Math.pow(ax, 2) + Math.pow(az, 2)) <= 4) {
-						player.addVelocity(player.motionX * (0.8 - 1), 0, player.motionZ * (0.8 - 1));
-					}
+				double ax = Math.abs(player.motionX);
+				double az = Math.abs(player.motionZ);
+				if (Math.sqrt(Math.pow(ax, 2) + Math.pow(az, 2)) <= 4) {
+					player.addVelocity(player.motionX * (0.8 - 1), 0, player.motionZ * (0.8 - 1));
 				}
+				boolean isMove = (Math.abs(player.motionX) > 0.25 || Math.abs(player.motionZ) > 0.25);
 				if (player.dimension == 71) {
 					player.motionY -= 0.075 / 4 * 3;
 				}
@@ -127,21 +134,28 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 				float pitch = player.rotationPitch;
 				double percent = 0;
 				percent = -pitch / 90;
+				player.jumpMovementFactor = (float) (0.8 * (1 - Math.abs(percent)));
 				if (Math.abs(percent) > 0.15)
-					player.motionY += percent * 0.15;
+					if (isMove)
+						player.motionY += percent * 0.15;
 				if (percent > -0.25)
 					player.motionY += 0.075;
-				if (Math.abs(percent) > 0.15) {
-				} else if (Math.abs(player.motionX) <= 0.25 && Math.abs(player.motionZ) <= 0.25) {
+				if (!isMove)
 					player.motionY = 0;
+				if (!isMove) {
 					if (world.isRemote && world.getTotalWorldTime() % 1 == 0 && !player.isSneaking()
 							&& (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0
 									|| Minecraft.getMinecraft().thePlayer != player)) {
-						double xp = 0.25 * (double) (-MathHelper.sin(player.rotationYaw / 180.0F * (float) Math.PI)
+						double dist = 0.25 + (0.25 * Math.abs(percent));//MathHelper.sin(player.rotationPitch)));
+						
+						double xp = dist * (double) (-MathHelper.sin(player.rotationYaw / 180.0F * (float) Math.PI)
 								* MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI));
-						double yp = 0.25 * (double) (-MathHelper.sin(player.rotationPitch / 180.0F * (float) Math.PI));
-						double zp = 0.25 * (double) (MathHelper.cos(player.rotationYaw / 180.0F * (float) Math.PI)
+						double yp = dist * (double) (-MathHelper.sin(player.rotationPitch / 180.0F * (float) Math.PI));
+						double zp = dist * (double) (MathHelper.cos(player.rotationYaw / 180.0F * (float) Math.PI)
 								* MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI));
+						
+						
+						
 						double x1 = xp + player.posX + (double) (-MathHelper
 								.sin(((player.rotationYaw + 90) % 360) / 180.0F * (float) Math.PI) / 7);
 						double y1 = yp + player.posY + 1.6625;

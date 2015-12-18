@@ -260,15 +260,16 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void onPlayerMine(PlayerEvent.BreakSpeed event) {
-		for (String type : event.entityPlayer.getHeldItem().getItem()
-				.getToolClasses(event.entityPlayer.getHeldItem())) {
-			if (event.state.getBlock().isToolEffective(type, event.state)
-					&& event.entityPlayer.getHeldItem().getItem() instanceof IToolSpec) {
-				event.newSpeed = (float) ((IToolSpec) (event.entityPlayer.getHeldItem().getItem()))
-						.getSpeed(event.entityPlayer.getHeldItem());
-				continue;
+		if (event.entityPlayer.getHeldItem() != null)
+			for (String type : event.entityPlayer.getHeldItem().getItem()
+					.getToolClasses(event.entityPlayer.getHeldItem())) {
+				if (event.state.getBlock().isToolEffective(type, event.state)
+						&& event.entityPlayer.getHeldItem().getItem() instanceof IToolSpec) {
+					event.newSpeed = (float) ((IToolSpec) (event.entityPlayer.getHeldItem().getItem()))
+							.getSpeed(event.entityPlayer.getHeldItem());
+					continue;
+				}
 			}
-		}
 	}
 
 	@SubscribeEvent
@@ -455,15 +456,23 @@ public class EventHandler {
 			}
 		}
 		if (event.entityLiving.dimension == 71) {
-
 			if (event.entity.worldObj.getTotalWorldTime() % 10 == 0) {
 				boolean td = false;
 				for (int i = 0; i < 4; i++) {
-					if (!(event.entityLiving.getCurrentArmor(i) != null
-							&& (event.entityLiving.getCurrentArmor(i).getItem() instanceof ItemArmorMaterial
-									&& !ElementLib.toList(ElementLib.BaseElements).contains(
-											ElementLib.Elements[event.entityLiving.getCurrentArmor(i).getItemDamage()
-													% ElementLib.Elements.length])))) {
+					if (!(event.entityLiving
+							.getCurrentArmor(
+									i) != null
+							&& (event.entityLiving
+									.getCurrentArmor(
+											i)
+									.getItem() instanceof ItemArmorCustom
+									|| (event.entityLiving
+											.getCurrentArmor(
+													i)
+											.getItem() instanceof ItemArmorMaterial
+											&& !ElementLib.toList(ElementLib.BaseElements)
+													.contains(ElementLib.Elements[event.entityLiving.getCurrentArmor(i)
+															.getItemDamage() % ElementLib.Elements.length]))))) {
 						td = true;
 					}
 				}

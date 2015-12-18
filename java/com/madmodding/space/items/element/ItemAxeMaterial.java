@@ -47,10 +47,11 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick, IToolSpec {
 		list.add(ElementLib.getRarity(stack).rarityName);
 		list.add("Made of Pure " + stack.getTagCompound().getString("Name"));
 	}
+
 	public float getSpeed(ItemStack stack) {
 		return (float) stack.getTagCompound().getDouble("Speed");
 	}
-	
+
 	public ItemAxeMaterial(String string, ToolMaterial material) {
 		super(material);
 		this.setUnlocalizedName(string);
@@ -69,7 +70,10 @@ public class ItemAxeMaterial extends ItemAxe implements IFirstTick, IToolSpec {
 
 	@Override
 	public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
-		return 1;
+		for (String type : getToolClasses(stack))
+			if (state.getBlock().isToolEffective(type, state))
+				return getSpeed(stack);
+		return super.getDigSpeed(stack, state);
 	}
 
 	public String getItemStackDisplayName(ItemStack stack) {

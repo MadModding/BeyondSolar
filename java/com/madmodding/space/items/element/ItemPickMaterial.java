@@ -48,14 +48,19 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick, IToolSp
 	public ItemPickMaterial(String string, ToolMaterial material) {
 		super(material);
 		this.setUnlocalizedName(string);
-	}public float getSpeed(ItemStack stack) {
+	}
+
+	public float getSpeed(ItemStack stack) {
 		return (float) stack.getTagCompound().getDouble("Speed");
 	}
+
 	@Override
-    public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state)
-    {
-        return 1;
-    }
+	public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
+		for (String type : getToolClasses(stack))
+			if (state.getBlock().isToolEffective(type, state))
+				return getSpeed(stack);
+		return super.getDigSpeed(stack, state);
+	}
 
 	public Multimap getAttributeModifiers(ItemStack stack) {
 		if (!stack.hasTagCompound())
@@ -63,8 +68,8 @@ public class ItemPickMaterial extends ItemPickaxe implements IFirstTick, IToolSp
 		Multimap multimap = HashMultimap.create();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(
 				itemModifierUUID, "Weapon modifier", (double) stack.getTagCompound().getDouble("Damage"), 0));
-		multimap.put(Main.miningSpeed.getAttributeUnlocalizedName(), new AttributeModifier(
-				itemModifierUUID, "Weapon modifier", (double) stack.getTagCompound().getDouble("Speed"), 0));
+		multimap.put(Main.miningSpeed.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID,
+				"Weapon modifier", (double) stack.getTagCompound().getDouble("Speed"), 0));
 		return multimap;
 	}
 

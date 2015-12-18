@@ -70,7 +70,7 @@ public class BlockForge extends BlockContainer {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side,
 			float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
-			player.openGui(Main.instance, ModGuis.MOD_TILE_ENTITY_GUI, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(Main.instance, ModGuis.MOD_FORGE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}

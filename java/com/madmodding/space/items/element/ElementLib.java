@@ -7,6 +7,7 @@ import com.madmodding.space.Main;
 import com.madmodding.space.blocks.tile.forge.IForgeable;
 import com.madmodding.space.items.IFirstTick;
 import com.madmodding.space.items.boost.ItemArmorBoost;
+import com.madmodding.space.items.inv.quantum.ItemArmorQuantum;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -57,7 +58,7 @@ public class ElementLib {
 			Element.ir, Element.pt, Element.au, Element.hg, Element.tl, Element.pb, Element.bi, Element.po, Element.at,
 			Element.rn, Element.fr, Element.ra, Element.ac, Element.th, Element.pa, Element.u, Element.np, Element.pu,
 			Element.am, Element.cm, Element.bk, Element.cf, Element.es, Element.fm, Element.DM, Element.EM };
-	protected static final ToolMaterial material = EnumHelper.addToolMaterial("SpaceMaterial", 4, 18054, 20.0f, 16.0f,
+	protected static final ToolMaterial material = EnumHelper.addToolMaterial("SpaceMaterial", 20, 18054, 20.0f, 16.0f,
 			0);
 	public static final Item ElementSword = new ItemSwordMaterial("colorsword", material)
 			.setCreativeTab(Main.aliensTabTech);
@@ -89,7 +90,15 @@ public class ElementLib {
 			new double[][] { { 10, 1.3 }, { 11, 0.3 }, { 12, -0.25 }, { 13, 0.25 }, { 14, 0 } })
 					.setCreativeTab(Main.aliensTabTech);
 	public static final Item cast = new ItemCast(castnames[0]).setCreativeTab(Main.aliensTabCast);
-
+	public static final Item QuantumHelm = new ItemArmorQuantum("quanthelmet", 0)
+			.setCreativeTab(Main.aliensTabTech);
+	public static final Item QuantumChest = new ItemArmorQuantum("quantchestplate", 1)
+			.setCreativeTab(Main.aliensTabTech);
+	public static final Item QuantumLegs = new ItemArmorQuantum("quantleggings", 2)
+			.setCreativeTab(Main.aliensTabTech);
+	public static final Item QuantumBoots = new ItemArmorQuantum("quantboots", 3)
+			.setCreativeTab(Main.aliensTabTech);
+	
 	public static int rarityToInt(EnumRarity er) {
 		if (er == Main.COMMON)
 			return 0;
@@ -247,6 +256,10 @@ public class ElementLib {
 			GameRegistry.registerItem(ElementChest, "colorchest");
 			GameRegistry.registerItem(ElementLegs, "colorlegs");
 			GameRegistry.registerItem(ElementBoots, "colorboots");
+			GameRegistry.registerItem(QuantumHelm, "quanthelmet");
+			GameRegistry.registerItem(QuantumChest, "quantchestplate");
+			GameRegistry.registerItem(QuantumLegs, "quantleggings");
+			GameRegistry.registerItem(QuantumBoots, "quantboots");
 		}
 		{
 			ModelBakery.addVariantName(Refined,
@@ -260,7 +273,11 @@ public class ElementLib {
 	}
 
 	public static void initClient() {
-		reg(StrongChest);
+		reg(QuantumHelm);
+		reg(QuantumChest);
+		reg(QuantumLegs);
+		reg(QuantumBoots);
+	reg(StrongChest);
 		reg(SturdyPants);
 		reg(QuickBoots);
 		for (int i = 0; i < EnumAlloy.values().length; i++) {
@@ -723,13 +740,12 @@ public class ElementLib {
 				int spec = -1;
 				for (int i = 0; i < el[0].length; i++)
 					total += el[0][i];
-				{
-					double prot = 0;
-					for (int i = 0; i < el[1].length; i++) {
-						prot += ((float) Elements[el[1][i]].getHardness() * (((float) el[0][i]) / ((float) total)));
-					}
-					stack.getTagCompound().setDouble("Prot", prot);
+				double prot = 0;
+				for (int i = 0; i < el[1].length; i++) {
+					prot += ((float) Elements[el[1][i]].getHardness() * (((float) el[0][i]) / ((float) total)));
 				}
+				stack.getTagCompound().setDouble("Prot", prot);
+
 				for (int i = 0; i < el[1].length; i++) {
 					el[1][i] = Elements[el[1][i]].getColor();
 					if (el[1][i] < 0)

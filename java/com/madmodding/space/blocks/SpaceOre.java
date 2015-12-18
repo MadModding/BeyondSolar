@@ -24,8 +24,18 @@ public class SpaceOre extends Block {
 		super(materialIn);
 		this.setCreativeTab(Main.aliensTabUnRef);
 		this.setStepSound(soundTypeStone);
+		this.setHarvestLevel("pickaxe", 35);
 	}
 
+	public Block setHardness(float hardness) {
+		this.blockHardness = hardness / 10;
+		
+		if (this.blockResistance < hardness / 2.0F) {
+			this.blockResistance = hardness / 2.0F;
+		}
+		
+		return this;
+	}
 	// ----------------------------------OREDROPS---------------------------------------------------------
 	// ---------------------------------------------------------------------------------------------------
 

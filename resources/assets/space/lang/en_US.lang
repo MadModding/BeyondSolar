@@ -4,8 +4,14 @@ attribute.name.space.radiationDamage=Radiation Damage
 attribute.name.space.fireDamage=Fire Damage
 attribute.name.space.antimatterDamage=Antimatter Damage
 attribute.name.space.divineDamage=Divine Damage
-attribute.name.space.armorPercent=Percent Damage Reduction
+attribute.name.space.armorPercent=Armor
 attribute.name.space.miningSpeed=Mining Speed
+
+item.quantboots.name=Quantum Entangled Boots
+item.quantleggings.name=Quantum Entangled Leggings
+item.quantchestplate.name=Quantum Entangled Chestplate
+item.quanthelmet.name=Quantum Entangled Helmet
+container.spacearmor=Quantum Entangled Armor
 
 container.tile_entity_forge=Metal Forge
 tile.forge.name=Metal Forge

@@ -115,7 +115,7 @@ public class ItemArmorCustom extends ItemArmor implements ISpecialArmor, IColora
 			stack.getTagCompound().setInteger("Color0", 16777215);
 		if (!stack.getTagCompound().hasKey("Unbreakable"))
 			stack.getTagCompound().setBoolean("Unbreakable", true);
-		return stack.getTagCompound().getInteger("Color");
+		return 16777215;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -203,9 +203,6 @@ public class ItemArmorCustom extends ItemArmor implements ISpecialArmor, IColora
 		} else {
 			return "space:textures/models/armor/custom_layer_overlay.png";
 		}
-		// if (slot != 2)
-		// return "space:textures/models/armor/custom_layer_1.png";
-		// return "space:textures/models/armor/custom_layer_2.png";
 	}
 
 	@Override
