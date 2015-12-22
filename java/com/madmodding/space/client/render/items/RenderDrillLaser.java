@@ -47,13 +47,6 @@ public class RenderDrillLaser extends Render
         float f9 = (float)(10 + b0 * 10) / 32.0F;
         float f10 = 0.05625F;
         GlStateManager.enableRescaleNormal();
-        float f11 = (float)p_180551_1_.arrowShake - p_180551_9_;
-
-        if (f11 > 0.0F)
-        {
-            float f12 = -MathHelper.sin(f11 * 3.0F) * f11;
-            GlStateManager.rotate(f12, 0.0F, 0.0F, 1.0F);
-        }
 
         GlStateManager.rotate(45.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.scale(f10, f10, f10);

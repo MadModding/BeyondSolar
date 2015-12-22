@@ -146,16 +146,14 @@ public class ItemArmorMaterial extends ItemArmor implements ISpecialArmor, IFirs
 					if (world.isRemote && world.getTotalWorldTime() % 1 == 0 && !player.isSneaking()
 							&& (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0
 									|| Minecraft.getMinecraft().thePlayer != player)) {
-						double dist = 0.25 + (0.25 * Math.abs(percent));//MathHelper.sin(player.rotationPitch)));
-						
+						double dist = 0.25 + (0.25 * Math.abs(percent));// MathHelper.sin(player.rotationPitch)));
+
 						double xp = dist * (double) (-MathHelper.sin(player.rotationYaw / 180.0F * (float) Math.PI)
 								* MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI));
 						double yp = dist * (double) (-MathHelper.sin(player.rotationPitch / 180.0F * (float) Math.PI));
 						double zp = dist * (double) (MathHelper.cos(player.rotationYaw / 180.0F * (float) Math.PI)
 								* MathHelper.cos(player.rotationPitch / 180.0F * (float) Math.PI));
-						
-						
-						
+
 						double x1 = xp + player.posX + (double) (-MathHelper
 								.sin(((player.rotationYaw + 90) % 360) / 180.0F * (float) Math.PI) / 7);
 						double y1 = yp + player.posY + 1.6625;

@@ -16,6 +16,7 @@ container.spacearmor=Quantum Entangled Armor
 container.tile_entity_forge=Metal Forge
 tile.forge.name=Metal Forge
 
+item.spacethundersword.name=Righteous Reckoning
 item.strongchest.name=Strong Chestplate
 item.sturdypants.name=Sturdy Leggings
 item.quickboots.name=Quick Boots

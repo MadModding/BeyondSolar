@@ -58,9 +58,13 @@ public final class ModBlocks {
 	public static Block blockOil;
 	public static final Block tpBlock = new TpBlock();
 	public static final Block forge = new BlockForge("forge");
-
+	public static final Block crystal = new BlockSpaceCrystal().setUnlocalizedName("spacecrystal").setHardness(60.0F);
+	public static final Block crystalhard = new Meteor(Material.rock).setUnlocalizedName("spacesolidcrystal").setHardness(60.0F);
+	
 	public static void init() {
 		FluidRegistry.registerFluid(fluidOil);
+		GameRegistry.registerBlock(crystal, crystal.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(crystalhard, crystalhard.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(forge, forge.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(tpBlock, tpBlock.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(alienCell, alienCell.getUnlocalizedName().substring(5));

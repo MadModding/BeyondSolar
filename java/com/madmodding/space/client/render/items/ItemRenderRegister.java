@@ -29,6 +29,7 @@ public final class ItemRenderRegister {
 		reg(ModItems.acidTankfull);
 		reg(ModItems.dust);
 		reg(ModItems.acidSquirter);
+		reg(ModItems.thunder);
 		reg(Item.getItemFromBlock(ModBlocks.forge));
 		reg(Item.getItemFromBlock(ModBlocks.tpBlock));
 		reg(Item.getItemFromBlock(ModBlocks.aluminiumOre));
@@ -48,7 +49,9 @@ public final class ItemRenderRegister {
 		reg(Item.getItemFromBlock(ModBlocks.titaniumOre));
 		reg(Item.getItemFromBlock(ModBlocks.uraniumOre));
 		reg(Item.getItemFromBlock(ModBlocks.zincOre));
-		reg(Item.getItemFromBlock(ModBlocks.ice));		
+		reg(Item.getItemFromBlock(ModBlocks.ice));
+		reg(Item.getItemFromBlock(ModBlocks.crystal));
+		reg(Item.getItemFromBlock(ModBlocks.crystalhard));
 	}
 
 	// ==========================================================================

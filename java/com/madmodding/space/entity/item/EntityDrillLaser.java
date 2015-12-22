@@ -1,15 +1,17 @@
 package com.madmodding.space.entity.item;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.madmodding.space.items.element.ItemDrill;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -17,12 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.network.play.server.S2BPacketChangeGameState;
-import net.minecraft.server.management.ItemInWorldManager;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -30,7 +30,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -216,14 +215,84 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 		}
 	}
 
+	public void setDead() {
+	}
+
 	/**
 	 * Called to update the entity's position/logic.
 	 */
 	public void onUpdate() {
 		super.onUpdate();
-		this.motionY += 0.05;
-		if (Math.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ) <= 0.25)
-			this.setDead();
+		if (!(this.shootingEntity instanceof EntityPlayer && ((EntityPlayer) shootingEntity).isUsingItem()
+				&& ((EntityPlayer) shootingEntity).getItemInUse().getItem() instanceof ItemDrill)) {
+			isDead = true;
+		}
+		((EntityPlayer) shootingEntity).addPotionEffect(new PotionEffect(Potion.damageBoost.getId(), 5, 1));
+		if (inGround && !((EntityPlayer) shootingEntity).isSneaking()) {
+			motionX = 0.25 * (double) (-MathHelper.sin(shootingEntity.rotationYaw / 180.0F * (float) Math.PI)
+					* MathHelper.cos(shootingEntity.rotationPitch / 180.0F * (float) Math.PI));
+			motionY = 0.25 * (double) (-MathHelper.sin(shootingEntity.rotationPitch / 180.0F * (float) Math.PI));
+			motionZ = 0.25 * (double) (MathHelper.cos(shootingEntity.rotationYaw / 180.0F * (float) Math.PI)
+					* MathHelper.cos(shootingEntity.rotationPitch / 180.0F * (float) Math.PI));
+			this.posX += this.motionX;
+			this.posY += this.motionY;
+			this.posZ += this.motionZ;
+			breakExtraBlock(worldObj, new BlockPos(posX, posY, posZ), 0, (EntityPlayer) shootingEntity,
+					worldObj.getBlockState(new BlockPos(posX, posY, posZ)));
+		}
+		{// Spawns Primary Particles
+			double x1 = this.shootingEntity.posX;
+			double y1 = this.shootingEntity.posY + this.shootingEntity.getEyeHeight();
+			double z1 = this.shootingEntity.posZ;
+			y1 += 0.5;
+			double x2 = this.posX;
+			double y2 = this.posY;
+			double z2 = this.posZ;
+			double distance = (Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2)));
+			double wide = 2;
+			List sec = new ArrayList();
+			int c = (int) (distance * wide);
+			sec.add(new double[] { x1, y1, z1 });
+			for (int d = 0; d < c; d++) {
+				if (c < 64 || worldObj.getTotalWorldTime() % (c - 63) == 0) {
+					double x = x2 + (x1 - x2) / distance * d / wide;
+					double y = y2 + (y1 - y2) / distance * d / wide;
+					double z = z2 + (z1 - z2) / distance * d / wide;
+					worldObj.spawnParticle(EnumParticleTypes.FLAME, x, y, z, 0, 0, 0, new int[0]);
+					System.out.println("L = " + d);
+					if (this.worldObj.getTotalWorldTime() % 3 == 0 && this.rand.nextBoolean()
+							&& this.rand.nextBoolean()) {
+						sec.add(new double[] { (x + rand.nextDouble() - 0.5), (y + rand.nextDouble() - 0.5),
+								(z + rand.nextDouble() - 0.5) });
+					}
+				}
+			}
+			sec.add(new double[] { x2, y2, z2 });
+			// Spawns Secondary Particles
+			if (this.worldObj.getTotalWorldTime() % 3 == 0) {
+				wide *= 2;
+				for (int i = 1; i < sec.size(); i++) {
+					System.out.println("I2 = " + i);
+					double xn1 = ((double[]) sec.get(i - 1))[0];
+					double yn1 = ((double[]) sec.get(i - 1))[1];
+					double zn1 = ((double[]) sec.get(i - 1))[2];
+					double xn2 = ((double[]) sec.get(i))[0];
+					double yn2 = ((double[]) sec.get(i))[1];
+					double zn2 = ((double[]) sec.get(i))[2];
+					double distancen = (Math
+							.sqrt(Math.pow(xn1 - xn2, 2) + Math.pow(yn1 - yn2, 2) + Math.pow(zn1 - zn2, 2)));
+					List secn = new ArrayList();
+					int cn = (int) (distancen * wide);
+					for (int d = 0; d < cn; d++) {
+						System.out.println("DS = " + d);
+						double x = xn2 + (xn1 - xn2) / distancen * d / wide;
+						double y = yn2 + (yn1 - yn2) / distancen * d / wide;
+						double z = zn2 + (zn1 - zn2) / distancen * d / wide;
+						worldObj.spawnParticle(EnumParticleTypes.FLAME, x, y, z, 0, 0, 0, new int[0]);
+					}
+				}
+			}
+		}
 
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
 			float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -242,7 +311,7 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 			AxisAlignedBB axisalignedbb = block.getCollisionBoundingBox(this.worldObj, blockpos, iblockstate);
 			breakExtraBlock(worldObj, blockpos, 0, (EntityPlayer) this.shootingEntity,
 					worldObj.getBlockState(blockpos));
-			
+
 			if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3(this.posX, this.posY, this.posZ))) {
 				this.inGround = true;
 			}
@@ -253,9 +322,8 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 		if (this.inGround) {
 			int j = block.getMetaFromState(iblockstate);
 			if (block == this.inTile && j == this.inData) {
-				this.setDead();
+				
 			} else {
-				this.setDead();
 			}
 		} else {
 			++this.ticksInAir;
@@ -315,7 +383,6 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 			float f4;
 			if (movingobjectposition != null) {
 				if (movingobjectposition.entityHit != null) {
-					this.setDead();
 				} else {
 					BlockPos blockpos1 = movingobjectposition.getBlockPos();
 					this.xTile = blockpos1.getX();
@@ -324,14 +391,8 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 					iblockstate = this.worldObj.getBlockState(blockpos1);
 					this.inTile = iblockstate.getBlock();
 					this.inData = this.inTile.getMetaFromState(iblockstate);
-					this.motionX = (double) ((float) (movingobjectposition.hitVec.xCoord - this.posX));
-					this.motionY = (double) ((float) (movingobjectposition.hitVec.yCoord - this.posY));
-					this.motionZ = (double) ((float) (movingobjectposition.hitVec.zCoord - this.posZ));
 					f3 = MathHelper.sqrt_double(
 							this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-					this.posX -= this.motionX / (double) f3 * 0.05000000074505806D;
-					this.posY -= this.motionY / (double) f3 * 0.05000000074505806D;
-					this.posZ -= this.motionZ / (double) f3 * 0.05000000074505806D;
 					this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 					this.inGround = true;
 					this.arrowShake = 7;
@@ -351,9 +412,11 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 				}
 			}
 
-			this.posX += this.motionX;
-			this.posY += this.motionY;
-			this.posZ += this.motionZ;
+			if (!inGround) {
+				this.posX += this.motionX;
+				this.posY += this.motionY;
+				this.posZ += this.motionZ;
+			}
 			f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
@@ -380,28 +443,19 @@ public class EntityDrillLaser extends Entity implements IProjectile {
 			f3 = 0.99F;
 			f1 = 0.05F;
 
-			if (this.isInWater()) {
-				for (int l = 0; l < 4; ++l) {
-					f4 = 0.25F;
-					this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double) f4,
-							this.posY - this.motionY * (double) f4, this.posZ - this.motionZ * (double) f4,
-							this.motionX, this.motionY, this.motionZ, new int[0]);
-				}
-
-				f3 = 0.6F;
-			}
-
 			if (this.isWet()) {
 				this.extinguish();
 			}
 
-			this.motionX *= (double) f3;
-			this.motionY *= (double) f3;
-			this.motionZ *= (double) f3;
-			this.motionY -= (double) f1;
-			this.setPosition(this.posX, this.posY, this.posZ);
+			if (!inGround) {
+				this.motionX *= (double) f3;
+				this.motionY *= (double) f3;
+				this.motionZ *= (double) f3;
+				this.motionY -= (double) f1;
+			}
 			this.doBlockCollisions();
 		}
+		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
 	/**

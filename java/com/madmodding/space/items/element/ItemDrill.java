@@ -9,6 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class ItemDrill extends SpecialItem {
@@ -28,20 +30,17 @@ public class ItemDrill extends SpecialItem {
 	}
 
 	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-
+		
 		if (stack.getItemDamage() == 0) {
-			if (count % 3 == 0) {
-				EntityDrillLaser entityarrow = new EntityDrillLaser(player.worldObj, player, 4);
-				player.worldObj.spawnEntityInWorld(entityarrow);
+			if (player.getActivePotionEffect(Potion.damageBoost) == null) {
+				EntityDrillLaser laser = new EntityDrillLaser(player.worldObj, player, 4);
+				player.worldObj.spawnEntityInWorld(laser);
+				player.addPotionEffect(new PotionEffect(Potion.damageBoost.getId(), 20, 1));
 			}
-		}
-		if (count <= 2 || stack.getItemDamage() != 0) {
-			stack.setItemDamage(50);
 		}
 	}
 
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityPlayer playerIn, int timeLeft) {
-		stack.setItemDamage(getMaxItemUseDuration(stack) - timeLeft);
 	}
 
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn) {
@@ -66,7 +65,7 @@ public class ItemDrill extends SpecialItem {
 	}
 
 	public int getMaxItemUseDuration(ItemStack stack) {
-		return 50 - stack.getItemDamage();
+		return 72000;//50 - stack.getItemDamage();
 	}
 
 	public EnumAction getItemUseAction(ItemStack stack) {

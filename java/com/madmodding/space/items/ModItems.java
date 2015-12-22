@@ -35,9 +35,11 @@ public final class ModItems {
 	public static final Item drill = new ItemDrill("drill").setCreativeTab(Main.aliensTabTech).setMaxStackSize(1);
 	public static final Item enderpouch = new EnderItem("enderpouch");
 	public static final Item pouch = new ItemBag("pouch");
+	public static final Item thunder = new ItemSwordThunder("spacethundersword", evilStaffToolMaterial);
 	
 	public static void init() 
 	{
+		GameRegistry.registerItem(thunder, "spacethundersword");
 		GameRegistry.registerItem(pouch, "pouch");
 		GameRegistry.registerItem(enderpouch, "enderpouch");
 		GameRegistry.registerItem(dust, "dust");

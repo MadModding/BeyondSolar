@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -61,17 +62,18 @@ public class ItemArmorQuantum extends ItemArmor implements ISpecialArmor, IFirst
 		if (multimap.get(Main.armorPercent.getAttributeUnlocalizedName()) != null) {
 			if (multimap.get(Main.armorPercent.getAttributeUnlocalizedName()).size() > 1) {
 				float basic = 100;
-				System.out.println("Calculating Armor Percent");
+				// System.out.println("Calculating Armor Percent");
 				for (int i = 0; i < multimap.get(Main.armorPercent.getAttributeUnlocalizedName()).size(); i++) {
 					float value = (float) ((AttributeModifier) multimap
 							.get(Main.armorPercent.getAttributeUnlocalizedName()).toArray()[i]).getAmount();
-					System.out.println("Value " + i + " = " + value);
+					// System.out.println("Value " + i + " = " + value);
 					value *= 4;
 					value /= 100;
-					System.out.println("Value % off total " + i + " = " + value);
-					System.out.println("Old Basic = " + basic);
+					// System.out.println("Value % off total " + i + " = " +
+					// value);
+					// System.out.println("Old Basic = " + basic);
 					basic -= basic * value;
-					System.out.println("New Basic = " + basic);
+					// System.out.println("New Basic = " + basic);
 				}
 				UUID id = ((AttributeModifier) multimap.get(Main.armorPercent.getAttributeUnlocalizedName())
 						.toArray()[0]).getID();
@@ -125,9 +127,45 @@ public class ItemArmorQuantum extends ItemArmor implements ISpecialArmor, IFirst
 	}
 
 	@Override
-	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+	public ArmorProperties getProperties(EntityLivingBase player, ItemStack stack, DamageSource source, double damage,
 			int slot) {
-		return new ArmorProperties(0, 0, 0);
+		//System.out.println("Taking Damage");
+		ArmorProperties properties = new ArmorProperties(0, 0, 0);
+		if (!stack.hasTagCompound())
+			onFirstTick(stack);
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("inv")) {
+			ItemStack[] stacks = loadInventoryFromNBT((NBTTagList) stack.getTagCompound().getTag("inv"));
+			ArmorProperties prop0 = null;
+			ArmorProperties prop1 = null;
+			if (stacks[0] != null && stacks[0].getItem() instanceof ISpecialArmor) {
+				prop0 = ((ISpecialArmor) stacks[0].getItem()).getProperties(player, stack, source, damage, slot);
+				//System.out.println("Stack 0: " + prop0.AbsorbRatio);
+			} else if (stacks[0] != null && stacks[0].getItem() instanceof ItemArmor) {
+				ItemArmor armor = (ItemArmor) stacks[0].getItem();
+				prop0 = new ArmorProperties(0, armor.damageReduceAmount / 25D, Integer.MAX_VALUE);
+				//System.out.println("Stack 0: " + prop0.AbsorbRatio);
+			} // else System.out.println("Stack 0: nope");
+
+			if (stacks[1] != null && stacks[1].getItem() instanceof ISpecialArmor) {
+				prop1 = ((ISpecialArmor) stacks[1].getItem()).getProperties(player, stack, source, damage, slot);
+				//System.out.println("Stack 1: " + prop1.AbsorbRatio);
+			} else if (stacks[1] != null && stacks[1].getItem() instanceof ItemArmor) {
+				ItemArmor armor = (ItemArmor) stacks[1].getItem();
+				prop1 = new ArmorProperties(0, armor.damageReduceAmount / 25D, Integer.MAX_VALUE);
+				//System.out.println("Stack 1: " + prop1.AbsorbRatio);
+			} // else System.out.println("Stack 1: nope");
+
+			if (prop0 != null && prop1 == null)
+				properties = prop0;
+			if (prop1 != null && prop0 == null)
+				properties = prop1;
+			if (prop0 != null && prop1 != null) {
+				double perc0 = prop0.AbsorbRatio;
+				double perc1 = prop1.AbsorbRatio;
+				properties = new ArmorProperties(1, (1 - (1 - perc0) * (1 - perc1)), Integer.MAX_VALUE);
+			}
+		}
+		return properties;
 	}
 
 	@Override
